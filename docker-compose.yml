@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: wanderpall-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-wanderpall}
+      POSTGRES_USER: ${POSTGRES_USER:-wanderpall}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wanderpall}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wanderpall} -d ${POSTGRES_DB:-wanderpall}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    profiles: ["backend", "full"]
+    build:
+      context: ./backend
+    container_name: wanderpall-backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg://wanderpall:wanderpall@db:5432/wanderpall
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/app:/app/app:ro
+
+  frontend:
+    profiles: ["full"]
+    build:
+      context: ./frontend
+    container_name: wanderpall-frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/src:/app/src:ro
+      - ./frontend/index.html:/app/index.html:ro
+      - ./frontend/vite.config.ts:/app/vite.config.ts:ro
+
+volumes:
+  postgres_data:
