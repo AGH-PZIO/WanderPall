@@ -1,0 +1,202 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "WanderPall API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Health Check",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Check Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Test Endpoint",
+        "operationId": "test_endpoint_test_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/status": {
+      "get": {
+        "tags": [
+          "module-1-account-auth"
+        ],
+        "summary": "Account Status",
+        "operationId": "account_status_account_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Account Status Account Status Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel-assistance/status": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Travel Assistance Status",
+        "operationId": "travel_assistance_status_travel_assistance_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Travel Assistance Status Travel Assistance Status Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel-buddies/status": {
+      "get": {
+        "tags": [
+          "module-3-travel-buddies"
+        ],
+        "summary": "Travel Buddies Status",
+        "operationId": "travel_buddies_status_travel_buddies_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Travel Buddies Status Travel Buddies Status Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/maps/status": {
+      "get": {
+        "tags": [
+          "module-4-maps"
+        ],
+        "summary": "Maps Status",
+        "operationId": "maps_status_maps_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Maps Status Maps Status Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/journals/status": {
+      "get": {
+        "tags": [
+          "module-5-journal"
+        ],
+        "summary": "Journal Status",
+        "operationId": "journal_status_journals_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Journal Status Journals Status Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TestResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "TestResponse"
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+# Module ownership for WanderPall.
+# Unassigned modules are intentionally commented until pairs are confirmed.
+
+# Global coordination / project docs
+README.md @JK2Kgit
+docs/ @JK2Kgit
+
+# Shared infrastructure
+docker-compose.yml @JK2Kgit
+infra/ @JK2Kgit
+
+# Frontend and backend shared app shells
+frontend/ @JK2Kgit @mKepka16
+backend/app/main.py @JK2Kgit @mKepka16
+backend/app/core/ @JK2Kgit @mKepka16
+
+# Module 1: Zarzadzanie kontem i strona + auth
+backend/app/modules/account/ @JK2Kgit
+frontend/src/modules/account/ @mKepka16
+
+# Module 2: Pomoce w podrozy
+backend/app/modules/travel_assistance/ @sggorski @Gawronek-8 @pavlvs-91
+frontend/src/modules/travel-assistance/ @sggorski @Gawronek-8 @pavlvs-91
+
+# Module 5: Tworzenie dziennika podrozy
+backend/app/modules/journal/ @sggorski @Gawronek-8 @pavlvs-91
+frontend/src/modules/journal/ @sggorski @Gawronek-8 @pavlvs-91
+
+# Unassigned:
+# Module 3: Podroz w grupie travel buddies
+# backend/app/modules/travel_buddies/
+# frontend/src/modules/travel-buddies/
+#
+# Module 4: Edycja mapy
+# backend/app/modules/maps/
+# frontend/src/modules/maps/
