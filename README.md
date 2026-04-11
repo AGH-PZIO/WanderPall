@@ -23,6 +23,12 @@ infra/           Infrastructure helpers and DB migrations
 
 ## Local startup
 
+Optional local configuration:
+
+```bash
+cp .env.example .env
+```
+
 Start PostgreSQL only:
 
 ```bash
