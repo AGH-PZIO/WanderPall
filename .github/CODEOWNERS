@@ -1,9 +1,12 @@
 # Module ownership for WanderPall.
 # Unassigned modules are intentionally commented until pairs are confirmed.
 
+* @qualv13 @JK2Kgit
+
 # Global coordination / project docs
-README.md @JK2Kgit
-docs/ @JK2Kgit
+README.md @JK2Kgit @qualv13
+docs/ @JK2Kgit @qualv13
+.github/ @JK2Kgit
 
 # Shared infrastructure
 docker-compose.yml @JK2Kgit
