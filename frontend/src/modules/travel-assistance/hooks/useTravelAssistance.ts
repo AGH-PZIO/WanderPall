@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { apiClient } from "../../../shared/api-client";
 import type { components } from "../../../shared/api-types";
 
@@ -21,7 +21,7 @@ export function useTravelAssistance() {
     "X-Dev-User-Id": DEV_USER_ID
   };
 
-  const checkGmailStatus = async () => {
+  const checkGmailStatus = useCallback(async () => {
     const res = await apiClient.GET("/travel-assistance/gmail/status", {
       headers
     });
@@ -31,9 +31,9 @@ export function useTravelAssistance() {
       setConnected(status.connected ?? false);
       setGoogleEmail(status.google_email ?? null);
     }
-  };
+  }, []);
 
-  const getAuthorizeUrl = async () => {
+  const getAuthorizeUrl = useCallback(async () => {
     const res = await apiClient.GET("/travel-assistance/gmail/oauth/authorize-url", {
       headers
     });
@@ -42,9 +42,9 @@ export function useTravelAssistance() {
       const data = res.data as { url: string };
       setAuthorizeUrl(data.url);
     }
-  };
+  }, []);
 
-  const fetchDocs = async () => {
+  const fetchDocs = useCallback(async () => {
     setLoading(true);
 
     const res = await apiClient.GET("/travel-assistance/travel-documents", {
@@ -56,7 +56,7 @@ export function useTravelAssistance() {
     }
 
     setLoading(false);
-  };
+  }, []);
 
   const sync = async () => {
     setSyncing(true);
@@ -111,13 +111,13 @@ export function useTravelAssistance() {
   useEffect(() => {
     checkGmailStatus();
     getAuthorizeUrl();
-  }, []);
+  }, [checkGmailStatus, getAuthorizeUrl]);
 
   useEffect(() => {
     if (connected) {
       fetchDocs();
     }
-  }, [connected]);
+  }, [connected, fetchDocs]);
 
   return {
     items,
