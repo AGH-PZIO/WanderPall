@@ -26,6 +26,11 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://wanderpall:wanderpall@db:5432/wanderpall
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      GOOGLE_OAUTH_CLIENT_ID: ${GOOGLE_OAUTH_CLIENT_ID:-}
+      GOOGLE_OAUTH_CLIENT_SECRET: ${GOOGLE_OAUTH_CLIENT_SECRET:-}
+      GOOGLE_OAUTH_REDIRECT_URI: ${GOOGLE_OAUTH_REDIRECT_URI:-http://localhost:8000/travel-assistance/gmail/oauth/callback}
+      GMAIL_TOKEN_ENCRYPTION_KEY: ${GMAIL_TOKEN_ENCRYPTION_KEY:-}
+      FRONTEND_OAUTH_REDIRECT_URL: ${FRONTEND_OAUTH_REDIRECT_URL:-}
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     depends_on:

@@ -72,6 +72,142 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/travel-assistance/gmail/oauth/authorize-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Gmail Authorize Url */
+        get: operations["gmail_authorize_url_travel_assistance_gmail_oauth_authorize_url_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-assistance/gmail/oauth/callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Gmail Oauth Callback */
+        get: operations["gmail_oauth_callback_travel_assistance_gmail_oauth_callback_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-assistance/gmail/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Gmail Status */
+        get: operations["gmail_status_travel_assistance_gmail_status_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-assistance/gmail/connection": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Gmail Disconnect */
+        delete: operations["gmail_disconnect_travel_assistance_gmail_connection_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-assistance/gmail/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Gmail Sync */
+        post: operations["gmail_sync_travel_assistance_gmail_sync_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-assistance/travel-documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Travel Documents */
+        get: operations["list_travel_documents_travel_assistance_travel_documents_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-assistance/travel-documents/{document_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove Travel Document */
+        delete: operations["remove_travel_document_travel_assistance_travel_documents__document_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-assistance/travel-documents/{document_id}/attachments/{attachment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Download Attachment */
+        get: operations["download_attachment_travel_assistance_travel_documents__document_id__attachments__attachment_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/travel-buddies/status": {
         parameters: {
             query?: never;
@@ -127,12 +263,113 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AttachmentInfo */
+        AttachmentInfo: {
+            /** Attachment Id */
+            attachment_id: string;
+            /** Filename */
+            filename?: string | null;
+            /** Mime Type */
+            mime_type?: string | null;
+            /** Size */
+            size?: number | null;
+        };
+        /** AuthorizeUrlResponse */
+        AuthorizeUrlResponse: {
+            /** Url */
+            url: string;
+        };
+        /** GmailStatusResponse */
+        GmailStatusResponse: {
+            /** Connected */
+            connected: boolean;
+            /** Google Email */
+            google_email?: string | null;
+            /** Last Sync At */
+            last_sync_at?: string | null;
+        };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
+        /** SyncResponse */
+        SyncResponse: {
+            /**
+             * Scanned
+             * @description Messages fetched from Gmail in this run
+             */
+            scanned: number;
+            /**
+             * Imported
+             * @description New travel-related rows inserted
+             */
+            imported: number;
+            /**
+             * Updated
+             * @description Existing rows updated
+             */
+            updated: number;
+        };
         /** TestResponse */
         TestResponse: {
             /** Status */
             status: string;
             /** Message */
             message: string;
+        };
+        /** TravelDocumentListResponse */
+        TravelDocumentListResponse: {
+            /** Items */
+            items: components["schemas"]["TravelDocumentResponse"][];
+            /** Total */
+            total: number;
+        };
+        /** TravelDocumentResponse */
+        TravelDocumentResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Gmail Message Id */
+            gmail_message_id: string;
+            /** Gmail Thread Id */
+            gmail_thread_id: string | null;
+            /** Subject */
+            subject: string | null;
+            /** Snippet */
+            snippet: string | null;
+            /** From Addr */
+            from_addr: string | null;
+            /** Received At */
+            received_at: string | null;
+            /** Category */
+            category: string;
+            /** Confidence */
+            confidence: string;
+            /** Is Travel Related */
+            is_travel_related: boolean;
+            /**
+             * Synced At
+             * Format: date-time
+             */
+            synced_at: string;
+            /** Attachments */
+            attachments?: components["schemas"]["AttachmentInfo"][];
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
         };
     };
     responses: never;
@@ -225,6 +462,275 @@ export interface operations {
                     "application/json": {
                         [key: string]: string;
                     };
+                };
+            };
+        };
+    };
+    gmail_authorize_url_travel_assistance_gmail_oauth_authorize_url_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string | null;
+                "X-User-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthorizeUrlResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    gmail_oauth_callback_travel_assistance_gmail_oauth_callback_get: {
+        parameters: {
+            query?: {
+                code?: string | null;
+                state?: string | null;
+                error?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    gmail_status_travel_assistance_gmail_status_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string | null;
+                "X-User-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GmailStatusResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    gmail_disconnect_travel_assistance_gmail_connection_delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string | null;
+                "X-User-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    gmail_sync_travel_assistance_gmail_sync_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string | null;
+                "X-User-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SyncResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_travel_documents_travel_assistance_travel_documents_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Dev-User-Id"?: string | null;
+                "X-User-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TravelDocumentListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_travel_document_travel_assistance_travel_documents__document_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string | null;
+                "X-User-Id"?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    download_attachment_travel_assistance_travel_documents__document_id__attachments__attachment_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string | null;
+                "X-User-Id"?: string | null;
+            };
+            path: {
+                document_id: string;
+                attachment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
