@@ -109,14 +109,22 @@ export function useTravelAssistance() {
   };
 
   useEffect(() => {
-    checkGmailStatus();
-    getAuthorizeUrl();
+    const init = async () => {
+      await checkGmailStatus();
+      await getAuthorizeUrl();
+    };
+
+    init();
   }, [checkGmailStatus, getAuthorizeUrl]);
 
   useEffect(() => {
-    if (connected) {
-      fetchDocs();
-    }
+    if (!connected) return;
+
+    const load = async () => {
+      await fetchDocs();
+    };
+
+    load();
   }, [connected, fetchDocs]);
 
   return {
