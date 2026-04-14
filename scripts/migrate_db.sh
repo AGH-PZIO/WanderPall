@@ -36,7 +36,7 @@ find "$migrations_dir" -maxdepth 1 -type f -name '*.sql' | sort | while read -r 
 
   already_applied="$(
     docker compose exec -T db psql -t -A -U "$db_user" -d "$db_name" \
-      -c "SELECT 1 FROM shared.schema_migrations WHERE filename = '$filename';"
+      -c "SELECT 1 FROM shared.schema_migrations WHERE filename = '$filename';" </dev/null
   )"
 
   if [ "$already_applied" = "1" ]; then
