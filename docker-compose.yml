@@ -24,7 +24,7 @@ services:
     container_name: wanderpall-backend
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql+psycopg://wanderpall:wanderpall@db:5432/wanderpall
+      DATABASE_URL: postgresql://wanderpall:wanderpall@db:5432/wanderpall
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
       GOOGLE_OAUTH_CLIENT_ID: ${GOOGLE_OAUTH_CLIENT_ID:-}
       GOOGLE_OAUTH_CLIENT_SECRET: ${GOOGLE_OAUTH_CLIENT_SECRET:-}
