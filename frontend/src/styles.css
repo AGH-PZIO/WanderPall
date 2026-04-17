@@ -5,6 +5,28 @@
   line-height: 1.5;
 }
 
+:root[data-theme="dark"] {
+  color: #e9ede6;
+  background: #131814;
+}
+
+:root[data-theme="dark"] body {
+  background: #131814;
+}
+
+:root[data-theme="dark"] .module-card {
+  background: #1b221d;
+  border-color: #2e362e;
+}
+
+:root[data-theme="dark"] .module-owner {
+  color: #9db1a5;
+}
+
+:root[data-theme="dark"] .module-number {
+  color: #e48bab;
+}
+
 * {
   box-sizing: border-box;
 }

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { accountModule } from "./modules/account";
+import { accountModule, AccountPage } from "./modules/account";
 import { journalModule } from "./modules/journal";
 import { mapsModule } from "./modules/maps";
 import { travelAssistanceModule } from "./modules/travel-assistance";
@@ -62,6 +62,7 @@ export function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/account/*" element={<AccountPage onClose={() => window.location.href = "/"} />} />
         <Route path="/travel-assistance/*" element={<TravelAssistancePage onClose={() => window.location.href = "/"} />} />
       </Routes>
     </Router>
