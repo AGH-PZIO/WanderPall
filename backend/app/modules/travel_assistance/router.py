@@ -10,11 +10,16 @@ from app.modules.travel_assistance.mail import repository
 from app.modules.travel_assistance.mail.dependencies import get_db_conn, get_dev_user_id
 from app.modules.travel_assistance.mail.gmail_api import (
     build_gmail_service,
-    credentials_from_refresh_token,
-    ensure_fresh_credentials,
     get_attachment_body,
 )
-from app.modules.travel_assistance.mail.gmail_oauth import GMAIL_READONLY_SCOPE, build_authorization_url, exchange_code_for_credentials
+from app.modules.travel_assistance.google_api import (
+    CALENDAR_READONLY_SCOPE,
+    GMAIL_READONLY_SCOPE,
+    build_authorization_url,
+    credentials_from_refresh_token,
+    ensure_fresh_credentials,
+    exchange_code_for_credentials,
+)
 from app.modules.travel_assistance.mail.oauth_state import verify_oauth_state
 from app.modules.travel_assistance.mail.schemas import (
     AuthorizeUrlResponse,
@@ -25,6 +30,15 @@ from app.modules.travel_assistance.mail.schemas import (
 )
 from app.modules.travel_assistance.mail.sync_service import run_gmail_sync
 from app.modules.travel_assistance.mail.token_crypto import decrypt_refresh_token, encrypt_refresh_token
+from app.modules.travel_assistance.calendar.schemas import CalendarEventsResponse
+from app.modules.travel_assistance.calendar import service as calendar_service
+from app.modules.travel_assistance.translator.schemas import (
+    SupportedLanguagesResponse,
+    SupportedLanguage,
+    TranslateRequest,
+    TranslateResponse,
+)
+from app.modules.travel_assistance.translator import service as translator_service
 
 router = APIRouter(prefix="/travel-assistance", tags=["module-2-travel-assistance"])
 
@@ -202,11 +216,15 @@ def download_attachment(
     if not gmail_row:
         raise HTTPException(status_code=400, detail="Gmail not connected")
 
+    scopes_str = (gmail_row.get("scopes") or "").strip()
+    scopes = [s for s in scopes_str.split() if s] or [GMAIL_READONLY_SCOPE]
+
     refresh_plain = decrypt_refresh_token(gmail_row["refresh_token_ciphertext"])
     creds = credentials_from_refresh_token(
         refresh_plain,
         settings.google_oauth_client_id,
         settings.google_oauth_client_secret,
+        scopes=scopes,
     )
     creds = ensure_fresh_credentials(creds)
     service = build_gmail_service(creds)
@@ -218,3 +236,102 @@ def download_attachment(
 
     mime = next((a.mime_type for a in atts if a.attachment_id == attachment_id), "application/octet-stream")
     return StreamingResponse(iter([data]), media_type=mime or "application/octet-stream")
+
+
+# Translator endpoints
+@router.get("/translator/supported-languages", response_model=SupportedLanguagesResponse)
+def get_supported_languages() -> SupportedLanguagesResponse:
+    """Get list of supported languages for translation."""
+    languages_dict = translator_service.get_supported_languages()
+    languages = [SupportedLanguage(code=code, name=name) for code, name in languages_dict.items()]
+    return SupportedLanguagesResponse(languages=languages)
+
+
+@router.post("/translator/translate", response_model=TranslateResponse)
+async def translate(
+    request: TranslateRequest,
+) -> TranslateResponse:
+    """Translate text from source language to target language."""
+    try:
+        translated_text = await translator_service.translate_text(
+            request.text,
+            request.source_language,
+            request.target_language,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Translation failed: {exc}") from exc
+
+    return TranslateResponse(
+        original_text=request.text,
+        translated_text=translated_text,
+        source_language=request.source_language,
+        target_language=request.target_language,
+    )
+
+
+@router.get("/calendar/events", response_model=CalendarEventsResponse)
+def list_calendar_events(
+    conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
+    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    calendar_id: str = "primary",
+    max_results: Annotated[int, Query(ge=1, le=250)] = 50,
+    time_min: str | None = None,
+    time_max: str | None = None,
+) -> CalendarEventsResponse:
+    """
+    List upcoming events from Google Calendar.
+    Uses the same stored Google refresh token as the Gmail integration.
+    """
+    _require_oauth_config()
+
+    gmail_row = repository.get_gmail_connection(conn, user_id)
+    if not gmail_row:
+        raise HTTPException(status_code=400, detail="Google is not connected (connect via Gmail OAuth first).")
+
+    scopes_str = (gmail_row.get("scopes") or "").strip()
+    scopes = [s for s in scopes_str.split() if s]
+    if CALENDAR_READONLY_SCOPE not in scopes:
+        raise HTTPException(
+            status_code=400,
+            detail="Google Calendar scope not granted. Disconnect Gmail and connect again to approve Calendar access.",
+        )
+
+    refresh_plain = decrypt_refresh_token(gmail_row["refresh_token_ciphertext"])
+    creds = credentials_from_refresh_token(
+        refresh_plain,
+        settings.google_oauth_client_id,
+        settings.google_oauth_client_secret,
+        scopes=scopes,
+    )
+    creds = ensure_fresh_credentials(creds)
+    service = calendar_service.build_calendar_service(creds)
+
+    from datetime import datetime, timedelta, timezone
+
+    now = datetime.now(timezone.utc)
+    parsed_time_min = now if not time_min else datetime.fromisoformat(time_min.replace("Z", "+00:00"))
+    parsed_time_max = (
+        None if not time_max else datetime.fromisoformat(time_max.replace("Z", "+00:00"))
+    )
+    if parsed_time_max is None:
+        parsed_time_max = parsed_time_min + timedelta(days=30)
+
+    try:
+        items = calendar_service.list_events(
+            service,
+            calendar_id=calendar_id,
+            time_min=parsed_time_min,
+            time_max=parsed_time_max,
+            max_results=max_results,
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Calendar fetch failed: {exc}") from exc
+
+    return CalendarEventsResponse(
+        calendar_id=calendar_id,
+        time_min=parsed_time_min,
+        time_max=parsed_time_max,
+        items=items,
+    )

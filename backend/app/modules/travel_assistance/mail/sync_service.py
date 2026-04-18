@@ -41,11 +41,15 @@ def run_gmail_sync(conn: psycopg.Connection, *, user_id: UUID) -> tuple[int, int
     if not row:
         raise RuntimeError("Gmail is not connected for this user")
 
+    scopes_str = (row.get("scopes") or "").strip()
+    scopes = [s for s in scopes_str.split() if s] or ["https://www.googleapis.com/auth/gmail.readonly"]
+
     refresh_plain = decrypt_refresh_token(row["refresh_token_ciphertext"])
     creds = credentials_from_refresh_token(
         refresh_plain,
         settings.google_oauth_client_id,
         settings.google_oauth_client_secret,
+        scopes=scopes,
     )
     creds = ensure_fresh_credentials(creds)
     service = build_gmail_service(creds)

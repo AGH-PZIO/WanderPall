@@ -6,7 +6,6 @@ type TravelDocument = components["schemas"]["TravelDocumentResponse"];
 type GmailStatusResponse = components["schemas"]["GmailStatusResponse"];
 
 const DEV_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
-const baseUrl = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
 export function useTravelAssistance() {
   const [items, setItems] = useState<TravelDocument[]>([]);
@@ -88,16 +87,23 @@ export function useTravelAssistance() {
   };
 
   const downloadAttachment = async (documentId: string, attachmentId: string) => {
-    const res = await fetch(
-      `${baseUrl}/travel-assistance/travel-documents/${documentId}/attachments/${attachmentId}`,
+    const res = await apiClient.GET(
+      "/travel-assistance/travel-documents/{document_id}/attachments/{attachment_id}",
       {
-        headers
+        params: {
+          path: {
+            document_id: documentId,
+            attachment_id: attachmentId
+          }
+        },
+        headers,
+        parseAs: "blob"
       }
     );
 
-    if (!res.ok) return;
+    if (res.error || !res.data) return;
 
-    const blob = await res.blob();
+    const blob = res.data as unknown as Blob;
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement("a");
