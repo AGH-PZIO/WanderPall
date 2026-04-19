@@ -4,27 +4,10 @@ import html
 import re
 
 from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
-GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly"
-
-
-def credentials_from_refresh_token(refresh_token: str, client_id: str, client_secret: str) -> Credentials:
-    return Credentials(
-        token=None,
-        refresh_token=refresh_token,
-        token_uri="https://oauth2.googleapis.com/token",
-        client_id=client_id,
-        client_secret=client_secret,
-        scopes=[GMAIL_READONLY_SCOPE],
-    )
-
-
-def ensure_fresh_credentials(creds: Credentials) -> Credentials:
-    if creds.expired or not creds.token:
-        creds.refresh(Request())
-    return creds
+from app.modules.travel_assistance.google_api.credentials import credentials_from_refresh_token, ensure_fresh_credentials
+from app.modules.travel_assistance.google_api.scopes import CALENDAR_READONLY_SCOPE, GMAIL_READONLY_SCOPE
 
 
 def build_gmail_service(creds: Credentials):

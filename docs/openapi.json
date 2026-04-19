@@ -1204,6 +1204,190 @@
         }
       }
     },
+    "/travel-assistance/translator/supported-languages": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Get Supported Languages",
+        "description": "Get list of supported languages for translation.",
+        "operationId": "get_supported_languages_travel_assistance_translator_supported_languages_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportedLanguagesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel-assistance/translator/translate": {
+      "post": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Translate",
+        "description": "Translate text from source language to target language.",
+        "operationId": "translate_travel_assistance_translator_translate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TranslateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TranslateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel-assistance/calendar/events": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "List Calendar Events",
+        "description": "List upcoming events from Google Calendar.\nUses the same stored Google refresh token as the Gmail integration.",
+        "operationId": "list_calendar_events_travel_assistance_calendar_events_get",
+        "parameters": [
+          {
+            "name": "calendar_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "primary",
+              "title": "Calendar Id"
+            }
+          },
+          {
+            "name": "max_results",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 250,
+              "minimum": 1,
+              "default": 50,
+              "title": "Max Results"
+            }
+          },
+          {
+            "name": "time_min",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Time Min"
+            }
+          },
+          {
+            "name": "time_max",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Time Max"
+            }
+          },
+          {
+            "name": "X-Dev-User-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Dev-User-Id"
+            }
+          },
+          {
+            "name": "X-User-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-User-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalendarEventsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/travel-buddies/status": {
       "get": {
         "tags": [
@@ -1340,6 +1524,149 @@
           "url"
         ],
         "title": "AuthorizeUrlResponse"
+      },
+      "CalendarEventResponse": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "html_link": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Html Link"
+          },
+          "start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start"
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End"
+          },
+          "all_day": {
+            "type": "boolean",
+            "title": "All Day",
+            "default": false
+          },
+          "organizer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Organizer"
+          }
+        },
+        "type": "object",
+        "title": "CalendarEventResponse"
+      },
+      "CalendarEventsResponse": {
+        "properties": {
+          "calendar_id": {
+            "type": "string",
+            "title": "Calendar Id",
+            "description": "Google Calendar id (e.g. 'primary')"
+          },
+          "time_min": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Time Min",
+            "description": "Lower bound (inclusive) for an event's start time"
+          },
+          "time_max": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Max",
+            "description": "Upper bound (exclusive) for an event's start time"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CalendarEventResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "calendar_id",
+          "time_min",
+          "items"
+        ],
+        "title": "CalendarEventsResponse"
       },
       "DeleteUserRequest": {
         "properties": {
@@ -1579,6 +1906,40 @@
         ],
         "title": "RegistrationStartResponse"
       },
+      "SupportedLanguage": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name"
+        ],
+        "title": "SupportedLanguage"
+      },
+      "SupportedLanguagesResponse": {
+        "properties": {
+          "languages": {
+            "items": {
+              "$ref": "#/components/schemas/SupportedLanguage"
+            },
+            "type": "array",
+            "title": "Languages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "languages"
+        ],
+        "title": "SupportedLanguagesResponse"
+      },
       "SyncResponse": {
         "properties": {
           "scanned": {
@@ -1681,6 +2042,61 @@
           "user"
         ],
         "title": "TokenResponse"
+      },
+      "TranslateRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Text",
+            "description": "Text to translate"
+          },
+          "source_language": {
+            "type": "string",
+            "title": "Source Language",
+            "description": "Source language code (e.g., 'en', 'pl')"
+          },
+          "target_language": {
+            "type": "string",
+            "title": "Target Language",
+            "description": "Target language code (e.g., 'es', 'fr')"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "source_language",
+          "target_language"
+        ],
+        "title": "TranslateRequest"
+      },
+      "TranslateResponse": {
+        "properties": {
+          "original_text": {
+            "type": "string",
+            "title": "Original Text"
+          },
+          "translated_text": {
+            "type": "string",
+            "title": "Translated Text"
+          },
+          "source_language": {
+            "type": "string",
+            "title": "Source Language"
+          },
+          "target_language": {
+            "type": "string",
+            "title": "Target Language"
+          }
+        },
+        "type": "object",
+        "required": [
+          "original_text",
+          "translated_text",
+          "source_language",
+          "target_language"
+        ],
+        "title": "TranslateResponse"
       },
       "TravelDocumentListResponse": {
         "properties": {

@@ -398,6 +398,67 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/travel-assistance/translator/supported-languages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Supported Languages
+         * @description Get list of supported languages for translation.
+         */
+        get: operations["get_supported_languages_travel_assistance_translator_supported_languages_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-assistance/translator/translate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Translate
+         * @description Translate text from source language to target language.
+         */
+        post: operations["translate_travel_assistance_translator_translate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-assistance/calendar/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Calendar Events
+         * @description List upcoming events from Google Calendar.
+         *     Uses the same stored Google refresh token as the Gmail integration.
+         */
+        get: operations["list_calendar_events_travel_assistance_calendar_events_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/travel-buddies/status": {
         parameters: {
             query?: never;
@@ -468,6 +529,51 @@ export interface components {
         AuthorizeUrlResponse: {
             /** Url */
             url: string;
+        };
+        /** CalendarEventResponse */
+        CalendarEventResponse: {
+            /** Id */
+            id?: string | null;
+            /** Summary */
+            summary?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Location */
+            location?: string | null;
+            /** Html Link */
+            html_link?: string | null;
+            /** Start */
+            start?: string | null;
+            /** End */
+            end?: string | null;
+            /**
+             * All Day
+             * @default false
+             */
+            all_day: boolean;
+            /** Organizer */
+            organizer?: string | null;
+        };
+        /** CalendarEventsResponse */
+        CalendarEventsResponse: {
+            /**
+             * Calendar Id
+             * @description Google Calendar id (e.g. 'primary')
+             */
+            calendar_id: string;
+            /**
+             * Time Min
+             * Format: date-time
+             * @description Lower bound (inclusive) for an event's start time
+             */
+            time_min: string;
+            /**
+             * Time Max
+             * @description Upper bound (exclusive) for an event's start time
+             */
+            time_max?: string | null;
+            /** Items */
+            items: components["schemas"]["CalendarEventResponse"][];
         };
         /** DeleteUserRequest */
         DeleteUserRequest: {
@@ -571,6 +677,18 @@ export interface components {
             /** Phone Verification Required */
             phone_verification_required: boolean;
         };
+        /** SupportedLanguage */
+        SupportedLanguage: {
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+        };
+        /** SupportedLanguagesResponse */
+        SupportedLanguagesResponse: {
+            /** Languages */
+            languages: components["schemas"]["SupportedLanguage"][];
+        };
         /** SyncResponse */
         SyncResponse: {
             /**
@@ -623,6 +741,35 @@ export interface components {
              */
             expires_at: string;
             user: components["schemas"]["UserResponse"];
+        };
+        /** TranslateRequest */
+        TranslateRequest: {
+            /**
+             * Text
+             * @description Text to translate
+             */
+            text: string;
+            /**
+             * Source Language
+             * @description Source language code (e.g., 'en', 'pl')
+             */
+            source_language: string;
+            /**
+             * Target Language
+             * @description Target language code (e.g., 'es', 'fr')
+             */
+            target_language: string;
+        };
+        /** TranslateResponse */
+        TranslateResponse: {
+            /** Original Text */
+            original_text: string;
+            /** Translated Text */
+            translated_text: string;
+            /** Source Language */
+            source_language: string;
+            /** Target Language */
+            target_language: string;
         };
         /** TravelDocumentListResponse */
         TravelDocumentListResponse: {
@@ -1501,6 +1648,96 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_supported_languages_travel_assistance_translator_supported_languages_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SupportedLanguagesResponse"];
+                };
+            };
+        };
+    };
+    translate_travel_assistance_translator_translate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TranslateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TranslateResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_calendar_events_travel_assistance_calendar_events_get: {
+        parameters: {
+            query?: {
+                calendar_id?: string;
+                max_results?: number;
+                time_min?: string | null;
+                time_max?: string | null;
+            };
+            header?: {
+                "X-Dev-User-Id"?: string | null;
+                "X-User-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CalendarEventsResponse"];
                 };
             };
             /** @description Validation Error */
