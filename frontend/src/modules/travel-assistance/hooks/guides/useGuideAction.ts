@@ -2,14 +2,6 @@ import { useState, useCallback } from "react";
 import { apiFetch } from "../../api/api.config";
 import { Guide, CreateGuideDTO } from "../../types/Guide";
 
-interface ImportMetaEnv {
-    readonly VITE_API_URL: string;
-}
-
-interface ImportMeta {
-    readonly env: ImportMetaEnv;
-}
-
 export const useGuideAction = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
