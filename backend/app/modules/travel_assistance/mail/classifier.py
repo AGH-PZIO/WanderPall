@@ -145,14 +145,14 @@ def classify_travel_message(
     elif "car" in lower_all or "wypożycz" in lower_all or "rental" in lower_all:
         category = "car"
 
-    if score >= 6:
+    if score >= 8:
         confidence = "high"
-    elif score >= 3:
+    elif score >= 5:
         confidence = "medium"
     else:
         confidence = "low"
 
-    is_travel = score >= 3
+    is_travel = score >= 5
 
     return Classification(
         is_travel_related=is_travel,

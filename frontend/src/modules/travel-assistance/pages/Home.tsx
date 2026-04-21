@@ -33,6 +33,7 @@ export function Home() {
 
         <button
           className="ta-home-card"
+           onClick={() => navigate("translator")}
           style={{ background: "none", border: "none", cursor: "default" }}
         >
           <div className="ta-card-icon">🌐</div>
@@ -42,7 +43,8 @@ export function Home() {
 
         <button
           className="ta-home-card"
-          style={{ background: "none", border: "none", cursor: "default" }}
+          onClick={() => navigate("calendar")}
+          style={{ background: "none", border: "none", cursor: "pointer" }}
         >
           <div className="ta-card-icon">📅</div>
           <h3>Calendar</h3>

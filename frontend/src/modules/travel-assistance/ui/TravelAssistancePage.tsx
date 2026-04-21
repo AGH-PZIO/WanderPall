@@ -10,6 +10,8 @@ import ReadGuide from "../pages/ReadGuide";
 import MyCalculations from "../pages/MyCalculations";
 import Calculation from "../pages/Calculation";
 import GuideEditor from "../pages/Guide";
+import { TranslatorPage } from "../pages/TranslatorPage";
+import { CalendarPage } from "../pages/CalendarPage";
 
 function TravelAssistanceContent({
   onClose
@@ -27,7 +29,9 @@ function TravelAssistanceContent({
       <div className="ta-page-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/mail" element={<MailPage />} />
+          <Route path="mail" element={<MailPage />} />
+          <Route path="translator" element={<TranslatorPage />} />
+          <Route path="calendar" element={<CalendarPage />} />
           {/* Add more routes here */}
           <Route path="*" element={<Home />} />
 
