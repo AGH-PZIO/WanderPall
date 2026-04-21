@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+import os
 
 from app.core.config import get_cors_origins
 from app.core.schemas import TestResponse
@@ -45,3 +47,7 @@ app.include_router(travel_assistance_router)
 app.include_router(travel_buddies_router)
 app.include_router(maps_router)
 app.include_router(journal_router)
+
+if not os.path.exists("uploads"):
+    os.makedirs("uploads")
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")

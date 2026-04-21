@@ -2,6 +2,14 @@ import { Routes, Route } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { MailPage } from "../pages/MailPage";
 import "./travel-assistance.css";
+import NotesPage from "../pages/NotesPage";
+import BrowseGuides from "../pages/BrowseGuidesPage";
+import NotePage from "../pages/NotePage";
+import MyGuides from "../pages/MyGuides";
+import ReadGuide from "../pages/ReadGuide";
+import MyCalculations from "../pages/MyCalculations";
+import Calculation from "../pages/Calculation";
+import GuideEditor from "../pages/Guide";
 
 function TravelAssistanceContent({
   onClose
@@ -22,6 +30,17 @@ function TravelAssistanceContent({
           <Route path="/mail" element={<MailPage />} />
           {/* Add more routes here */}
           <Route path="*" element={<Home />} />
+
+          <Route path="/notes" element={<NotesPage />} />
+          <Route path="/note/:id" element={<NotePage />} />
+
+          <Route path="/browse-guides" element={<BrowseGuides />} />
+          <Route path="/my-guides" element={<MyGuides />} />
+          <Route path="/read-guide/:id" element={<ReadGuide />} />
+          <Route path="/guide/:id" element={<GuideEditor />} />
+          
+          <Route path="/my-calculations" element={<MyCalculations />} />
+          <Route path="/calculation/:id" element={<Calculation />} />
         </Routes>
       </div>
     </div>
