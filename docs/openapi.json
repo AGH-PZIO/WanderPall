@@ -1548,13 +1548,13 @@
         "tags": [
           "module-2-travel-assistance"
         ],
-        "summary": "Upload File",
-        "operationId": "upload_file_travel_assistance_guides_upload_post",
+        "summary": "Upload Guide Image",
+        "operationId": "upload_guide_image_travel_assistance_guides_upload_post",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_upload_file_travel_assistance_guides_upload_post"
+                "$ref": "#/components/schemas/Body_upload_guide_image_travel_assistance_guides_upload_post"
               }
             }
           },
@@ -1565,7 +1565,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponse"
+                }
               }
             }
           },
@@ -1579,7 +1581,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/travel-assistance/notes": {
@@ -2293,7 +2300,7 @@
         ],
         "title": "AuthorizeUrlResponse"
       },
-      "Body_upload_file_travel_assistance_guides_upload_post": {
+      "Body_upload_guide_image_travel_assistance_guides_upload_post": {
         "properties": {
           "file": {
             "type": "string",
@@ -2305,7 +2312,7 @@
         "required": [
           "file"
         ],
-        "title": "Body_upload_file_travel_assistance_guides_upload_post"
+        "title": "Body_upload_guide_image_travel_assistance_guides_upload_post"
       },
       "CalculationCreate": {
         "properties": {
@@ -3385,6 +3392,24 @@
         },
         "type": "object",
         "title": "UpdateUserRequest"
+      },
+      "UploadResponse": {
+        "properties": {
+          "file_id": {
+            "type": "string",
+            "title": "File Id"
+          },
+          "original_name": {
+            "type": "string",
+            "title": "Original Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file_id",
+          "original_name"
+        ],
+        "title": "UploadResponse"
       },
       "UserResponse": {
         "properties": {

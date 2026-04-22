@@ -38,7 +38,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend/app:/app/app:ro
-      - ./backend/app/uploads:/app/uploads
+      - ./backend/media:/app/media:rw
 
   frontend:
     profiles: ["full"]

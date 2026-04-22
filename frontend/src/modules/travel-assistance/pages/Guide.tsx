@@ -48,14 +48,14 @@ export default function GuideEditor() {
 
     const handleFileUpload = async (index: number, file: File | undefined) => {
         if (!file) return;
-            try {
+        try {
             const response = await uploadFile(file);
-            updateBlock(index, 'url', response.url);
+            updateBlock(index, 'url', response.file_id);
         } catch (err: unknown) {
             if(err instanceof Error)
-                alert("Error when uploading the file!" + err.message);
+                alert("Error uploading file! " + err.message);
             else
-                alert("Error when uploading the file!")
+                alert("Error uploading file!");
         }
     };
 

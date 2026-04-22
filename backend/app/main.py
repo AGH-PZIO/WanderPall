@@ -48,6 +48,6 @@ app.include_router(travel_buddies_router)
 app.include_router(maps_router)
 app.include_router(journal_router)
 
-if not os.path.exists("uploads"):
-    os.makedirs("uploads")
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+if not os.path.exists("media"):
+    os.makedirs("media")
+app.mount("/media", StaticFiles(directory="media"), name="media")

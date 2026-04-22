@@ -495,8 +495,8 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Upload File */
-        post: operations["upload_file_travel_assistance_guides_upload_post"];
+        /** Upload Guide Image */
+        post: operations["upload_guide_image_travel_assistance_guides_upload_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -708,8 +708,8 @@ export interface components {
             /** Url */
             url: string;
         };
-        /** Body_upload_file_travel_assistance_guides_upload_post */
-        Body_upload_file_travel_assistance_guides_upload_post: {
+        /** Body_upload_guide_image_travel_assistance_guides_upload_post */
+        Body_upload_guide_image_travel_assistance_guides_upload_post: {
             /** File */
             file: string;
         };
@@ -1137,6 +1137,13 @@ export interface components {
             email?: string | null;
             /** Phone */
             phone?: string | null;
+        };
+        /** UploadResponse */
+        UploadResponse: {
+            /** File Id */
+            file_id: string;
+            /** Original Name */
+            original_name: string;
         };
         /** UserResponse */
         UserResponse: {
@@ -2207,7 +2214,7 @@ export interface operations {
             };
         };
     };
-    upload_file_travel_assistance_guides_upload_post: {
+    upload_guide_image_travel_assistance_guides_upload_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -2216,7 +2223,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": components["schemas"]["Body_upload_file_travel_assistance_guides_upload_post"];
+                "multipart/form-data": components["schemas"]["Body_upload_guide_image_travel_assistance_guides_upload_post"];
             };
         };
         responses: {
@@ -2226,7 +2233,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["UploadResponse"];
                 };
             };
             /** @description Validation Error */

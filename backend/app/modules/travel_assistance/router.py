@@ -52,6 +52,8 @@ from app.modules.travel_assistance.notes.schemas import NotesCreate, NotesRespon
 from app.modules.travel_assistance.calculator.services import CalculationService
 from app.modules.travel_assistance.calculator.schemas import CalculationCreate, CalculationWithExpenses
 
+from app.utils.file_storage.storage import UploadResponse, save_file_with_uuid
+
 router = APIRouter(prefix="/travel-assistance", tags=["module-2-travel-assistance"])
 
 def _require_oauth_config() -> None:
@@ -344,17 +346,17 @@ def delete_guide(
     except PermissionError:
         raise HTTPException(status_code=403, detail="Forbidden")
 
-
-UPLOAD_DIR = "uploads"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
-
-@router.post("/guides/upload")
-async def upload_file(file: UploadFile = File(...)):
-    file_location = f"{UPLOAD_DIR}/{file.filename}"
-    with open(file_location, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+@router.post("/guides/upload", response_model=UploadResponse)
+async def upload_guide_image(
+    file: UploadFile = File(...),
+    user=Depends(get_current_user)
+):
+    saved_file_id = await save_file_with_uuid(file, module_folder="guides")
     
-    return {"url": f"/{file_location}"}
+    return UploadResponse(
+        file_id=saved_file_id,
+        original_name=file.filename
+    )
 
 # === NOTES ===
 

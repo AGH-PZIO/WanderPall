@@ -1,10 +1,13 @@
 import { useState, useCallback } from "react";
 import { apiFetch } from "../../api/api.config";
 import { Guide, CreateGuideDTO } from "../../types/Guide";
+import { tokenStore } from "../../../account/auth-runtime";
 
 export const useGuideAction = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const tokens = tokenStore.get(); 
+    const accessToken = tokens?.accessToken;
 
     const getGuide = useCallback(async (id: string): Promise<Guide | null> => {
         setLoading(true);
@@ -73,28 +76,28 @@ export const useGuideAction = () => {
         }
     };
 
-    const uploadFile = async (file: File): Promise<{ url: string }> => {
+    const uploadFile = async (file: File): Promise<{ file_id: string }> => {
         setLoading(true);
         const formData = new FormData();
         formData.append("file", file);
 
         try {
-            // const meta = import.meta as unknown as ImportMeta;
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
+            
             const response = await fetch(`${apiUrl}/travel-assistance/guides/upload`, {
                 method: "POST",
                 body: formData,
+                headers: {
+                    "Authorization": `Bearer ${accessToken}` 
+                },
             });
 
             if (!response.ok) throw new Error("Upload failed");
-            return await response.json();
+            
+            return await response.json(); 
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("Unknown ERROR");
-            }
+            const msg = err instanceof Error ? err.message : "Unknown ERROR";
+            setError(msg);
             throw err;
         } finally {
             setLoading(false);

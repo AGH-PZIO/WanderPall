@@ -6,6 +6,7 @@ import { Guide, GuideBlock } from '../types/Guide';
 import { useGuides } from '../hooks/guides/useGuides';
 
 export default function ReadGuide() {
+    const BASE_URL = "http://localhost:8000";
     const navigate = useNavigate();
     const { id } = useParams();
     const { getGuide } = useGuideAction();
@@ -52,9 +53,9 @@ export default function ReadGuide() {
         switch (block.type) {
         case 'heading': return <h2 key={idx}>{block.text}</h2>;
         case 'paragraph': return <p key={idx}>{block.text}</p>;
-        case 'image': return <img key={idx} src={`http://localhost:8000${block.url}`} alt="Poradnik" style={{maxWidth: '100%'}}/>;
-        case 'video': return <video key={idx} src={`http://localhost:8000${block.url}`} controls style={{maxWidth: '100%'}}/>;
-        case 'audio': return <audio key={idx} src={`http://localhost:8000${block.url}`} controls />;
+        case 'image': return <img key={idx} src={`${BASE_URL}/media/${block.url}`} alt="Poradnik" style={{maxWidth: '100%'}}/>;
+        case 'video': return <video key={idx} src={`${BASE_URL}/media/${block.url}`} controls style={{maxWidth: '100%'}}/>;
+        case 'audio': return <audio key={idx} src={`${BASE_URL}/media/${block.url}`} controls />;
         default: return null;
         }
     };
