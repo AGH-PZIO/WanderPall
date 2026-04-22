@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTravelBuddies } from "../hooks/useTravelBuddies";
 import {
-  listMessages,
   sendMessage,
   addReaction,
-  removeReaction,
 } from "../api/travel-buddies-api";
 
 function getAccessToken(): string | null {
@@ -21,7 +19,7 @@ function getAccessToken(): string | null {
 
 export function ChatPage() {
   const { groupId } = useParams<{ groupId: string }>();
-  const { messages, accessToken, refreshMessages } = useTravelBuddies();
+  const { messages, refreshMessages } = useTravelBuddies();
   const [text, setText] = useState("");
 
   useEffect(() => {

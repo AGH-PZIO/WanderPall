@@ -2,7 +2,6 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { TravelBuddiesProvider, useTravelBuddies } from "../hooks/useTravelBuddies";
 import { GroupsPage } from "../pages/GroupsPage";
 import { GroupDetailPage } from "../pages/GroupDetailPage";
-import { ChatPage } from "../pages/ChatPage";
 import "./travel-buddies.css";
 
 function TravelBuddiesTopbar({ onClose }: { onClose: () => void }) {

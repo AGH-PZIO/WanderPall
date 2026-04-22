@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { useTravelBuddies } from "../hooks/useTravelBuddies";
 import {
   inviteMemberByEmail, createPoll, createTask, votePoll, markTaskDone,
-  markTaskPending, updateTask, deleteTask, getPoll, sendMessage,
-  addReaction, removeReaction, listMessages, deleteMessage, updateMemberRole,
+  markTaskPending, deleteTask, getPoll, sendMessage,
+  addReaction, removeReaction, listMessages, deleteMessage,
   transferOwnership, uploadAttachment,
 } from "../api/travel-buddies-api";
 import type { PollDetailResponse, MessageDetailWithCountsResponse, AttachmentResponse } from "../api/travel-buddies-api";
@@ -54,7 +54,6 @@ export function GroupDetailPage() {
   const [notes, setNotes] = useState<MessageDetailWithCountsResponse[]>([]);
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [editingRoleId, setEditingRoleId] = useState<string | null>(null);
-  const [editingRoleValue, setEditingRoleValue] = useState<string>("member");
 
   useEffect(() => {
     if (groupId) {
@@ -63,7 +62,7 @@ export function GroupDetailPage() {
       refreshPolls(groupId);
       refreshTasks(groupId);
     }
-  }, [groupId]);
+  }, [groupId, refreshGroup, refreshMembers, refreshPolls, refreshTasks]);
 
   useEffect(() => {
     if (activeTab === "notes" && groupId) {
@@ -228,8 +227,6 @@ export function GroupDetailPage() {
       showMsg(false, err instanceof Error ? err.message : "Błąd");
     }
   }
-
-  const [reactingTo, setReactingTo] = useState<string | null>(null);
 
   async function handleAddReaction(noteId: string, emoji: string) {
     if (!groupId) return;
@@ -524,16 +521,14 @@ export function GroupDetailPage() {
 }
 
 function PollCard({ poll, groupId, onVote }: { poll: { id: string; question: string; status: string; option_count: number; vote_count: number; created_by: string }; groupId: string; onVote: (pollId: string, optionId: string) => void }) {
-  const [detail, setDetail] = useState<PollDetailResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [expanded, setExpanded] = useState(false);
+  const [detail, setDetail] = useState<PollDetailResponse | null | undefined>(undefined);
 
   useEffect(() => {
-    setLoading(true);
+    let cancelled = false;
     getPoll(getAccessToken()!, groupId, poll.id)
-      .then((d) => setDetail(d))
-      .catch(() => setDetail(null))
-      .finally(() => setLoading(false));
+      .then((d) => { if (!cancelled) setDetail(d); })
+      .catch(() => { if (!cancelled) setDetail(null); });
+    return () => { cancelled = true; };
   }, [groupId, poll.id]);
 
   async function handleVote(optionId: string) {

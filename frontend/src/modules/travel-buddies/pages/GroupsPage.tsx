@@ -4,7 +4,7 @@ import { useTravelBuddies } from "../hooks/useTravelBuddies";
 import { createGroup } from "../api/travel-buddies-api";
 
 export function GroupsPage() {
-  const { groups, accessToken, refreshGroups, setCurrentGroup, loading, error } = useTravelBuddies();
+  const { groups, refreshGroups, loading, error } = useTravelBuddies();
   const navigate = useNavigate();
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState("");

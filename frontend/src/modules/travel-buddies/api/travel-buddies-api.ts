@@ -364,23 +364,8 @@ export async function removeReaction(
   const { error } = await apiClient.DELETE(
     `/travel-buddies/groups/${groupId}/messages/${messageId}/reactions/${encodedEmoji}`,
     { headers: { Authorization: `Bearer ${accessToken}` } }
-  );
-  if (error) throw new Error(describeError(error, "Could not remove reaction"));
-}
-}
-
-export async function removeReaction(
-  accessToken: string,
-  groupId: string,
-  messageId: string,
-  emoji: string
-): Promise<void> {
-  const encodedEmoji = encodeURIComponent(emoji);
-  const { error } = await apiClient.DELETE(
-    `/travel-buddies/groups/${groupId}/messages/${messageId}/reactions/${encodedEmoji}`,
-    { headers: { Authorization: `Bearer ${accessToken}` } }
-  );
-  if (error) throw new Error(describeError(error, "Could not remove reaction"));
+);
+  if (error) throw new Error(describeError(error, "Could not add reaction"));
 }
 
 export async function deleteMessage(
