@@ -3,10 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { accountModule, AccountPage } from "./modules/account";
 import { journalModule } from "./modules/journal";
 import { mapsModule } from "./modules/maps";
-import { travelAssistanceModule } from "./modules/travel-assistance";
-import { travelBuddiesModule } from "./modules/travel-buddies";
+import { travelAssistanceModule, TravelAssistancePage } from "./modules/travel-assistance";
+import { travelBuddiesModule, TravelBuddiesPage } from "./modules/travel-buddies";
 
-import { TravelAssistancePage } from "./modules/travel-assistance";
 import { getTestStatus } from "./shared/api";
 import type { FrontendModule } from "./shared/module";
 
@@ -64,6 +63,7 @@ export function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/account/*" element={<AccountPage onClose={() => window.location.href = "/"} />} />
         <Route path="/travel-assistance/*" element={<TravelAssistancePage onClose={() => window.location.href = "/"} />} />
+        <Route path="/travel-buddies/*" element={<TravelBuddiesPage onClose={() => window.location.href = "/"} />} />
       </Routes>
     </Router>
   );
