@@ -54,7 +54,6 @@ export function GroupDetailPage() {
   const [notes, setNotes] = useState<MessageDetailWithCountsResponse[]>([]);
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [editingRoleId, setEditingRoleId] = useState<string | null>(null);
-  const [reactingTo, setReactingTo] = useState<string | null>(null);
 
   useEffect(() => {
     if (groupId) {
@@ -235,7 +234,6 @@ export function GroupDetailPage() {
       await addReaction(getAccessToken()!, groupId, noteId, emoji);
       const data = await listMessages(getAccessToken()!, groupId);
       setNotes(data.items);
-      setReactingTo(null);
       showMsg(true, "Dodano reakcję!");
     } catch (err: unknown) {
       showMsg(false, err instanceof Error ? err.message : "Błąd");
