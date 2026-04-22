@@ -536,12 +536,12 @@ function PollCard({ poll, groupId, onVote }: { poll: { id: string; question: str
     setDetail(d);
   }
 
-  if (detail === undefined) {
+  if (!detail) {
     return (
       <div className="tb-poll-card">
         <div className="tb-poll-q">{poll.question}</div>
         <div className="tb-poll-meta">
-          {detail === undefined ? "ładowanie..." : poll.option_count} opcji · {detail === undefined ? "..." : poll.vote_count} głosów
+          {poll.option_count} opcji · {poll.vote_count} głosów
         </div>
       </div>
     );
