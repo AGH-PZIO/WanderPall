@@ -30,7 +30,7 @@ export function ChatPage() {
     e.preventDefault();
     const token = getAccessToken();
     if (!text.trim() || !token || !groupId) return;
-    await sendMessage(token, groupId, { content: text });
+    await sendMessage(token, groupId, { content: text, attachment_ids: [] });
     setText("");
     refreshMessages();
   }

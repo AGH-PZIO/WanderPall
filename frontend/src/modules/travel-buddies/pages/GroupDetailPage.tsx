@@ -54,6 +54,7 @@ export function GroupDetailPage() {
   const [notes, setNotes] = useState<MessageDetailWithCountsResponse[]>([]);
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [editingRoleId, setEditingRoleId] = useState<string | null>(null);
+  const [reactingTo, setReactingTo] = useState<string | null>(null);
 
   useEffect(() => {
     if (groupId) {
@@ -183,10 +184,10 @@ export function GroupDetailPage() {
     setSaving(true);
     try {
       if (pendingAttachments.length > 0) {
-        await sendMessage(getAccessToken()!, groupId, { content: noteText.trim() || "📎" }, pendingAttachments.map((a) => a.id));
+        await sendMessage(getAccessToken()!, groupId, { content: noteText.trim() || "📎", attachment_ids: pendingAttachments.map((a) => a.id) });
         setPendingAttachments([]);
       } else {
-        await sendMessage(getAccessToken()!, groupId, { content: noteText.trim() });
+        await sendMessage(getAccessToken()!, groupId, { content: noteText.trim(), attachment_ids: [] });
       }
       setNoteText("");
       const data = await listMessages(getAccessToken()!, groupId);
@@ -537,12 +538,12 @@ function PollCard({ poll, groupId, onVote }: { poll: { id: string; question: str
     setDetail(d);
   }
 
-  if (loading || !detail) {
+  if (detail === undefined) {
     return (
       <div className="tb-poll-card">
         <div className="tb-poll-q">{poll.question}</div>
         <div className="tb-poll-meta">
-          {loading ? "ładowanie..." : poll.option_count} opcji · {loading ? "..." : poll.vote_count} głosów
+          {detail === undefined ? "ładowanie..." : poll.option_count} opcji · {detail === undefined ? "..." : poll.vote_count} głosów
         </div>
       </div>
     );

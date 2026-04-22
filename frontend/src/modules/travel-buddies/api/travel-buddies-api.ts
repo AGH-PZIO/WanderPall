@@ -1,5 +1,4 @@
 import { apiClient } from "../../../shared/api-client";
-import type { components } from "../../../shared/api-types";
 
 export interface LocalAttachment {
   id: string;
@@ -9,7 +8,103 @@ export interface LocalAttachment {
   size: number;
 }
 
-export interface LocalMessageDetail {
+export type GroupResponse = {
+  id: string;
+  name: string;
+  description?: string | null;
+  member_count: number;
+  created_at?: string | null;
+};
+export type GroupDetailResponse = {
+  id: string;
+  name: string;
+  description?: string | null;
+  created_by: string;
+  created_at?: string | null;
+  updated_at?: string | null;
+  is_member: boolean;
+  is_admin: boolean;
+  is_owner: boolean;
+};
+export type GroupListResponse = {
+  items: GroupResponse[];
+  total: number;
+};
+export type CreateGroupRequest = {
+  name: string;
+  description?: string | null;
+};
+export type UpdateGroupRequest = {
+  name?: string | null;
+  description?: string | null;
+};
+
+export type GroupMemberResponse = {
+  id: string;
+  group_id: string;
+  user_id: string;
+  role: string;
+  nickname?: string | null;
+  joined_at?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
+};
+export type MemberListResponse = {
+  items: GroupMemberResponse[];
+  total: number;
+};
+export type AddMemberRequest = {
+  user_id: string;
+};
+export type InviteMemberRequest = {
+  email: string;
+};
+export type UpdateMemberRoleRequest = {
+  role: string;
+};
+export type TransferOwnershipRequest = {
+  new_owner_id: string;
+};
+
+export type PollResponse = {
+  id: string;
+  group_id: string;
+  question: string;
+  status: string;
+  created_by: string;
+  option_count: number;
+  vote_count: number;
+  created_at?: string | null;
+  closed_at?: string | null;
+};
+export type PollDetailResponse = {
+  id: string;
+  group_id: string;
+  question: string;
+  status: string;
+  created_by: string;
+  created_at?: string | null;
+  closed_at?: string | null;
+  options: { id: string; poll_id: string; text: string; order_index: number; vote_count: number }[];
+  user_vote_option_id?: string | null;
+  is_closed: boolean;
+};
+export type PollListResponse = {
+  items: PollResponse[];
+  total: number;
+};
+export type CreatePollRequest = {
+  question: string;
+  options: string[];
+};
+export type AddPollOptionRequest = {
+  text: string;
+};
+export type VoteRequest = {
+  option_id: string;
+};
+
+export type MessageDetailResponse = {
   id: string;
   group_id: string;
   user_id: string;
@@ -20,50 +115,77 @@ export interface LocalMessageDetail {
   first_name: string | null;
   last_name: string | null;
   nickname: string | null;
-}
-
-export interface LocalMessageList {
-  items: LocalMessageDetail[];
+};
+export type MessageDetailWithCountsResponse = MessageDetailResponse;
+export type MessageListResponse = {
+  items: MessageDetailResponse[];
   total: number;
-}
-
-export type GroupResponse = components["schemas"]["GroupResponse"];
-export type GroupDetailResponse = components["schemas"]["GroupDetailResponse"];
-export type GroupListResponse = components["schemas"]["GroupListResponse"];
-export type CreateGroupRequest = components["schemas"]["CreateGroupRequest"];
-export type UpdateGroupRequest = components["schemas"]["UpdateGroupRequest"];
-
-export type GroupMemberResponse = components["schemas"]["GroupMemberResponse"];
-export type MemberListResponse = components["schemas"]["MemberListResponse"];
-export type AddMemberRequest = components["schemas"]["AddMemberRequest"];
-export type InviteMemberRequest = components["schemas"]["InviteMemberRequest"];
-export type UpdateMemberRoleRequest = components["schemas"]["UpdateMemberRoleRequest"];
-export type TransferOwnershipRequest = components["schemas"]["TransferOwnershipRequest"];
-
-export type PollResponse = components["schemas"]["PollResponse"];
-export type PollDetailResponse = components["schemas"]["PollDetailResponse"];
-export type PollListResponse = components["schemas"]["PollListResponse"];
-export type CreatePollRequest = components["schemas"]["CreatePollRequest"];
-export type AddPollOptionRequest = components["schemas"]["AddPollOptionRequest"];
-export type VoteRequest = components["schemas"]["VoteRequest"];
-
-export type MessageResponse = components["schemas"]["MessageResponse"];
-export type MessageDetailResponse = components["schemas"]["MessageDetailResponse"];
-export type MessageDetailWithCountsResponse = LocalMessageDetail;
-export type MessageListResponse = LocalMessageList;
-export type CreateMessageRequest = components["schemas"]["CreateMessageRequest"];
+};
+export type CreateMessageRequest = {
+  content: string;
+  attachment_ids?: string[];
+};
 export type AttachmentResponse = LocalAttachment;
 
-export type TaskResponse = components["schemas"]["TaskResponse"];
-export type TaskListResponse = components["schemas"]["TaskListResponse"];
-export type CreateTaskRequest = components["schemas"]["CreateTaskRequest"];
-export type UpdateTaskRequest = components["schemas"]["UpdateTaskRequest"];
+export type TaskResponse = {
+  id: string;
+  group_id: string;
+  title: string;
+  description?: string | null;
+  status: string;
+  assigned_to?: string | null;
+  due_date?: string | null;
+  created_by: string;
+  created_at?: string | null;
+};
+export type TaskListResponse = {
+  items: TaskResponse[];
+  total: number;
+};
+export type CreateTaskRequest = {
+  title: string;
+  description?: string | null;
+  assigned_to?: string | null;
+  due_date?: string | null;
+};
+export type UpdateTaskRequest = {
+  title?: string | null;
+  description?: string | null;
+  assigned_to?: string | null;
+  due_date?: string | null;
+};
 
-export type PackingItemResponse = components["schemas"]["PackingItemResponse"];
-export type PackingItemListResponse = components["schemas"]["PackingItemListResponse"];
-export type PackingProgressResponse = components["schemas"]["PackingProgressResponse"];
-export type CreatePackingItemRequest = components["schemas"]["CreatePackingItemRequest"];
-export type UpdatePackingItemRequest = components["schemas"]["UpdatePackingItemRequest"];
+export type PackingItemResponse = {
+  id: string;
+  group_id: string;
+  name: string;
+  category?: string | null;
+  quantity: number;
+  is_packed: boolean;
+  added_by: string;
+  created_at?: string | null;
+};
+export type PackingItemListResponse = {
+  items: PackingItemResponse[];
+  total: number;
+  packed_count: number;
+};
+export type PackingProgressResponse = {
+  total: number;
+  packed: number;
+  unpacked: number;
+  progress_percent: number;
+};
+export type CreatePackingItemRequest = {
+  name: string;
+  category?: string | null;
+  quantity?: number;
+};
+export type UpdatePackingItemRequest = {
+  name?: string | null;
+  category?: string | null;
+  quantity?: number | null;
+};
 
 function authHeaders(accessToken: string | null): Record<string, string> {
   return accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
@@ -87,7 +209,7 @@ export async function listGroups(
 ): Promise<GroupListResponse> {
   const { data, error } = await apiClient.GET("/travel-buddies/groups", {
     headers: authHeaders(accessToken),
-    params: { limit: options?.limit, offset: options?.offset, search: options?.search }
+    params: { query: { limit: options?.limit, offset: options?.offset, search: options?.search } }
   });
   if (error || !data) throw new Error(describeError(error, "Could not fetch groups"));
   return data;
@@ -109,7 +231,8 @@ export async function getGroup(
   accessToken: string,
   groupId: string
 ): Promise<GroupDetailResponse> {
-  const { data, error } = await apiClient.GET(`/travel-buddies/groups/${groupId}`, {
+  const path = `/travel-buddies/groups/${groupId}` as "/travel-buddies/groups/{group_id}";
+  const { data, error } = await apiClient.GET(path, {
     headers: authHeaders(accessToken)
   });
   if (error || !data) throw new Error(describeError(error, "Could not fetch group"));
@@ -121,7 +244,8 @@ export async function updateGroup(
   groupId: string,
   body: UpdateGroupRequest
 ): Promise<GroupResponse> {
-  const { data, error } = await apiClient.PATCH(`/travel-buddies/groups/${groupId}`, {
+  const path = `/travel-buddies/groups/${groupId}` as "/travel-buddies/groups/{group_id}";
+  const { data, error } = await apiClient.PATCH(path, {
     body,
     headers: authHeaders(accessToken)
   });
@@ -130,7 +254,8 @@ export async function updateGroup(
 }
 
 export async function deleteGroup(accessToken: string, groupId: string): Promise<void> {
-  const { error } = await apiClient.DELETE(`/travel-buddies/groups/${groupId}`, {
+  const path = `/travel-buddies/groups/${groupId}` as "/travel-buddies/groups/{group_id}";
+  const { error } = await apiClient.DELETE(path, {
     headers: authHeaders(accessToken)
   });
   if (error) throw new Error(describeError(error, "Could not delete group"));
@@ -141,9 +266,10 @@ export async function listGroupMembers(
   groupId: string,
   options?: { limit?: number; offset?: number }
 ): Promise<MemberListResponse> {
-  const { data, error } = await apiClient.GET(`/travel-buddies/groups/${groupId}/members`, {
+  const path = `/travel-buddies/groups/${groupId}/members` as "/travel-buddies/groups/{group_id}/members";
+  const { data, error } = await apiClient.GET(path, {
     headers: authHeaders(accessToken),
-    params: { limit: options?.limit, offset: options?.offset }
+    params: { query: { limit: options?.limit, offset: options?.offset } }
   });
   if (error || !data) throw new Error(describeError(error, "Could not fetch members"));
   return data;
@@ -154,7 +280,8 @@ export async function addGroupMember(
   groupId: string,
   body: AddMemberRequest
 ): Promise<GroupMemberResponse> {
-  const { data, error } = await apiClient.POST(`/travel-buddies/groups/${groupId}/members`, {
+  const path = `/travel-buddies/groups/${groupId}/members` as "/travel-buddies/groups/{group_id}/members";
+  const { data, error } = await apiClient.POST(path, {
     body,
     headers: authHeaders(accessToken)
   });
@@ -167,7 +294,8 @@ export async function inviteMemberByEmail(
   groupId: string,
   body: InviteMemberRequest
 ): Promise<GroupMemberResponse> {
-  const { data, error } = await apiClient.POST(`/travel-buddies/groups/${groupId}/invite`, {
+  const path = `/travel-buddies/groups/${groupId}/invite` as "/travel-buddies/groups/{group_id}/invite";
+  const { data, error } = await apiClient.POST(path, {
     body,
     headers: authHeaders(accessToken)
   });
@@ -181,10 +309,10 @@ export async function updateMemberRole(
   userId: string,
   body: UpdateMemberRoleRequest
 ): Promise<GroupMemberResponse> {
-  const { data, error } = await apiClient.PATCH(
-    `/travel-buddies/groups/${groupId}/members/${userId}`,
-    { body, headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/members/${userId}` as "/travel-buddies/groups/{group_id}/members/{user_id}";
+  const { data, error } = await apiClient.PATCH(path, {
+    body, headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not update role"));
   return data;
 }
@@ -194,10 +322,10 @@ export async function removeGroupMember(
   groupId: string,
   userId: string
 ): Promise<void> {
-  const { error } = await apiClient.DELETE(
-    `/travel-buddies/groups/${groupId}/members/${userId}`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/members/${userId}` as "/travel-buddies/groups/{group_id}/members/{user_id}";
+  const { error } = await apiClient.DELETE(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error) throw new Error(describeError(error, "Could not remove member"));
 }
 
@@ -205,10 +333,10 @@ export async function leaveGroup(
   accessToken: string,
   groupId: string
 ): Promise<void> {
-  const { error } = await apiClient.DELETE(
-    `/travel-buddies/groups/${groupId}/leave`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/leave` as "/travel-buddies/groups/{group_id}/leave";
+  const { error } = await apiClient.DELETE(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error) throw new Error(describeError(error, "Could not leave group"));
 }
 
@@ -217,10 +345,10 @@ export async function transferOwnership(
   groupId: string,
   body: TransferOwnershipRequest
 ): Promise<GroupMemberResponse> {
-  const { data, error } = await apiClient.POST(
-    `/travel-buddies/groups/${groupId}/transfer-ownership`,
-    { body, headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/transfer-ownership` as "/travel-buddies/groups/{group_id}/transfer-ownership";
+  const { data, error } = await apiClient.POST(path, {
+    body, headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not transfer ownership"));
   return data;
 }
@@ -230,9 +358,10 @@ export async function listPolls(
   groupId: string,
   options?: { limit?: number; offset?: number }
 ): Promise<PollListResponse> {
-  const { data, error } = await apiClient.GET(`/travel-buddies/groups/${groupId}/polls`, {
+  const path = `/travel-buddies/groups/${groupId}/polls` as "/travel-buddies/groups/{group_id}/polls";
+  const { data, error } = await apiClient.GET(path, {
     headers: authHeaders(accessToken),
-    params: { limit: options?.limit, offset: options?.offset }
+    params: { query: { limit: options?.limit, offset: options?.offset } }
   });
   if (error || !data) throw new Error(describeError(error, "Could not fetch polls"));
   return data;
@@ -243,7 +372,8 @@ export async function createPoll(
   groupId: string,
   body: CreatePollRequest
 ): Promise<PollResponse> {
-  const { data, error } = await apiClient.POST(`/travel-buddies/groups/${groupId}/polls`, {
+  const path = `/travel-buddies/groups/${groupId}/polls` as "/travel-buddies/groups/{group_id}/polls";
+  const { data, error } = await apiClient.POST(path, {
     body,
     headers: authHeaders(accessToken)
   });
@@ -256,10 +386,10 @@ export async function getPoll(
   groupId: string,
   pollId: string
 ): Promise<PollDetailResponse> {
-  const { data, error } = await apiClient.GET(
-    `/travel-buddies/groups/${groupId}/polls/${pollId}`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/polls/${pollId}` as "/travel-buddies/groups/{group_id}/polls/{poll_id}";
+  const { data, error } = await apiClient.GET(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not fetch poll"));
   return data;
 }
@@ -270,10 +400,10 @@ export async function votePoll(
   pollId: string,
   body: VoteRequest
 ): Promise<PollDetailResponse> {
-  const { data, error } = await apiClient.POST(
-    `/travel-buddies/groups/${groupId}/polls/${pollId}/vote`,
-    { body, headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/polls/${pollId}/vote` as "/travel-buddies/groups/{group_id}/polls/{poll_id}/vote";
+  const { data, error } = await apiClient.POST(path, {
+    body, headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not vote"));
   return data;
 }
@@ -283,10 +413,10 @@ export async function closePoll(
   groupId: string,
   pollId: string
 ): Promise<PollResponse> {
-  const { data, error } = await apiClient.POST(
-    `/travel-buddies/groups/${groupId}/polls/${pollId}/close`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/polls/${pollId}/close` as "/travel-buddies/groups/{group_id}/polls/{poll_id}/close";
+  const { data, error } = await apiClient.POST(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not close poll"));
   return data;
 }
@@ -295,31 +425,28 @@ export async function listMessages(
   accessToken: string,
   groupId: string,
   options?: { limit?: number; offset?: number }
-): Promise<LocalMessageList> {
-  const params = options ? `?limit=${options.limit}&offset=${options.offset}` : "";
-  const { data, error } = await apiClient.GET(
-    `/travel-buddies/groups/${groupId}/messages${params}`,
-    { headers: { Authorization: `Bearer ${accessToken}` } }
-  );
-  if (error) throw new Error(describeError(error, "Could not fetch messages"));
-  return data as LocalMessageList;
+): Promise<MessageListResponse> {
+  const path = `/travel-buddies/groups/${groupId}/messages` as "/travel-buddies/groups/{group_id}/messages";
+  const { data, error } = await apiClient.GET(path, {
+    headers: authHeaders(accessToken),
+    params: { query: { limit: options?.limit, offset: options?.offset } }
+  });
+  if (error || !data) throw new Error(describeError(error, "Could not fetch messages"));
+  return data;
 }
 
 export async function sendMessage(
   accessToken: string,
   groupId: string,
-  body: CreateMessageRequest,
-  attachmentIds?: string[]
-): Promise<LocalMessageDetail> {
-  const { data, error } = await apiClient.POST(
-    `/travel-buddies/groups/${groupId}/messages`,
-    {
-      body: { content: body.content || "", attachment_ids: attachmentIds || [] },
-      headers: { Authorization: `Bearer ${accessToken}` }
-    }
-  );
-  if (error) throw new Error(describeError(error, "Could not send message"));
-  return data as LocalMessageDetail;
+  body: CreateMessageRequest
+): Promise<MessageDetailResponse> {
+  const path = `/travel-buddies/groups/${groupId}/messages` as "/travel-buddies/groups/{group_id}/messages";
+  const { data, error } = await apiClient.POST(path, {
+    body: { content: body.content || "", attachment_ids: body.attachment_ids || [] },
+    headers: authHeaders(accessToken)
+  });
+  if (error || !data) throw new Error(describeError(error, "Could not send message"));
+  return data;
 }
 
 export async function uploadAttachment(
@@ -327,17 +454,15 @@ export async function uploadAttachment(
   groupId: string,
   file: File
 ): Promise<AttachmentResponse> {
+  const path = `/travel-buddies/groups/${groupId}/attachments` as "/travel-buddies/groups/{group_id}/attachments";
   const formData = new FormData();
   formData.append("file", file);
-  const { data, error } = await apiClient.POST(
-    `/travel-buddies/groups/${groupId}/attachments`,
-    {
-      body: formData,
-      headers: { Authorization: `Bearer ${accessToken}` }
-    }
-  );
+  const { data, error } = await apiClient.POST(path, {
+    body: formData,
+    headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not upload file"));
-  return data as AttachmentResponse;
+  return data;
 }
 
 export async function addReaction(
@@ -347,11 +472,11 @@ export async function addReaction(
   emoji: string
 ): Promise<void> {
   const encodedEmoji = encodeURIComponent(emoji);
-  const { error } = await apiClient.POST(
-    `/travel-buddies/groups/${groupId}/messages/${messageId}/reactions/${encodedEmoji}`,
-    { headers: { Authorization: `Bearer ${accessToken}` } }
-  );
-if (error) throw new Error(describeError(error, "Could not add reaction"));
+  const path = `/travel-buddies/groups/${groupId}/messages/${messageId}/reactions/${encodedEmoji}` as "/travel-buddies/groups/{group_id}/messages/{message_id}/reactions/{emoji}";
+  const { error } = await apiClient.POST(path, {
+    headers: authHeaders(accessToken)
+  });
+  if (error) throw new Error(describeError(error, "Could not add reaction"));
 }
 
 export async function removeReaction(
@@ -361,11 +486,11 @@ export async function removeReaction(
   emoji: string
 ): Promise<void> {
   const encodedEmoji = encodeURIComponent(emoji);
-  const { error } = await apiClient.DELETE(
-    `/travel-buddies/groups/${groupId}/messages/${messageId}/reactions/${encodedEmoji}`,
-    { headers: { Authorization: `Bearer ${accessToken}` } }
-);
-  if (error) throw new Error(describeError(error, "Could not add reaction"));
+  const path = `/travel-buddies/groups/${groupId}/messages/${messageId}/reactions/${encodedEmoji}` as "/travel-buddies/groups/{group_id}/messages/{message_id}/reactions/{emoji}";
+  const { error } = await apiClient.DELETE(path, {
+    headers: authHeaders(accessToken)
+  });
+  if (error) throw new Error(describeError(error, "Could not remove reaction"));
 }
 
 export async function deleteMessage(
@@ -373,10 +498,10 @@ export async function deleteMessage(
   groupId: string,
   messageId: string
 ): Promise<void> {
-  const { error } = await apiClient.DELETE(
-    `/travel-buddies/groups/${groupId}/messages/${messageId}`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/messages/${messageId}` as "/travel-buddies/groups/{group_id}/messages/{message_id}";
+  const { error } = await apiClient.DELETE(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error) throw new Error(describeError(error, "Could not delete message"));
 }
 
@@ -385,13 +510,10 @@ export async function listTasks(
   groupId: string,
   options?: { limit?: number; offset?: number; status_filter?: string }
 ): Promise<TaskListResponse> {
-  const { data, error } = await apiClient.GET(`/travel-buddies/groups/${groupId}/tasks`, {
+  const path = `/travel-buddies/groups/${groupId}/tasks` as "/travel-buddies/groups/{group_id}/tasks";
+  const { data, error } = await apiClient.GET(path, {
     headers: authHeaders(accessToken),
-    params: {
-      limit: options?.limit,
-      offset: options?.offset,
-      status_filter: options?.status_filter
-    }
+    params: { query: { limit: options?.limit, offset: options?.offset, status_filter: options?.status_filter } }
   });
   if (error || !data) throw new Error(describeError(error, "Could not fetch tasks"));
   return data;
@@ -402,7 +524,8 @@ export async function createTask(
   groupId: string,
   body: CreateTaskRequest
 ): Promise<TaskResponse> {
-  const { data, error } = await apiClient.POST(`/travel-buddies/groups/${groupId}/tasks`, {
+  const path = `/travel-buddies/groups/${groupId}/tasks` as "/travel-buddies/groups/{group_id}/tasks";
+  const { data, error } = await apiClient.POST(path, {
     body,
     headers: authHeaders(accessToken)
   });
@@ -416,10 +539,10 @@ export async function updateTask(
   taskId: string,
   body: UpdateTaskRequest
 ): Promise<TaskResponse> {
-  const { data, error } = await apiClient.PATCH(
-    `/travel-buddies/groups/${groupId}/tasks/${taskId}`,
-    { body, headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/tasks/${taskId}` as "/travel-buddies/groups/{group_id}/tasks/{task_id}";
+  const { data, error } = await apiClient.PATCH(path, {
+    body, headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not update task"));
   return data;
 }
@@ -429,10 +552,10 @@ export async function markTaskDone(
   groupId: string,
   taskId: string
 ): Promise<TaskResponse> {
-  const { data, error } = await apiClient.POST(
-    `/travel-buddies/groups/${groupId}/tasks/${taskId}/done`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/tasks/${taskId}/done` as "/travel-buddies/groups/{group_id}/tasks/{task_id}/done";
+  const { data, error } = await apiClient.POST(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not mark task done"));
   return data;
 }
@@ -442,10 +565,10 @@ export async function markTaskPending(
   groupId: string,
   taskId: string
 ): Promise<TaskResponse> {
-  const { data, error } = await apiClient.POST(
-    `/travel-buddies/groups/${groupId}/tasks/${taskId}/pending`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/tasks/${taskId}/pending` as "/travel-buddies/groups/{group_id}/tasks/{task_id}/pending";
+  const { data, error } = await apiClient.POST(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not mark task pending"));
   return data;
 }
@@ -455,10 +578,10 @@ export async function deleteTask(
   groupId: string,
   taskId: string
 ): Promise<void> {
-  const { error } = await apiClient.DELETE(
-    `/travel-buddies/groups/${groupId}/tasks/${taskId}`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/tasks/${taskId}` as "/travel-buddies/groups/{group_id}/tasks/{task_id}";
+  const { error } = await apiClient.DELETE(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error) throw new Error(describeError(error, "Could not delete task"));
 }
 
@@ -467,9 +590,10 @@ export async function listPackingItems(
   groupId: string,
   options?: { limit?: number; offset?: number; category?: string }
 ): Promise<PackingItemListResponse> {
-  const { data, error } = await apiClient.GET(`/travel-buddies/groups/${groupId}/packing`, {
+  const path = `/travel-buddies/groups/${groupId}/packing` as "/travel-buddies/groups/{group_id}/packing";
+  const { data, error } = await apiClient.GET(path, {
     headers: authHeaders(accessToken),
-    params: { limit: options?.limit, offset: options?.offset, category: options?.category }
+    params: { query: { limit: options?.limit, offset: options?.offset, category: options?.category } }
   });
   if (error || !data) throw new Error(describeError(error, "Could not fetch packing items"));
   return data;
@@ -480,7 +604,8 @@ export async function createPackingItem(
   groupId: string,
   body: CreatePackingItemRequest
 ): Promise<PackingItemResponse> {
-  const { data, error } = await apiClient.POST(`/travel-buddies/groups/${groupId}/packing`, {
+  const path = `/travel-buddies/groups/${groupId}/packing` as "/travel-buddies/groups/{group_id}/packing";
+  const { data, error } = await apiClient.POST(path, {
     body,
     headers: authHeaders(accessToken)
   });
@@ -494,10 +619,10 @@ export async function updatePackingItem(
   itemId: string,
   body: UpdatePackingItemRequest
 ): Promise<PackingItemResponse> {
-  const { data, error } = await apiClient.PATCH(
-    `/travel-buddies/groups/${groupId}/packing/${itemId}`,
-    { body, headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/packing/${itemId}` as "/travel-buddies/groups/{group_id}/packing/{item_id}";
+  const { data, error } = await apiClient.PATCH(path, {
+    body, headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not update packing item"));
   return data;
 }
@@ -507,10 +632,10 @@ export async function markItemPacked(
   groupId: string,
   itemId: string
 ): Promise<PackingItemResponse> {
-  const { data, error } = await apiClient.POST(
-    `/travel-buddies/groups/${groupId}/packing/${itemId}/packed`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/packing/${itemId}/packed` as "/travel-buddies/groups/{group_id}/packing/{item_id}/packed";
+  const { data, error } = await apiClient.POST(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not mark item packed"));
   return data;
 }
@@ -519,10 +644,10 @@ export async function getPackingProgress(
   accessToken: string,
   groupId: string
 ): Promise<PackingProgressResponse> {
-  const { data, error } = await apiClient.GET(
-    `/travel-buddies/groups/${groupId}/packing/progress`,
-    { headers: authHeaders(accessToken) }
-  );
+  const path = `/travel-buddies/groups/${groupId}/packing/progress` as "/travel-buddies/groups/{group_id}/packing/progress";
+  const { data, error } = await apiClient.GET(path, {
+    headers: authHeaders(accessToken)
+  });
   if (error || !data) throw new Error(describeError(error, "Could not fetch progress"));
   return data;
 }
