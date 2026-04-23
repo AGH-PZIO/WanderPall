@@ -1204,6 +1204,781 @@
         }
       }
     },
+    "/travel-assistance/guides": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Get User Guides",
+        "operationId": "get_user_guides_travel_assistance_guides_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/GuideResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get User Guides Travel Assistance Guides Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Create Guide",
+        "operationId": "create_guide_travel_assistance_guides_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GuideCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "title": "Response Create Guide Travel Assistance Guides Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/travel-assistance/guides/public": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Get Published Guides",
+        "operationId": "get_published_guides_travel_assistance_guides_public_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/GuideResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Published Guides Travel Assistance Guides Public Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel-assistance/guides/{guide_id}": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Get Guide",
+        "operationId": "get_guide_travel_assistance_guides__guide_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "guide_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Guide Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GuideResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Update Guide",
+        "operationId": "update_guide_travel_assistance_guides__guide_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "guide_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Guide Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GuideCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Delete Guide",
+        "operationId": "delete_guide_travel_assistance_guides__guide_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "guide_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Guide Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel-assistance/guides/{guide_id}/publish": {
+      "post": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Publish Guide",
+        "operationId": "publish_guide_travel_assistance_guides__guide_id__publish_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "guide_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Guide Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel-assistance/guides/{guide_id}/unpublish": {
+      "post": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Unpublish Guide",
+        "operationId": "unpublish_guide_travel_assistance_guides__guide_id__unpublish_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "guide_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Guide Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel-assistance/guides/upload": {
+      "post": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Upload Guide Image",
+        "operationId": "upload_guide_image_travel_assistance_guides_upload_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_guide_image_travel_assistance_guides_upload_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/travel-assistance/notes": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Get User Notes",
+        "operationId": "get_user_notes_travel_assistance_notes_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/NotesResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get User Notes Travel Assistance Notes Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Create Note",
+        "operationId": "create_note_travel_assistance_notes_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotesCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "title": "Response Create Note Travel Assistance Notes Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/travel-assistance/notes/{note_id}": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Get Notes",
+        "operationId": "get_notes_travel_assistance_notes__note_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "note_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Note Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Update Note",
+        "operationId": "update_note_travel_assistance_notes__note_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "note_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Note Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotesCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Delete Note",
+        "operationId": "delete_note_travel_assistance_notes__note_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "note_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Note Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel-assistance/calculator": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Get Calculations",
+        "operationId": "get_calculations_travel_assistance_calculator_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CalculationWithExpenses"
+                  },
+                  "type": "array",
+                  "title": "Response Get Calculations Travel Assistance Calculator Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Create Calculation",
+        "operationId": "create_calculation_travel_assistance_calculator_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid",
+                  "title": "Response Create Calculation Travel Assistance Calculator Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/travel-assistance/calculator/{calculation_id}": {
+      "get": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Get Calculation",
+        "operationId": "get_calculation_travel_assistance_calculator__calculation_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "calculation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Calculation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationWithExpenses"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "module-2-travel-assistance"
+        ],
+        "summary": "Delete Calculation",
+        "operationId": "delete_calculation_travel_assistance_calculator__calculation_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "calculation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Calculation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/travel-assistance/translator/supported-languages": {
       "get": {
         "tags": [
@@ -1525,6 +2300,80 @@
         ],
         "title": "AuthorizeUrlResponse"
       },
+      "Body_upload_guide_image_travel_assistance_guides_upload_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_guide_image_travel_assistance_guides_upload_post"
+      },
+      "CalculationCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "expenses": {
+            "items": {
+              "$ref": "#/components/schemas/ExpenseCreate"
+            },
+            "type": "array",
+            "title": "Expenses"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "expenses"
+        ],
+        "title": "CalculationCreate"
+      },
+      "CalculationWithExpenses": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "expenses": {
+            "items": {
+              "$ref": "#/components/schemas/ExpenseResponse"
+            },
+            "type": "array",
+            "title": "Expenses"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "id",
+          "user_id",
+          "created_at",
+          "expenses"
+        ],
+        "title": "CalculationWithExpenses"
+      },
       "CalendarEventResponse": {
         "properties": {
           "id": {
@@ -1681,6 +2530,63 @@
         ],
         "title": "DeleteUserRequest"
       },
+      "ExpenseCreate": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Amount"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "amount"
+        ],
+        "title": "ExpenseCreate"
+      },
+      "ExpenseResponse": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "calculation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Calculation Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "amount",
+          "id",
+          "calculation_id"
+        ],
+        "title": "ExpenseResponse"
+      },
       "GmailStatusResponse": {
         "properties": {
           "connected": {
@@ -1716,6 +2622,131 @@
           "connected"
         ],
         "title": "GmailStatusResponse"
+      },
+      "GuideBlock": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "heading",
+              "paragraph",
+              "image",
+              "audio",
+              "video"
+            ],
+            "title": "Type"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "GuideBlock"
+      },
+      "GuideCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/GuideBlock"
+            },
+            "type": "array",
+            "title": "Content"
+          },
+          "published": {
+            "type": "boolean",
+            "title": "Published"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content",
+          "published"
+        ],
+        "title": "GuideCreate"
+      },
+      "GuideResponse": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/GuideBlock"
+            },
+            "type": "array",
+            "title": "Content"
+          },
+          "published": {
+            "type": "boolean",
+            "title": "Published"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content",
+          "published",
+          "id",
+          "user_id",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "GuideResponse"
       },
       "HTTPValidationError": {
         "properties": {
@@ -1761,6 +2792,73 @@
           "refresh_token"
         ],
         "title": "LogoutRequest"
+      },
+      "NotesCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "title": "NotesCreate"
+      },
+      "NotesResponse": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "modified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modified At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content",
+          "id",
+          "user_id",
+          "created_at",
+          "modified_at"
+        ],
+        "title": "NotesResponse"
       },
       "PasswordResetConfirmRequest": {
         "properties": {
@@ -2294,6 +3392,24 @@
         },
         "type": "object",
         "title": "UpdateUserRequest"
+      },
+      "UploadResponse": {
+        "properties": {
+          "file_id": {
+            "type": "string",
+            "title": "File Id"
+          },
+          "original_name": {
+            "type": "string",
+            "title": "Original Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file_id",
+          "original_name"
+        ],
+        "title": "UploadResponse"
       },
       "UserResponse": {
         "properties": {

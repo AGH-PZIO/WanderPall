@@ -1,8 +1,10 @@
-from typing import Annotated
+from typing import Annotated, List
 from uuid import UUID
+import os
+import shutil
 
 import psycopg
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, File, UploadFile
 from fastapi.responses import RedirectResponse, StreamingResponse
 
 from app.core.config import settings
@@ -40,8 +42,19 @@ from app.modules.travel_assistance.translator.schemas import (
 )
 from app.modules.travel_assistance.translator import service as translator_service
 
-router = APIRouter(prefix="/travel-assistance", tags=["module-2-travel-assistance"])
+from app.modules.account.dependencies import get_current_user
+from app.modules.travel_assistance.guides.services import GuideService
+from app.modules.travel_assistance.guides.schemas import GuideCreate, GuideResponse
 
+from app.modules.travel_assistance.notes.services import NotesService
+from app.modules.travel_assistance.notes.schemas import NotesCreate, NotesResponse
+
+from app.modules.travel_assistance.calculator.services import CalculationService
+from app.modules.travel_assistance.calculator.schemas import CalculationCreate, CalculationWithExpenses
+
+from app.utils.file_storage.storage import UploadResponse, save_file_with_uuid
+
+router = APIRouter(prefix="/travel-assistance", tags=["module-2-travel-assistance"])
 
 def _require_oauth_config() -> None:
     if not settings.google_oauth_client_id or not settings.google_oauth_client_secret:
@@ -237,6 +250,226 @@ def download_attachment(
     mime = next((a.mime_type for a in atts if a.attachment_id == attachment_id), "application/octet-stream")
     return StreamingResponse(iter([data]), media_type=mime or "application/octet-stream")
 
+# === TRAVEL GUIDES ===
+
+def get_guide_service(conn=Depends(get_db_conn)):
+    return GuideService(conn)
+
+@router.get("/guides", response_model=List[GuideResponse])
+def get_user_guides(
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    return service.get_user_guides(user.id)
+
+@router.get("/guides/public", response_model=List[GuideResponse])
+def get_published_guides(
+    service: GuideService = Depends(get_guide_service),
+):
+    return service.get_published_guides()
+
+@router.get("/guides/{guide_id}", response_model=GuideResponse)
+def get_guide(
+    guide_id: UUID,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        guide = service.get_guide(guide_id, user.id)
+    except PermissionError as e:
+        raise HTTPException(status_code=403, detail=str(e))
+    if not guide:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    return guide
+
+@router.post("/guides", response_model=UUID)
+def create_guide(
+    data: GuideCreate,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        return service.create_guide(user.id, data.title, data.content)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.put("/guides/{guide_id}")
+def update_guide(
+    guide_id: UUID,
+    data: GuideCreate,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        return service.update_guide(user.id, guide_id, data.title, data.content)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    
+@router.post("/guides/{guide_id}/publish")
+def publish_guide(
+    guide_id: UUID,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        service.publish_guide(user.id, guide_id)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+@router.post("/guides/{guide_id}/unpublish")
+def unpublish_guide(
+    guide_id: UUID,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        service.unpublish_guide(user.id, guide_id)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+@router.delete("/guides/{guide_id}")
+def delete_guide(
+    guide_id: UUID,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        service.delete_guide(user.id, guide_id)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+@router.post("/guides/upload", response_model=UploadResponse)
+async def upload_guide_image(
+    file: UploadFile = File(...),
+    user=Depends(get_current_user)
+):
+    saved_file_id = await save_file_with_uuid(file, module_folder="guides")
+    
+    return UploadResponse(
+        file_id=saved_file_id,
+        original_name=file.filename
+    )
+
+# === NOTES ===
+
+def get_notes_service(conn=Depends(get_db_conn)):
+    return NotesService(conn)
+
+@router.get("/notes", response_model=List[NotesResponse])
+def get_user_notes(
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    return service.get_user_notes(user.id)
+
+@router.get("/notes/{note_id}", response_model=NotesResponse)
+def get_notes(
+    note_id: UUID,
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    try:
+        return service.get_note(user.id, note_id)
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+@router.post("/notes", response_model=UUID)
+def create_note(
+    data: NotesCreate,
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    try:
+        return service.create_note(user.id, data.title, data.content)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.put("/notes/{note_id}")
+def update_note(
+    note_id: UUID,
+    data: NotesCreate,
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    try:
+        return service.update_note(user.id, note_id, data.title, data.content)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    
+@router.delete("/notes/{note_id}")
+def delete_note(
+    note_id: UUID,
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    try:
+        service.delete_note(user.id, note_id)
+        return {"status": "deleted"}
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+# === CALCULATIONS ===
+
+def get_calculation_service(conn=Depends(get_db_conn)):
+    return CalculationService(conn)
+
+@router.get("/calculator", response_model=List[CalculationWithExpenses])
+def get_calculations(
+    service: CalculationService = Depends(get_calculation_service),
+    user = Depends(get_current_user),
+):
+    return service.get_calculations(user.id)
+
+@router.get("/calculator/{calculation_id}", response_model=CalculationWithExpenses)
+def get_calculation(
+    calculation_id: UUID,
+    service: CalculationService = Depends(get_calculation_service),
+    user = Depends(get_current_user),
+):
+    try:
+        return service.get_calculation(calculation_id, user.id)
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.post("/calculator", response_model=UUID)
+def create_calculation(
+    data: CalculationCreate,
+    service: CalculationService = Depends(get_calculation_service),
+    user = Depends(get_current_user),
+):
+    try:
+        expenses_data = [e.model_dump() for e in data.expenses]
+        return service.create_calculation(user.id, data.title, expenses_data)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.delete("/calculator/{calculation_id}")
+def delete_calculation(
+    calculation_id: UUID,
+    service: CalculationService = Depends(get_calculation_service),
+    user = Depends(get_current_user),
+):
+    try:
+        service.delete_calculation(user.id, calculation_id)
+        return {"status": "deleted"}
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 # Translator endpoints
 @router.get("/translator/supported-languages", response_model=SupportedLanguagesResponse)
