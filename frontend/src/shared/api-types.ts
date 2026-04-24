@@ -1192,6 +1192,11 @@ export interface components {
             /** Url */
             url: string;
         };
+        /** Body_upload_attachment_travel_buddies_groups__group_id__attachments_post */
+        Body_upload_attachment_travel_buddies_groups__group_id__attachments_post: {
+            /** File */
+            file: string;
+        };
         /** Body_upload_guide_image_travel_assistance_guides_upload_post */
         Body_upload_guide_image_travel_assistance_guides_upload_post: {
             /** File */
@@ -1225,11 +1230,6 @@ export interface components {
             created_at: string;
             /** Expenses */
             expenses: components["schemas"]["ExpenseResponse"][];
-        };
-        /** Body_upload_attachment_travel_buddies_groups__group_id__attachments_post */
-        Body_upload_attachment_travel_buddies_groups__group_id__attachments_post: {
-            /** File */
-            file: string;
         };
         /** CalendarEventResponse */
         CalendarEventResponse: {
@@ -1526,37 +1526,6 @@ export interface components {
             /** Refresh Token */
             refresh_token: string;
         };
-        /** NotesCreate */
-        NotesCreate: {
-            /** Title */
-            title: string;
-            /** Content */
-            content: string;
-        };
-        /** NotesResponse */
-        NotesResponse: {
-            /** Title */
-            title: string;
-            /** Content */
-            content: string;
-            /**
-             * Id
-             * Format: uuid
-             */
-            id: string;
-            /**
-             * User Id
-             * Format: uuid
-             */
-            user_id: string;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at: string;
-            /** Modified At */
-            modified_at: string | null;
-        };
         /** MemberListResponse */
         MemberListResponse: {
             /** Items */
@@ -1615,6 +1584,37 @@ export interface components {
             items: components["schemas"]["MessageDetailWithCountsResponse"][];
             /** Total */
             total: number;
+        };
+        /** NotesCreate */
+        NotesCreate: {
+            /** Title */
+            title: string;
+            /** Content */
+            content: string;
+        };
+        /** NotesResponse */
+        NotesResponse: {
+            /** Title */
+            title: string;
+            /** Content */
+            content: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Modified At */
+            modified_at: string | null;
         };
         /** PackingItemListResponse */
         PackingItemListResponse: {

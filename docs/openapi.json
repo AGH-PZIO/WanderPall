@@ -5159,131 +5159,6 @@
         ],
         "title": "GmailStatusResponse"
       },
-      "GuideBlock": {
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "heading",
-              "paragraph",
-              "image",
-              "audio",
-              "video"
-            ],
-            "title": "Type"
-          },
-          "text": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Text"
-          },
-          "url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Url"
-          }
-        },
-        "type": "object",
-        "required": [
-          "type"
-        ],
-        "title": "GuideBlock"
-      },
-      "GuideCreate": {
-        "properties": {
-          "title": {
-            "type": "string",
-            "title": "Title"
-          },
-          "content": {
-            "items": {
-              "$ref": "#/components/schemas/GuideBlock"
-            },
-            "type": "array",
-            "title": "Content"
-          },
-          "published": {
-            "type": "boolean",
-            "title": "Published"
-          }
-        },
-        "type": "object",
-        "required": [
-          "title",
-          "content",
-          "published"
-        ],
-        "title": "GuideCreate"
-      },
-      "GuideResponse": {
-        "properties": {
-          "title": {
-            "type": "string",
-            "title": "Title"
-          },
-          "content": {
-            "items": {
-              "$ref": "#/components/schemas/GuideBlock"
-            },
-            "type": "array",
-            "title": "Content"
-          },
-          "published": {
-            "type": "boolean",
-            "title": "Published"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Id"
-          },
-          "user_id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "User Id"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "updated_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Updated At"
-          }
-        },
-        "type": "object",
-        "required": [
-          "title",
-          "content",
-          "published",
-          "id",
-          "user_id",
-          "created_at",
-          "updated_at"
-        ],
-        "title": "GuideResponse"
-      },
       "GroupDetailResponse": {
         "properties": {
           "id": {
@@ -5499,6 +5374,131 @@
         ],
         "title": "GroupResponse"
       },
+      "GuideBlock": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "heading",
+              "paragraph",
+              "image",
+              "audio",
+              "video"
+            ],
+            "title": "Type"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "GuideBlock"
+      },
+      "GuideCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/GuideBlock"
+            },
+            "type": "array",
+            "title": "Content"
+          },
+          "published": {
+            "type": "boolean",
+            "title": "Published"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content",
+          "published"
+        ],
+        "title": "GuideCreate"
+      },
+      "GuideResponse": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/GuideBlock"
+            },
+            "type": "array",
+            "title": "Content"
+          },
+          "published": {
+            "type": "boolean",
+            "title": "Published"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content",
+          "published",
+          "id",
+          "user_id",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "GuideResponse"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -5556,73 +5556,6 @@
           "refresh_token"
         ],
         "title": "LogoutRequest"
-      },
-      "NotesCreate": {
-        "properties": {
-          "title": {
-            "type": "string",
-            "title": "Title"
-          },
-          "content": {
-            "type": "string",
-            "title": "Content"
-          }
-        },
-        "type": "object",
-        "required": [
-          "title",
-          "content"
-        ],
-        "title": "NotesCreate"
-      },
-      "NotesResponse": {
-        "properties": {
-          "title": {
-            "type": "string",
-            "title": "Title"
-          },
-          "content": {
-            "type": "string",
-            "title": "Content"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Id"
-          },
-          "user_id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "User Id"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "modified_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Modified At"
-          }
-        },
-        "type": "object",
-        "required": [
-          "title",
-          "content",
-          "id",
-          "user_id",
-          "created_at",
-          "modified_at"
-        ],
-        "title": "NotesResponse"
       },
       "MemberListResponse": {
         "properties": {
@@ -5765,6 +5698,73 @@
           "total"
         ],
         "title": "MessageListResponse"
+      },
+      "NotesCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "title": "NotesCreate"
+      },
+      "NotesResponse": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "modified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modified At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content",
+          "id",
+          "user_id",
+          "created_at",
+          "modified_at"
+        ],
+        "title": "NotesResponse"
       },
       "PackingItemListResponse": {
         "properties": {
