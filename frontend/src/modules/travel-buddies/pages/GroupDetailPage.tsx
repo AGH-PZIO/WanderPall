@@ -482,7 +482,7 @@ export function GroupDetailPage() {
               <div className="tb-notes-list">
                 {notes.map((n) => {
                   const authorName = n.first_name && n.last_name ? `${n.first_name} ${n.last_name}` : n.user_id;
-                  const reactionEntries = Object.entries(n.reactions || {}).filter(([, count]) => count > 0).map(([emoji, count]) => [decodeURIComponent(emoji), count] as [string, number]);
+                  //const reactionEntries = Object.entries(n.reactions || {}).filter(([, count]) => count > 0).map(([emoji, count]) => [decodeURIComponent(emoji), count] as [string, number]);
                   return (
                   <div key={n.id} className="tb-note-item">
                     <div className="tb-note-author">{authorName}</div>
