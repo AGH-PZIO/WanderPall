@@ -7,7 +7,7 @@ from fastapi.responses import FileResponse
 from psycopg import Connection
 
 from app.core.database import get_connection
-from app.modules.travel_buddies.file_storage import save_attachment, get_attachment_url
+from app.utils.file_storage.storage import save_file_with_uuid
 from app.modules.travel_buddies.errors import ValidationError
 from app.modules.account.dependencies import get_current_user
 from app.modules.account.models import User
@@ -386,8 +386,9 @@ def list_messages(
     from app.modules.account.repositories import PsycopgUserRepository
 
     messages_repo = _repositories(connection)[5]
+    attachments_repo = _repositories(connection)[6]
     user_repo = PsycopgUserRepository(connection)
-    service = MessageService(messages_repo)
+    service = MessageService(messages_repo, attachments_repo)
     return service.list_messages(group_id, limit, offset, user_repo)
 
 
@@ -412,13 +413,13 @@ async def upload_attachment(
     if size > 10 * 1024 * 1024:
         raise ValidationError("File too large (max 10MB)")
 
-    file_id, stored_filename = await save_attachment(str(group_id), file)
+    stored_path = await save_file_with_uuid(file, "travel_buddies")
 
     attachment = Attachment(
         id=uuid4(),
         group_id=group_id,
         user_id=current_user.id,
-        filename=file.filename or stored_filename,
+        filename=file.filename or stored_path.split("/")[-1],
         content_type=file.content_type or "application/octet-stream",
         size=size,
     )
@@ -427,7 +428,7 @@ async def upload_attachment(
         id=created.id,
         filename=created.filename,
         content_type=created.content_type,
-        url=get_attachment_url(str(group_id), stored_filename),
+        url=f"/media/{stored_path}",
         size=created.size,
     )
 
@@ -443,8 +444,9 @@ def send_message(
     from app.modules.account.repositories import PsycopgUserRepository
 
     messages_repo = _repositories(connection)[5]
+    attachments_repo = _repositories(connection)[6]
     user_repo = PsycopgUserRepository(connection)
-    service = MessageService(messages_repo)
+    service = MessageService(messages_repo, attachments_repo)
     return service.send_message(group_id, current_user.id, request, user_repo)
 
 
@@ -457,9 +459,14 @@ def add_reaction(
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.chat import MessageService
+    from urllib.parse import unquote
+    from app.modules.account.repositories import PsycopgUserRepository
 
+    decoded_emoji = unquote(emoji)
     messages_repo = _repositories(connection)[5]
     service = MessageService(messages_repo)
+    service.add_reaction(message_id, current_user.id, decoded_emoji)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
     service.add_reaction(message_id, current_user.id, emoji)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -473,10 +480,12 @@ def remove_reaction(
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.chat import MessageService
+    from urllib.parse import unquote
 
+    decoded_emoji = unquote(emoji)
     messages_repo = _repositories(connection)[5]
     service = MessageService(messages_repo)
-    service.remove_reaction(message_id, current_user.id, emoji)
+    service.remove_reaction(message_id, current_user.id, decoded_emoji)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
@@ -691,11 +700,11 @@ def get_attachment(
     current_user: Annotated[User, Depends(get_current_user)],
     current_member: Annotated[GroupMember, Depends(get_current_group_member)],
 ) -> FileResponse:
-    import os
-    from app.modules.travel_buddies.file_storage import get_attachment_path
+    from pathlib import Path
+    from app.utils.file_storage.storage import UPLOAD_DIR
 
-    filepath = os.path.join(get_attachment_path(str(group_id)), filename)
-    if not os.path.exists(filepath):
+    filepath = UPLOAD_DIR / "travel_buddies" / filename
+    if not filepath.exists():
         from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="File not found")
     return FileResponse(filepath)

@@ -23,8 +23,10 @@ export function ChatPage() {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    refreshMessages();
-  }, []);
+    if (groupId) {
+      refreshMessages(groupId);
+    }
+  }, [groupId]);
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
@@ -32,7 +34,7 @@ export function ChatPage() {
     if (!text.trim() || !token || !groupId) return;
     await sendMessage(token, groupId, { content: text, attachment_ids: [] });
     setText("");
-    refreshMessages();
+    refreshMessages(groupId);
   }
 
   async function handleReact(emoji: string) {
@@ -41,7 +43,7 @@ export function ChatPage() {
     const msgId = messages[0]?.id;
     if (!msgId) return;
     await addReaction(token, groupId, msgId, emoji);
-    refreshMessages();
+    refreshMessages(groupId);
   }
 
   if (!groupId) {
@@ -58,7 +60,7 @@ export function ChatPage() {
             <div key={msg.id} className="tb-message">
               <div className="tb-message-author">{msg.user_id}</div>
               <div className="tb-message-content">{msg.content}</div>
-              {Object.entries(msg.reactions || {}).map(([emoji, count]) => (
+              {[...new Map(Object.entries(msg.reactions || {}).filter(([, count]) => count > 0).map(([emoji, count]) => [decodeURIComponent(emoji), count])).entries()].map(([emoji, count]) => (
                 <span key={emoji} className="tb-emoji-count">
                   {emoji} {count}
                 </span>

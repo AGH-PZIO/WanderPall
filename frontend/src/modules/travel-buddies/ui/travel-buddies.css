@@ -97,29 +97,36 @@
 .tb-group-name {
   font-weight: 600;
   font-size: 1.1rem;
+  color: #000000;
 }
 
 .tb-group-desc {
-  color: #666;
+  color: #333333;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.tb-group-desc {
+  color: #444;
   font-size: 0.9rem;
   margin-top: 0.25rem;
 }
 
 .tb-group-meta {
-  color: #999;
+  color: #555;
   font-size: 0.8rem;
   margin-top: 0.25rem;
 }
 
 .tb-empty {
   text-align: center;
-  color: #999;
+  color: #555;
   padding: 2rem;
 }
 
 .tb-loading {
   text-align: center;
-  color: #666;
+  color: #444;
   padding: 2rem;
 }
 
@@ -143,7 +150,7 @@
 }
 
 .tb-group-description {
-  color: #666;
+  color: #444;
   margin: 0;
 }
 
@@ -193,7 +200,7 @@
 
 .tb-chat-empty {
   text-align: center;
-  color: #999;
+  color: #555;
   padding: 2rem;
 }
 
@@ -204,11 +211,27 @@
 
 .tb-message-author {
   font-size: 0.75rem;
-  color: #999;
+  color: #555;
+}
+
+.tb-note-author {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
 }
 
 .tb-message-content {
   margin-top: 0.25rem;
+  color: #222;
+}
+
+.tb-note-content {
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 0.25rem;
+  color: #222;
 }
 
 .tb-emoji-count {
@@ -281,6 +304,18 @@
 .tb-section h3 {
   margin: 0 0 0.75rem;
   font-size: 1rem;
+  color: #222222;
+}
+
+.tb-group-description {
+  color: #333333;
+  margin: 0;
+}
+
+.tb-group-meta {
+  color: #444444;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
 }
 
 .tb-inline-form {
@@ -400,7 +435,7 @@
 }
 
 .tb-empty-text {
-  color: #999;
+  color: #555;
   font-size: 0.9rem;
   text-align: center;
   padding: 1rem;
@@ -485,7 +520,7 @@
 }
 
 .tb-poll-closed {
-  color: #999;
+  color: #555;
   font-style: italic;
   font-size: 0.85rem;
   margin-top: 0.5rem;
@@ -590,7 +625,7 @@
 }
 
 .tb-task-info small {
-  color: #999;
+  color: #555;
   font-size: 0.8rem;
 }
 
@@ -648,7 +683,7 @@
 
 .tb-note-date {
   font-size: 0.75rem;
-  color: #999;
+  color: #555;
 }
 
 .tb-note-del {
@@ -695,7 +730,7 @@
   padding: 0.125rem 0.375rem;
   font-size: 0.75rem;
   cursor: pointer;
-  color: #666;
+  color: #444;
 }
 
 .tb-note-react-btn:hover {
@@ -724,7 +759,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #999;
+  color: #555;
   padding: 0;
 }
 
@@ -793,6 +828,16 @@
 .tb-member-name {
   font-weight: 600;
   font-size: 0.95rem;
+  color: #000000;
+}
+
+.tb-member-role {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+  display: inline-block;
+  color: #ffffff;
 }
 
 .tb-member-role {
@@ -974,7 +1019,7 @@
 
 .tb-task-done span {
   text-decoration: line-through;
-  color: #999;
+  color: #555;
 }
 
 .tb-msg {
@@ -995,7 +1040,7 @@
 }
 
 .tb-empty-text {
-  color: #999;
+  color: #555;
   font-size: 0.9rem;
   text-align: center;
   padding: 1rem;
@@ -1080,7 +1125,7 @@
 }
 
 .tb-poll-closed {
-  color: #999;
+  color: #555;
   font-style: italic;
   font-size: 0.85rem;
   margin-top: 0.5rem;
@@ -1185,7 +1230,7 @@
 }
 
 .tb-task-info small {
-  color: #999;
+  color: #555;
   font-size: 0.8rem;
 }
 
@@ -1243,7 +1288,7 @@
 
 .tb-note-date {
   font-size: 0.75rem;
-  color: #999;
+  color: #555;
 }
 
 .tb-note-del {

@@ -597,6 +597,24 @@ class PsycopgMessageRepository:
             reactions[emoji].append(row["user_id"])
         return reactions
 
+    def get_attachments(self, message_id: UUID) -> list[Attachment]:
+        rows = self.connection.execute(
+            """
+            SELECT a.id, a.group_id, a.user_id, a.filename, a.content_type, a.size, a.created_at
+            FROM travel_buddies.attachments a
+            JOIN travel_buddies.message_attachments ma ON a.id = ma.attachment_id
+            WHERE ma.message_id = %s
+            """,
+            (message_id,),
+        ).fetchall()
+        return [attachment_from_row(row) for row in rows]
+
+    def link_attachment(self, message_id: UUID, attachment_id: UUID) -> None:
+        self.connection.execute(
+            "INSERT INTO travel_buddies.message_attachments (message_id, attachment_id) VALUES (%s, %s) ON CONFLICT DO NOTHING",
+            (message_id, attachment_id),
+        )
+
 
 class PsycopgAttachmentRepository:
     def __init__(self, connection: Connection) -> None:

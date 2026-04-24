@@ -482,7 +482,7 @@ export function GroupDetailPage() {
               <div className="tb-notes-list">
                 {notes.map((n) => {
                   const authorName = n.first_name && n.last_name ? `${n.first_name} ${n.last_name}` : n.user_id;
-                  const reactionEntries = Object.entries(n.reactions || {}).filter(([, count]) => count > 0);
+                  const reactionEntries = Object.entries(n.reactions || {}).filter(([, count]) => count > 0).map(([emoji, count]) => [decodeURIComponent(emoji), count] as [string, number]);
                   return (
                   <div key={n.id} className="tb-note-item">
                     <div className="tb-note-author">{authorName}</div>
@@ -497,7 +497,7 @@ export function GroupDetailPage() {
                       </div>
                     ) : null}
                     <div className="tb-note-reactions">
-                      {reactionEntries.map(([emoji, count]) => (
+                      {[...new Map(Object.entries(n.reactions || {}).filter(([, count]) => count > 0).map(([emoji, count]) => [decodeURIComponent(emoji), count])).entries()].map(([emoji, count]) => (
                         <span key={emoji} className="tb-note-reaction" onClick={() => handleToggleReaction(n.id, emoji)} title="Usuń reakcję">{emoji} {count}</span>
                       ))}
                       <button type="button" className="tb-note-react-btn" onClick={() => handleAddReaction(n.id, "👍")} title="Dodaj reakcję">👍</button>

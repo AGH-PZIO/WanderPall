@@ -10,6 +10,7 @@ from app.modules.travel_buddies.models import (
     GroupMember,
     MemberRole,
     Message,
+    Attachment,
     PackingItem,
     Poll,
     PollOption,
@@ -305,6 +306,12 @@ class FakeMessages:
                     result[emoji] = []
                 result[emoji].append(uid)
         return result
+
+    def get_attachments(self, message_id: UUID) -> list[Attachment]:
+        return []
+
+    def link_attachment(self, message_id: UUID, attachment_id: UUID) -> None:
+        pass
 
 
 class FakeTasks:
