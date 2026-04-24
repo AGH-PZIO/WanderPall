@@ -4,12 +4,14 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     database_url: str = "postgresql://wanderpall:wanderpall@localhost:5432/wanderpall"
+    backend_url: str = "http://localhost:8000"
     cors_origins: str = "http://localhost:5173"
     jwt_secret_key: str = "change-me-in-env"
     access_token_expire_minutes: int = 15
     refresh_token_expire_days: int = 30
     verification_code_expire_minutes: int = 15
     password_reset_expire_minutes: int = 30
+    journal_media_dir: str = "/app/media/journals"
 
     google_oauth_client_id: str = ""
     google_oauth_client_secret: str = ""

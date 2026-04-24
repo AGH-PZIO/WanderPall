@@ -1,0 +1,418 @@
+.jr-full-page {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+}
+
+.jr-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 2px solid #f0f0f0;
+  background: linear-gradient(to bottom, #fafbfc, #ffffff);
+}
+
+.jr-topbar-title {
+  font-weight: 700;
+}
+
+.jr-page-content {
+  flex: 1;
+  overflow: auto;
+}
+
+.jr-shell {
+  padding: 28px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.jr-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.jr-card {
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  padding: 16px;
+  background: #fff;
+}
+
+.jr-list {
+  display: grid;
+  gap: 12px;
+}
+
+.jr-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.jr-row h3 {
+  margin: 0 0 4px;
+}
+
+.jr-muted {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.jr-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.jr-btn {
+  border: 1px solid #1976d2;
+  background: #1976d2;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.jr-btn:hover {
+  background: #1565c0;
+}
+
+.jr-btn-secondary {
+  border: 1px solid #cfd8dc;
+  background: white;
+  color: #263238;
+}
+
+.jr-btn-secondary:hover {
+  border-color: #90a4ae;
+  background: #f7f9fa;
+}
+
+.jr-btn-danger {
+  border: 1px solid #d32f2f;
+  background: #d32f2f;
+}
+
+.jr-btn-danger:hover {
+  background: #b71c1c;
+}
+
+.jr-form {
+  display: grid;
+  gap: 12px;
+}
+
+.jr-field {
+  display: grid;
+  gap: 6px;
+}
+
+.jr-field label {
+  font-weight: 700;
+}
+
+.jr-field input,
+.jr-field textarea,
+.jr-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  font: inherit;
+}
+
+.jr-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 700px) {
+  .jr-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.jr-photos {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.jr-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid #e0e0e0;
+}
+
+/* ============================================================================
+   Explorer Styles
+   ============================================================================ */
+
+.jr-explorer-feed {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.jr-journal-card {
+  margin-bottom: 20px;
+}
+
+.jr-journal-header {
+  margin-bottom: 12px;
+}
+
+.jr-entry-preview {
+  margin: 16px 0;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.jr-entry-text {
+  margin-bottom: 8px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.jr-entry-location {
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.jr-journal-interactions {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e2e2;
+}
+
+/* Reaction Bar Styles */
+.jr-reaction-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.jr-reaction-count {
+  font-size: 0.95rem;
+}
+
+.jr-reaction-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.jr-reaction-btn {
+  font-size: 1.5rem;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.jr-reaction-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.05);
+  transform: scale(1.1);
+}
+
+.jr-reaction-btn.active {
+  border-color: #1976d2;
+  background: rgba(25, 118, 210, 0.1);
+}
+
+.jr-reaction-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Comment Section Styles */
+.jr-comment-section {
+  margin-top: 16px;
+}
+
+.jr-comment-header {
+  margin-bottom: 12px;
+}
+
+.jr-comment-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  color: #1976d2;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.jr-comment-toggle:hover {
+  text-decoration: underline;
+}
+
+.jr-comment-toggle-icon {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.jr-comment-content {
+  margin-top: 12px;
+}
+
+.jr-comment-list {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.jr-comment-item {
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 3px solid #e0e0e0;
+}
+
+.jr-comment-item.depth-1 {
+  margin-left: 24px;
+  border-left-color: #1976d2;
+}
+
+.jr-comment-item.depth-2 {
+  margin-left: 48px;
+  border-left-color: #4caf50;
+}
+
+.jr-comment-item.depth-3 {
+  margin-left: 72px;
+  border-left-color: #ff9800;
+}
+
+.jr-comment-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.jr-comment-author {
+  font-weight: 600;
+  color: #263238;
+}
+
+.jr-comment-time {
+  font-size: 0.85rem;
+}
+
+.jr-comment-body {
+  margin-bottom: 8px;
+}
+
+.jr-comment-body p {
+  margin: 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.jr-comment-deleted {
+  font-style: italic;
+}
+
+.jr-comment-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.jr-comment-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  color: #1976d2;
+  padding: 4px 0;
+}
+
+.jr-comment-action-btn:hover {
+  text-decoration: underline;
+}
+
+.jr-comment-delete-btn {
+  color: #d32f2f;
+}
+
+.jr-comment-reply-form {
+  margin-top: 12px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+}
+
+.jr-comment-replies {
+  margin-top: 12px;
+}
+
+.jr-comment-add {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+/* Comment Form Styles */
+.jr-comment-form {
+  display: grid;
+  gap: 12px;
+}
+
+.jr-error {
+  color: #d32f2f;
+  font-size: 0.9rem;
+  padding: 8px 0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 700px) {
+  .jr-reaction-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .jr-comment-item.depth-1 {
+    margin-left: 16px;
+  }
+
+  .jr-comment-item.depth-2 {
+    margin-left: 32px;
+  }
+
+  .jr-comment-item.depth-3 {
+    margin-left: 48px;
+  }
+
+  .jr-reaction-btn {
+    font-size: 1.3rem;
+    padding: 8px 12px;
+  }
+}
