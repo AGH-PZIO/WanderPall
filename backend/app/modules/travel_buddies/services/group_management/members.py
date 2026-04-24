@@ -137,7 +137,7 @@ class GroupMembersService:
                 id=current.id,
                 group_id=current.group_id,
                 user_id=current.user_id,
-                role=MemberRole.MEMBER,
+                role=MemberRole.ADMIN,
                 joined_at=current.joined_at,
             )
         )
