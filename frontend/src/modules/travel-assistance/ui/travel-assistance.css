@@ -437,6 +437,149 @@
   100% { transform: rotate(360deg); }
 }
 
+.ta-notes {
+  min-height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2%;
+  padding: 16px 20px;
+  border-bottom: 2px solid #f0f0f0;
+  background: linear-gradient(to bottom, #fafbfc, #ffffff);
+}
+
+#create-note, .ta-note-item {
+  width: 18%;
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+}
+
+#create-note {
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 70px;
+  background-color: #1565c0;
+  transition: all .2s ease;
+}
+
+#create-note:hover {
+  background-color: #1976d2;
+}
+
+.ta-note-item {
+  transition: all .2s ease;
+  padding: 5px 10px;
+}
+
+.ta-note-item:hover {
+  border-color: #1976d2;
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.1);
+  transform: translateY(-2px);
+}
+
+.ta-note-item-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-button {
+  color: white;
+  cursor: pointer;
+  background-color: red;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border: none;
+}
+
+.ta-note-container, .ta-calc-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 2px solid #f0f0f0;
+  background: linear-gradient(to bottom, #fafbfc, #ffffff);
+}
+
+.ta-note-editor, .ta-calc-editor, .ta-calc-view {
+  width: 70%;
+  border-right: 2px solid #f0f0f0;
+}
+
+.ta-note-editor input[type="text"] {
+  width: 50%;
+  height: 30px;
+}
+
+.ta-note-editor textarea {
+  width: 50%;
+  height: 200px;
+}
+
+.control-buttons {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.control-buttons #save, .create-btn {
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background-color: #1565c0;
+  transition: all .2s ease;
+  margin-right: 20px;
+}
+
+.control-buttons #save:hover, .create-btn:hover {
+  background-color: #1976d2;
+}
+
+.control-buttons #del, .del-btn {
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background-color: red;
+  transition: all .2s ease;
+}
+
+.control-buttons #del:hover, .del-btn:hover {
+  background-color: #ff1111;
+}
+
+.ta-notes-list {
+  width: 25%;
+  height: 100%;
+}
+
+.ta-note-list-item {
+  width: 100%;
+  padding: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.ta-calc-fields {
+  width: 50%;
+}
+
+.ta-calc-editor {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 .ta-calendar {
   padding: 16px 20px;
 }

@@ -8,6 +8,7 @@ import { travelBuddiesModule, TravelBuddiesPage } from "./modules/travel-buddies
 
 import { getTestStatus } from "./shared/api";
 import type { FrontendModule } from "./shared/module";
+import { AuthProvider } from "./modules/account/hooks/useAuth";
 
 const modules: FrontendModule[] = [
   accountModule,
@@ -58,13 +59,16 @@ function HomePage() {
 
 export function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/account/*" element={<AccountPage onClose={() => window.location.href = "/"} />} />
-        <Route path="/travel-assistance/*" element={<TravelAssistancePage onClose={() => window.location.href = "/"} />} />
-        <Route path="/travel-buddies/*" element={<TravelBuddiesPage onClose={() => window.location.href = "/"} />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/account/*" element={<AccountPage onClose={() => window.location.href = "/"} />} />
+          <Route path="/travel-assistance/*" element={<TravelAssistancePage onClose={() => window.location.href = "/"} />} />
+            <Route path="/travel-buddies/*" element={<TravelBuddiesPage onClose={() => window.location.href = "/"} />} />
+
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
