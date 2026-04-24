@@ -1,11 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import {
   useMaps,
-  Marker,
-  MarkerGroup,
-  Route,
-  Waypoint,
-  MapSettings,
+  type Marker,
+  type Waypoint,
+  type MarkerComment,
 } from "../hooks/useMaps";
 import { MapComponent, MAP_LAYERS } from "./MapComponent";
 import "./maps.css";
@@ -39,11 +37,9 @@ export function MapsPage({ onClose }: { onClose?: () => void }) {
     routes,
     markerGroups,
     settings,
-    loading,
     error,
     loadMarkers,
     createMarker,
-    updateMarker,
     deleteMarker,
     markAsVisited,
     loadRoutes,
@@ -80,7 +76,7 @@ export function MapsPage({ onClose }: { onClose?: () => void }) {
     color: "#3388ff",
   });
   const [newComment, setNewComment] = useState("");
-  const [markerComments, setMarkerComments] = useState<any[]>([]);
+  const [markerComments, setMarkerComments] = useState<MarkerComment[]>([]);
   const [newRouteMode, setNewRouteMode] = useState(false);
   const [routePoints, setRoutePoints] = useState<Waypoint[]>([]);
 
@@ -426,7 +422,7 @@ export function MapsPage({ onClose }: { onClose?: () => void }) {
                   <li key={route.id} className="maps-list-item">
                     <div className="maps-list-item-name">{route.name}</div>
                     <div className="maps-list-item-meta">
-                      {route.waypoints.length} punktów
+                      {(route.waypoints ?? []).length} punktów
                     </div>
                     <button
                       className="danger"
@@ -571,13 +567,15 @@ export function MapsPage({ onClose }: { onClose?: () => void }) {
 
         <div className="map-wrapper">
           <MapComponent
-            markers={markers}
+            markers={filteredMarkers}
             routes={routes}
             groups={markerGroups}
             settings={settings}
             onMarkerClick={handleMarkerClick}
             onMapClick={handleMapClick}
             selectedMarkerId={selectedMarker?.id}
+            draftRoutePoints={newRouteMode ? routePoints : []}
+            draftRouteColor={newRouteForm.color}
           />
         </div>
       </div>

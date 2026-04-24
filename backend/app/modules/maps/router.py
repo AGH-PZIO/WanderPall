@@ -278,16 +278,7 @@ def get_map_settings(
 ):
     record = db.get_user_map_settings(connection, user.id)
     if not record:
-        return MapSettingsResponse(
-            id=user.id,
-            user_id=user.id,
-            map_layer="OpenStreetMap",
-            center_latitude=52.2297,
-            center_longitude=21.0122,
-            zoom_level=6,
-            created_at=None,
-            updated_at=None,
-        )
+        record = db.update_user_map_settings(connection, user.id, MapSettingsUpdate())
     return MapSettingsResponse.model_validate(record)
 
 

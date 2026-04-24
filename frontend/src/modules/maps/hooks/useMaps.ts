@@ -1,6 +1,12 @@
 import { useState, useCallback } from "react";
 import { apiClient } from "../../../shared/api-client";
 
+function errorMessage(e: unknown, fallback: string): string {
+  if (e instanceof Error) return e.message || fallback;
+  if (typeof e === "string") return e;
+  return fallback;
+}
+
 export interface Waypoint {
   latitude: number;
   longitude: number;
@@ -12,7 +18,7 @@ export interface MarkerGroup {
   user_id: string;
   name: string;
   color: string;
-  icon: string | null;
+  icon?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -20,12 +26,12 @@ export interface MarkerGroup {
 export interface Marker {
   id: string;
   user_id: string;
-  group_id: string | null;
+  group_id?: string | null;
   name: string;
-  description: string | null;
+  description?: string | null;
   latitude: number;
   longitude: number;
-  is_visited: boolean;
+  is_visited?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -34,9 +40,9 @@ export interface Route {
   id: string;
   user_id: string;
   name: string;
-  description: string | null;
+  description?: string | null;
   color: string;
-  waypoints: Waypoint[];
+  waypoints?: Waypoint[];
   created_at: string;
   updated_at: string;
 }
@@ -61,26 +67,6 @@ export interface MapSettings {
   updated_at: string;
 }
 
-interface MarkerGroupListResponse {
-  items: MarkerGroup[];
-  total: number;
-}
-
-interface MarkerListResponse {
-  items: Marker[];
-  total: number;
-}
-
-interface RouteListResponse {
-  items: Route[];
-  total: number;
-}
-
-interface MarkerCommentListResponse {
-  items: MarkerComment[];
-  total: number;
-}
-
 export function useMaps() {
   const [markerGroups, setMarkerGroups] = useState<MarkerGroup[]>([]);
   const [markers, setMarkers] = useState<Marker[]>([]);
@@ -96,8 +82,8 @@ export function useMaps() {
       const { data, error } = await apiClient.GET("/maps/marker-groups");
       if (error || !data) throw error;
       setMarkerGroups(data.items);
-    } catch (e: any) {
-      setError(e.message || "Failed to load marker groups");
+    } catch (e) {
+      setError(errorMessage(e, "Failed to load marker groups"));
     } finally {
       setLoading(false);
     }
@@ -109,13 +95,17 @@ export function useMaps() {
       setError(null);
       try {
         const { data, error } = await apiClient.POST("/maps/marker-groups", {
-          body: group,
+          body: {
+            name: group.name,
+            color: group.color ?? "#3388ff",
+            icon: group.icon ?? null,
+          },
         });
         if (error || !data) throw error;
         setMarkerGroups((prev) => [data, ...prev]);
         return data;
-      } catch (e: any) {
-        setError(e.message || "Failed to create marker group");
+      } catch (e) {
+        setError(errorMessage(e, "Failed to create marker group"));
         throw e;
       } finally {
         setLoading(false);
@@ -144,8 +134,8 @@ export function useMaps() {
           prev.map((g) => (g.id === groupId ? data : g)),
         );
         return data;
-      } catch (e: any) {
-        setError(e.message || "Failed to update marker group");
+      } catch (e) {
+        setError(errorMessage(e, "Failed to update marker group"));
         throw e;
       } finally {
         setLoading(false);
@@ -166,8 +156,8 @@ export function useMaps() {
       );
       if (error) throw error;
       setMarkerGroups((prev) => prev.filter((g) => g.id !== groupId));
-    } catch (e: any) {
-      setError(e.message || "Failed to delete marker group");
+    } catch (e) {
+      setError(errorMessage(e, "Failed to delete marker group"));
       throw e;
     } finally {
       setLoading(false);
@@ -182,8 +172,8 @@ export function useMaps() {
       const { data, error } = await apiClient.GET("/maps/markers", params);
       if (error || !data) throw error;
       setMarkers(data.items);
-    } catch (e: any) {
-      setError(e.message || "Failed to load markers");
+    } catch (e) {
+      setError(errorMessage(e, "Failed to load markers"));
     } finally {
       setLoading(false);
     }
@@ -202,13 +192,20 @@ export function useMaps() {
       setError(null);
       try {
         const { data, error } = await apiClient.POST("/maps/markers", {
-          body: marker,
+          body: {
+            name: marker.name,
+            description: marker.description,
+            latitude: marker.latitude,
+            longitude: marker.longitude,
+            group_id: marker.group_id,
+            is_visited: marker.is_visited ?? false,
+          },
         });
         if (error || !data) throw error;
         setMarkers((prev) => [data, ...prev]);
         return data;
-      } catch (e: any) {
-        setError(e.message || "Failed to create marker");
+      } catch (e) {
+        setError(errorMessage(e, "Failed to create marker"));
         throw e;
       } finally {
         setLoading(false);
@@ -242,8 +239,8 @@ export function useMaps() {
         if (error || !data) throw error;
         setMarkers((prev) => prev.map((m) => (m.id === markerId ? data : m)));
         return data;
-      } catch (e: any) {
-        setError(e.message || "Failed to update marker");
+      } catch (e) {
+        setError(errorMessage(e, "Failed to update marker"));
         throw e;
       } finally {
         setLoading(false);
@@ -261,8 +258,8 @@ export function useMaps() {
       });
       if (error) throw error;
       setMarkers((prev) => prev.filter((m) => m.id !== markerId));
-    } catch (e: any) {
-      setError(e.message || "Failed to delete marker");
+    } catch (e) {
+      setError(errorMessage(e, "Failed to delete marker"));
       throw e;
     } finally {
       setLoading(false);
@@ -282,8 +279,8 @@ export function useMaps() {
       if (error || !data) throw error;
       setMarkers((prev) => prev.map((m) => (m.id === markerId ? data : m)));
       return data;
-    } catch (e: any) {
-      setError(e.message || "Failed to mark as visited");
+    } catch (e) {
+      setError(errorMessage(e, "Failed to mark as visited"));
       throw e;
     } finally {
       setLoading(false);
@@ -297,8 +294,8 @@ export function useMaps() {
       const { data, error } = await apiClient.GET("/maps/routes");
       if (error || !data) throw error;
       setRoutes(data.items);
-    } catch (e: any) {
-      setError(e.message || "Failed to load routes");
+    } catch (e) {
+      setError(errorMessage(e, "Failed to load routes"));
     } finally {
       setLoading(false);
     }
@@ -315,13 +312,18 @@ export function useMaps() {
       setError(null);
       try {
         const { data, error } = await apiClient.POST("/maps/routes", {
-          body: route,
+          body: {
+            name: route.name,
+            description: route.description,
+            color: route.color ?? "#ff0000",
+            waypoints: route.waypoints,
+          },
         });
         if (error || !data) throw error;
         setRoutes((prev) => [data, ...prev]);
         return data;
-      } catch (e: any) {
-        setError(e.message || "Failed to create route");
+      } catch (e) {
+        setError(errorMessage(e, "Failed to create route"));
         throw e;
       } finally {
         setLoading(false);
@@ -353,8 +355,8 @@ export function useMaps() {
         if (error || !data) throw error;
         setRoutes((prev) => prev.map((r) => (r.id === routeId ? data : r)));
         return data;
-      } catch (e: any) {
-        setError(e.message || "Failed to update route");
+      } catch (e) {
+        setError(errorMessage(e, "Failed to update route"));
         throw e;
       } finally {
         setLoading(false);
@@ -372,8 +374,8 @@ export function useMaps() {
       });
       if (error) throw error;
       setRoutes((prev) => prev.filter((r) => r.id !== routeId));
-    } catch (e: any) {
-      setError(e.message || "Failed to delete route");
+    } catch (e) {
+      setError(errorMessage(e, "Failed to delete route"));
       throw e;
     } finally {
       setLoading(false);
@@ -392,8 +394,8 @@ export function useMaps() {
       );
       if (error || !data) throw error;
       return data.items;
-    } catch (e: any) {
-      setError(e.message || "Failed to load comments");
+    } catch (e) {
+      setError(errorMessage(e, "Failed to load comments"));
       throw e;
     } finally {
       setLoading(false);
@@ -414,8 +416,8 @@ export function useMaps() {
         );
         if (error || !data) throw error;
         return data;
-      } catch (e: any) {
-        setError(e.message || "Failed to create comment");
+      } catch (e) {
+        setError(errorMessage(e, "Failed to create comment"));
         throw e;
       } finally {
         setLoading(false);
@@ -434,8 +436,8 @@ export function useMaps() {
           { params: { path: { marker_id: markerId, comment_id: commentId } } },
         );
         if (error) throw error;
-      } catch (e: any) {
-        setError(e.message || "Failed to delete comment");
+      } catch (e) {
+        setError(errorMessage(e, "Failed to delete comment"));
         throw e;
       } finally {
         setLoading(false);
@@ -452,8 +454,8 @@ export function useMaps() {
       if (error || !data) throw error;
       setSettings(data);
       return data;
-    } catch (e: any) {
-      setError(e.message || "Failed to load settings");
+    } catch (e) {
+      setError(errorMessage(e, "Failed to load settings"));
       throw e;
     } finally {
       setLoading(false);
@@ -476,8 +478,8 @@ export function useMaps() {
         if (error || !data) throw error;
         setSettings(data);
         return data;
-      } catch (e: any) {
-        setError(e.message || "Failed to update settings");
+      } catch (e) {
+        setError(errorMessage(e, "Failed to update settings"));
         throw e;
       } finally {
         setLoading(false);

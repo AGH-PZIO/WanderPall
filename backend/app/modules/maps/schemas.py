@@ -1,6 +1,6 @@
 from datetime import datetime
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
 
 
@@ -26,8 +26,7 @@ class MarkerGroupResponse(MarkerGroupBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Waypoint(BaseModel):
@@ -64,8 +63,7 @@ class MarkerResponse(MarkerBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class RouteBase(BaseModel):
@@ -96,8 +94,7 @@ class RouteResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MarkerCommentBase(BaseModel):
@@ -119,8 +116,7 @@ class MarkerCommentResponse(MarkerCommentBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MapSettingsUpdate(BaseModel):
@@ -140,8 +136,7 @@ class MapSettingsResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MarkerGroupListResponse(BaseModel):

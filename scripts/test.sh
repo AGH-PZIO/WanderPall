@@ -34,7 +34,7 @@ run_backend_unit() {
   PYTHONPATH="${PYTHONPATH:+$PYTHONPATH:}backend" PYTHONDONTWRITEBYTECODE=1 \
     "$venv_dir/bin/python" -m compileall -q backend/app backend/scripts
   PYTHONPATH="${PYTHONPATH:+$PYTHONPATH:}backend" PYTHONDONTWRITEBYTECODE=1 \
-    "$venv_dir/bin/python" -m pytest backend/app/modules/account/tests backend/app/modules/travel_assistance/tests -q
+    "$venv_dir/bin/python" -m pytest backend/app/modules/account/tests backend/app/modules/travel_assistance/tests backend/app/modules/maps/tests -q
 }
 
 run_backend_integration() {
