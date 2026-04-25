@@ -6,20 +6,9 @@ import {
   addReaction,
 } from "../api/travel-buddies-api";
 
-function getAccessToken(): string | null {
-  try {
-    const raw = localStorage.getItem("wanderpall.account.tokens");
-    if (!raw) return null;
-    const tokens = JSON.parse(raw);
-    return tokens.accessToken || null;
-  } catch {
-    return null;
-  }
-}
-
 export function ChatPage() {
   const { groupId } = useParams<{ groupId: string }>();
-  const { messages, refreshMessages } = useTravelBuddies();
+  const { messages, refreshMessages, accessToken } = useTravelBuddies();
   const [text, setText] = useState("");
 
   useEffect(() => {
@@ -30,17 +19,15 @@ export function ChatPage() {
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
-    const token = getAccessToken();
-    if (!text.trim() || !token || !groupId) return;
-    await sendMessage(token, groupId, { content: text, attachment_ids: [] });
+    if (!text.trim() || !accessToken || !groupId) return;
+    await sendMessage(accessToken, groupId, { content: text, attachment_ids: [] });
     setText("");
     refreshMessages(groupId);
   }
 
   async function handleReact(messageId: string, emoji: string) {
-    const token = getAccessToken();
-    if (!token || !groupId) return;
-    await addReaction(token, groupId, messageId, emoji);
+    if (!accessToken || !groupId) return;
+    await addReaction(accessToken, groupId, messageId, emoji);
     refreshMessages(groupId);
   }
 

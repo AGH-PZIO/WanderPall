@@ -79,11 +79,14 @@ class PollManagementService:
         if self.poll_options:
             db_options = []
             for i, text in enumerate(request.options):
+                stripped_text = text.strip()
+                if not stripped_text:
+                    raise ValidationError(f"Option {i + 1} cannot be empty")
                 db_options.append(
                     PollOption(
                         id=uuid4(),
                         poll_id=created_poll.id,
-                        text=text.strip(),
+                        text=stripped_text,
                         order_index=i,
                     )
                 )

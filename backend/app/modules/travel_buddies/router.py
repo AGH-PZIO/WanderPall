@@ -438,13 +438,15 @@ async def upload_attachment(
         user_id=current_user.id,
         # Store the UUID-generated filename so URL reconstruction is consistent
         filename=stored_filename,
+        # Preserve the original client-provided filename for display
+        original_filename=file.filename,
         content_type=file.content_type or "application/octet-stream",
         size=size,
     )
     created = attachments_repo.create(attachment)
     return AttachmentResponse(
         id=created.id,
-        filename=file.filename or created.filename,
+        filename=created.original_filename or created.filename,
         content_type=created.content_type,
         url=f"/media/{stored_path}",
         size=created.size,

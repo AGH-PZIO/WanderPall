@@ -84,6 +84,7 @@ class Attachment:
     filename: str
     content_type: str
     size: int
+    original_filename: str | None = None
     created_at: datetime | None = None
 
 

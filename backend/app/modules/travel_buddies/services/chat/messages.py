@@ -24,7 +24,7 @@ class MessageService:
             attachments = [
                 AttachmentResponse(
                     id=a.id,
-                    filename=a.filename,
+                    filename=a.original_filename or a.filename,
                     content_type=a.content_type,
                     url=f"/media/travel_buddies/{a.filename.split('/')[-1]}",
                     size=a.size,
@@ -69,7 +69,7 @@ class MessageService:
         attachments = [
             AttachmentResponse(
                 id=a.id,
-                filename=a.filename,
+                filename=a.original_filename or a.filename,
                 content_type=a.content_type,
                 url=f"/media/travel_buddies/{a.filename.split('/')[-1]}",
                 size=a.size,
