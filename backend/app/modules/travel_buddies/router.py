@@ -409,7 +409,7 @@ def list_messages(
 @router.post("/groups/{group_id}/attachments", response_model=AttachmentResponse, status_code=status.HTTP_201_CREATED)
 async def upload_attachment(
     group_id: UUID,
-    file: UploadFile,
+    file: Annotated[UploadFile, File()],
     current_user: Annotated[User, Depends(get_current_user)],
     current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
@@ -690,6 +690,7 @@ def mark_item_packed(
     from app.modules.travel_buddies.services.notes import PackingListService
 
     packing_repo = _repositories(connection)[8]
+    service = PackingListService(packing_repo)
     return service.mark_packed(item_id, current_user.id)
 
 
@@ -730,12 +731,18 @@ def get_attachment(
     filename: str,
     current_user: Annotated[User, Depends(get_current_user)],
     current_member: Annotated[GroupMember, Depends(get_current_group_member)],
+    connection: Annotated[Connection, Depends(get_connection)],
 ) -> FileResponse:
     from pathlib import Path
+    from fastapi import HTTPException
     from app.utils.file_storage.storage import UPLOAD_DIR
+
+    attachments_repo = _repositories(connection)[6]
+    group_attachments = attachments_repo.list_by_group(group_id)
+    if not any(a.filename == filename for a in group_attachments):
+        raise HTTPException(status_code=404, detail="File not found")
 
     filepath = UPLOAD_DIR / "travel_buddies" / filename
     if not filepath.exists():
-        from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="File not found")
     return FileResponse(filepath)

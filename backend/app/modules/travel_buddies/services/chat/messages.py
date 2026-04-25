@@ -82,7 +82,7 @@ class MessageService:
             id=created.id,
             group_id=group_id,
             user_id=user_id,
-            content=content,
+            content=created.content,
             reactions={},
             attachments=attachments,
             created_at=created.created_at.isoformat() if created.created_at else None,
