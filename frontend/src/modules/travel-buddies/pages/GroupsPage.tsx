@@ -16,7 +16,7 @@ export function GroupsPage() {
 
   useEffect(() => {
     refreshGroups();
-  }, []);
+  }, [refreshGroups]);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();

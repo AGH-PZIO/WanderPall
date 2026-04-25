@@ -75,12 +75,26 @@ export function TravelBuddiesProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const token = getAccessToken();
-      setAccessToken(token);
-    }, 1000);
-    return () => clearInterval(interval);
+    const syncAccessToken = () => {
+      setAccessToken(getAccessToken());
+    };
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === "wanderpall.account.tokens") {
+        syncAccessToken();
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    syncAccessToken();
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
+
+  useEffect(() => {
+    setState((s) =>
+      s.isAuthenticated === Boolean(accessToken)
+        ? s
+        : { ...s, isAuthenticated: Boolean(accessToken) },
+    );
+  }, [accessToken]);
 
   const refreshGroups = useCallback(async () => {
     const token = getAccessToken();

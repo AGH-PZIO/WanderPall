@@ -60,6 +60,8 @@ class PollManagementService:
         return PollListResponse(items=items, total=total)
 
     def create_poll(self, group_id: UUID, user_id: UUID, request: CreatePollRequest) -> PollResponse:
+        if not request.question.strip():
+            raise ValidationError("Poll question cannot be empty")
         if len(request.options) < 2:
             raise ValidationError("Poll must have at least 2 options")
         if len(request.options) > 20:

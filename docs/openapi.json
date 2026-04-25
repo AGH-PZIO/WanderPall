@@ -2220,22 +2220,6 @@
               "default": 0,
               "title": "Offset"
             }
-          },
-          {
-            "name": "search",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Search"
-            }
           }
         ],
         "responses": {
@@ -2468,7 +2452,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -2490,6 +2473,15 @@
               "type": "integer",
               "default": 0,
               "title": "Offset"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -2534,8 +2526,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -2592,7 +2592,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -2604,6 +2603,15 @@
               "type": "string",
               "format": "uuid",
               "title": "User Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -2658,7 +2666,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -2670,6 +2677,15 @@
               "type": "string",
               "format": "uuid",
               "title": "User Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -2709,8 +2725,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -2767,8 +2791,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -2808,8 +2840,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -2866,7 +2906,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -2888,6 +2927,15 @@
               "type": "integer",
               "default": 0,
               "title": "Offset"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -2932,8 +2980,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -2990,7 +3046,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3002,6 +3057,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Poll Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3048,7 +3112,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3060,6 +3123,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Poll Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3116,7 +3188,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3128,6 +3199,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Poll Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3182,7 +3262,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3194,6 +3273,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Poll Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3233,7 +3321,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3245,6 +3332,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Poll Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3291,7 +3387,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3313,6 +3408,15 @@
               "type": "integer",
               "default": 0,
               "title": "Offset"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3357,8 +3461,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3481,7 +3593,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3502,6 +3613,15 @@
             "schema": {
               "type": "string",
               "title": "Emoji"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3539,7 +3659,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3560,6 +3679,15 @@
             "schema": {
               "type": "string",
               "title": "Emoji"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3599,7 +3727,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3611,6 +3738,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Message Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3650,7 +3786,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3688,6 +3823,15 @@
                 }
               ],
               "title": "Status Filter"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3732,8 +3876,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3790,7 +3942,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3802,6 +3953,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Task Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3856,7 +4016,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3868,6 +4027,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Task Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3907,7 +4075,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3919,6 +4086,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Task Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -3965,7 +4141,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -3977,6 +4152,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Task Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -4023,7 +4207,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -4061,6 +4244,15 @@
                 }
               ],
               "title": "Category"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -4105,8 +4297,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -4163,8 +4363,16 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -4211,7 +4419,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -4223,6 +4430,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Item Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -4277,7 +4493,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -4289,6 +4504,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Item Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -4328,7 +4552,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -4340,6 +4563,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Item Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -4386,7 +4618,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Group Id"
             }
           },
@@ -4398,6 +4629,15 @@
               "type": "string",
               "format": "uuid",
               "title": "Item Id"
+            }
+          },
+          {
+            "name": "required_role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/MemberRole",
+              "default": "member"
             }
           }
         ],
@@ -5078,8 +5318,7 @@
                 "type": "number"
               },
               {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                "type": "string"
               }
             ],
             "title": "Amount"
@@ -5100,7 +5339,6 @@
           },
           "amount": {
             "type": "string",
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Amount"
           },
           "id": {

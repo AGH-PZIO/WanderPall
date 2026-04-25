@@ -82,7 +82,7 @@ class GroupService:
         updated = self.groups.update(
             Group(
                 id=group.id,
-                name=request.name if request.name is not None else group.name,
+                name=name if request.name is not None else group.name,
                 description=request.description if request.description is not None else group.description,
                 created_by=group.created_by,
                 created_at=group.created_at,

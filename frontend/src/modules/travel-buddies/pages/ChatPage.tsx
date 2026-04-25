@@ -37,12 +37,10 @@ export function ChatPage() {
     refreshMessages(groupId);
   }
 
-  async function handleReact(emoji: string) {
+  async function handleReact(messageId: string, emoji: string) {
     const token = getAccessToken();
     if (!token || !groupId) return;
-    const msgId = messages[0]?.id;
-    if (!msgId) return;
-    await addReaction(token, groupId, msgId, emoji);
+    await addReaction(token, groupId, messageId, emoji);
     refreshMessages(groupId);
   }
 
@@ -65,6 +63,13 @@ export function ChatPage() {
                   {emoji} {count}
                 </span>
               ))}
+              <div className="tb-emoji-bar">
+                {["👍", "❤️", "😄", "😢", "😮"].map((e) => (
+                  <button key={e} type="button" onClick={() => handleReact(msg.id, e)}>
+                    {e}
+                  </button>
+                ))}
+              </div>
             </div>
           ))
         )}
@@ -79,13 +84,6 @@ export function ChatPage() {
         />
         <button type="submit">Send</button>
       </form>
-      <div className="tb-emoji-bar">
-        {["👍", "❤️", "😄", "😢", "😮"].map((e) => (
-          <button key={e} type="button" onClick={() => handleReact(e)}>
-            {e}
-          </button>
-        ))}
-      </div>
     </div>
   );
 }

@@ -3568,7 +3568,6 @@ export interface operations {
             query?: {
                 limit?: number;
                 offset?: number;
-                search?: string | null;
             };
             header?: never;
             path?: never;
@@ -3729,6 +3728,7 @@ export interface operations {
             query?: {
                 limit?: number;
                 offset?: number;
+                required_role?: components["schemas"]["MemberRole"];
             };
             header?: never;
             path: {
@@ -3760,7 +3760,9 @@ export interface operations {
     };
     add_member_travel_buddies_groups__group_id__members_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -3795,7 +3797,9 @@ export interface operations {
     };
     remove_member_travel_buddies_groups__group_id__members__user_id__delete: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -3825,7 +3829,9 @@ export interface operations {
     };
     update_member_role_travel_buddies_groups__group_id__members__user_id__patch: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -3861,7 +3867,9 @@ export interface operations {
     };
     invite_member_by_email_travel_buddies_groups__group_id__invite_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -3896,7 +3904,9 @@ export interface operations {
     };
     leave_group_travel_buddies_groups__group_id__leave_delete: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -3925,7 +3935,9 @@ export interface operations {
     };
     transfer_group_ownership_travel_buddies_groups__group_id__transfer_ownership_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -3963,6 +3975,7 @@ export interface operations {
             query?: {
                 limit?: number;
                 offset?: number;
+                required_role?: components["schemas"]["MemberRole"];
             };
             header?: never;
             path: {
@@ -3994,7 +4007,9 @@ export interface operations {
     };
     create_poll_travel_buddies_groups__group_id__polls_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4029,7 +4044,9 @@ export interface operations {
     };
     get_poll_travel_buddies_groups__group_id__polls__poll_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4061,7 +4078,9 @@ export interface operations {
     };
     add_poll_option_travel_buddies_groups__group_id__polls__poll_id__options_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4097,7 +4116,9 @@ export interface operations {
     };
     vote_poll_travel_buddies_groups__group_id__polls__poll_id__vote_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4133,7 +4154,9 @@ export interface operations {
     };
     remove_vote_travel_buddies_groups__group_id__polls__poll_id__vote_delete: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4163,7 +4186,9 @@ export interface operations {
     };
     close_poll_travel_buddies_groups__group_id__polls__poll_id__close_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4198,6 +4223,7 @@ export interface operations {
             query?: {
                 limit?: number;
                 offset?: number;
+                required_role?: components["schemas"]["MemberRole"];
             };
             header?: never;
             path: {
@@ -4229,7 +4255,9 @@ export interface operations {
     };
     send_message_travel_buddies_groups__group_id__messages_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4301,7 +4329,9 @@ export interface operations {
     };
     add_reaction_travel_buddies_groups__group_id__messages__message_id__reactions__emoji__post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4332,7 +4362,9 @@ export interface operations {
     };
     remove_reaction_travel_buddies_groups__group_id__messages__message_id__reactions__emoji__delete: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4363,7 +4395,9 @@ export interface operations {
     };
     delete_message_travel_buddies_groups__group_id__messages__message_id__delete: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4397,6 +4431,7 @@ export interface operations {
                 limit?: number;
                 offset?: number;
                 status_filter?: string | null;
+                required_role?: components["schemas"]["MemberRole"];
             };
             header?: never;
             path: {
@@ -4428,7 +4463,9 @@ export interface operations {
     };
     create_task_travel_buddies_groups__group_id__tasks_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4463,7 +4500,9 @@ export interface operations {
     };
     delete_task_travel_buddies_groups__group_id__tasks__task_id__delete: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4493,7 +4532,9 @@ export interface operations {
     };
     update_task_travel_buddies_groups__group_id__tasks__task_id__patch: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4529,7 +4570,9 @@ export interface operations {
     };
     mark_task_done_travel_buddies_groups__group_id__tasks__task_id__done_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4561,7 +4604,9 @@ export interface operations {
     };
     mark_task_pending_travel_buddies_groups__group_id__tasks__task_id__pending_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4597,6 +4642,7 @@ export interface operations {
                 limit?: number;
                 offset?: number;
                 category?: string | null;
+                required_role?: components["schemas"]["MemberRole"];
             };
             header?: never;
             path: {
@@ -4628,7 +4674,9 @@ export interface operations {
     };
     add_packing_item_travel_buddies_groups__group_id__packing_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4663,7 +4711,9 @@ export interface operations {
     };
     get_packing_progress_travel_buddies_groups__group_id__packing_progress_get: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4694,7 +4744,9 @@ export interface operations {
     };
     delete_packing_item_travel_buddies_groups__group_id__packing__item_id__delete: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4724,7 +4776,9 @@ export interface operations {
     };
     update_packing_item_travel_buddies_groups__group_id__packing__item_id__patch: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4760,7 +4814,9 @@ export interface operations {
     };
     mark_item_packed_travel_buddies_groups__group_id__packing__item_id__packed_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;
@@ -4792,7 +4848,9 @@ export interface operations {
     };
     mark_item_unpacked_travel_buddies_groups__group_id__packing__item_id__unpacked_post: {
         parameters: {
-            query?: never;
+            query?: {
+                required_role?: components["schemas"]["MemberRole"];
+            };
             header?: never;
             path: {
                 group_id: string;

@@ -520,19 +520,25 @@ export function GroupDetailPage() {
 }
 
 function PollCard({ poll, groupId, onVote }: { poll: { id: string; question: string; status: string; option_count: number; vote_count: number; created_by: string }; groupId: string; onVote: (pollId: string, optionId: string) => void }) {
+  const { accessToken } = useTravelBuddies();
   const [detail, setDetail] = useState<PollDetailResponse | null | undefined>(undefined);
 
   useEffect(() => {
+    if (!accessToken) {
+      setDetail(null);
+      return;
+    }
     let cancelled = false;
-    getPoll(getAccessToken()!, groupId, poll.id)
+    getPoll(accessToken, groupId, poll.id)
       .then((d) => { if (!cancelled) setDetail(d); })
       .catch(() => { if (!cancelled) setDetail(null); });
     return () => { cancelled = true; };
-  }, [groupId, poll.id]);
+  }, [accessToken, groupId, poll.id]);
 
   async function handleVote(optionId: string) {
+    if (!accessToken) return;
     await onVote(poll.id, optionId);
-    const d = await getPoll(getAccessToken()!, groupId, poll.id);
+    const d = await getPoll(accessToken, groupId, poll.id);
     setDetail(d);
   }
 

@@ -41,7 +41,7 @@ from app.modules.travel_buddies.schemas import (
     PollDetailResponse,
     PollOptionResponse,
     VoteRequest,
-CreateMessageRequest,
+    CreateMessageRequest,
     MessageResponse,
     MessageDetailResponse,
     MessageDetailWithCountsResponse,
@@ -57,7 +57,6 @@ CreateMessageRequest,
     GroupListResponse,
     MemberListResponse,
     PollListResponse,
-    MessageListResponse,
     TaskListResponse,
     PackingItemListResponse,
     group_to_response,
@@ -88,19 +87,19 @@ def travel_buddies_status() -> dict[str, str]:
 def list_groups(
     limit: int = 20,
     offset: int = 0,
-    search: str | None = None,
     current_user: Annotated[User, Depends(get_current_user)] = None,
     connection: Annotated[Connection, Depends(get_connection)] = None,
 ) -> GroupListResponse:
     groups_repo, members_repo = _repositories(connection)[:2]
-    if search:
-        items = groups_repo.search(search, limit, offset)
-        total = groups_repo.count_search(search)
-    else:
-        items = groups_repo.list_for_user(current_user.id, limit, offset)
-        total = groups_repo.count_for_user(current_user.id)
+    items = groups_repo.list_for_user(current_user.id, limit, offset)
+    total = groups_repo.count_for_user(current_user.id)
+    group_responses = []
+    for g in items:
+        group_response = group_to_response(g)
+        group_response.member_count = members_repo.count_by_group(g.id)
+        group_responses.append(group_response)
     return GroupListResponse(
-        items=[group_to_response(g) for g in items],
+        items=group_responses,
         total=total,
     )
 
@@ -163,6 +162,7 @@ def delete_group(
 def list_group_members(
     group_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
     limit: int = 50,
     offset: int = 0,
@@ -181,6 +181,7 @@ def add_member(
     group_id: UUID,
     request: AddMemberRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> GroupMemberResponse:
     from app.modules.travel_buddies.services.group_management import GroupMembersService
@@ -196,6 +197,7 @@ def update_member_role(
     user_id: UUID,
     request: UpdateMemberRoleRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> GroupMemberResponse:
     from app.modules.travel_buddies.services.group_management import GroupMembersService
@@ -210,6 +212,7 @@ def remove_member(
     group_id: UUID,
     user_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.group_management import GroupMembersService
@@ -229,6 +232,7 @@ def invite_member_by_email(
     group_id: UUID,
     request: InviteMemberRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> GroupMemberResponse:
     from app.modules.travel_buddies.services.group_management import GroupMembersService
@@ -244,6 +248,7 @@ def invite_member_by_email(
 def leave_group(
     group_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.group_management import GroupMembersService
@@ -263,6 +268,7 @@ def transfer_group_ownership(
     group_id: UUID,
     request: TransferOwnershipRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> GroupMemberResponse:
     from app.modules.travel_buddies.services.group_management import GroupMembersService
@@ -276,14 +282,15 @@ def transfer_group_ownership(
 def list_polls(
     group_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
     limit: int = 20,
     offset: int = 0,
 ) -> PollListResponse:
     from app.modules.travel_buddies.services.chat import PollManagementService
 
-    polls_repo = _repositories(connection)[2]
-    service = PollManagementService(polls_repo)
+    polls_repo, poll_options_repo, poll_votes_repo = _repositories(connection)[2:5]
+    service = PollManagementService(polls_repo, poll_options_repo, poll_votes_repo)
     return service.list_polls(group_id, limit, offset)
 
 
@@ -292,6 +299,7 @@ def create_poll(
     group_id: UUID,
     request: CreatePollRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PollResponse:
     from app.modules.travel_buddies.services.chat import PollManagementService
@@ -306,6 +314,7 @@ def get_poll(
     group_id: UUID,
     poll_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PollDetailResponse:
     from app.modules.travel_buddies.services.chat import PollManagementService
@@ -321,6 +330,7 @@ def add_poll_option(
     poll_id: UUID,
     request: AddPollOptionRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PollOptionResponse:
     from app.modules.travel_buddies.services.chat import PollManagementService
@@ -336,6 +346,7 @@ def vote_poll(
     poll_id: UUID,
     request: VoteRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PollDetailResponse:
     from app.modules.travel_buddies.services.chat import PollManagementService
@@ -350,6 +361,7 @@ def remove_vote(
     group_id: UUID,
     poll_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.chat import PollManagementService
@@ -365,6 +377,7 @@ def close_poll(
     group_id: UUID,
     poll_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PollResponse:
     from app.modules.travel_buddies.services.chat import PollManagementService
@@ -378,6 +391,7 @@ def close_poll(
 def list_messages(
     group_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
     limit: int = 50,
     offset: int = 0,
@@ -413,20 +427,24 @@ async def upload_attachment(
     if size > 10 * 1024 * 1024:
         raise ValidationError("File too large (max 10MB)")
 
+    # Seek back to start so save_file_with_uuid reads the full content
+    await file.seek(0)
     stored_path = await save_file_with_uuid(file, "travel_buddies")
+    stored_filename = stored_path.split("/")[-1]
 
     attachment = Attachment(
         id=uuid4(),
         group_id=group_id,
         user_id=current_user.id,
-        filename=file.filename or stored_path.split("/")[-1],
+        # Store the UUID-generated filename so URL reconstruction is consistent
+        filename=stored_filename,
         content_type=file.content_type or "application/octet-stream",
         size=size,
     )
     created = attachments_repo.create(attachment)
     return AttachmentResponse(
         id=created.id,
-        filename=created.filename,
+        filename=file.filename or created.filename,
         content_type=created.content_type,
         url=f"/media/{stored_path}",
         size=created.size,
@@ -438,6 +456,7 @@ def send_message(
     group_id: UUID,
     request: CreateMessageRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> MessageDetailResponse:
     from app.modules.travel_buddies.services.chat import MessageService
@@ -456,18 +475,16 @@ def add_reaction(
     message_id: UUID,
     emoji: str,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.chat import MessageService
     from urllib.parse import unquote
-    from app.modules.account.repositories import PsycopgUserRepository
 
     decoded_emoji = unquote(emoji)
     messages_repo = _repositories(connection)[5]
     service = MessageService(messages_repo)
     service.add_reaction(message_id, current_user.id, decoded_emoji)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
-    service.add_reaction(message_id, current_user.id, emoji)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
@@ -477,6 +494,7 @@ def remove_reaction(
     message_id: UUID,
     emoji: str,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.chat import MessageService
@@ -494,6 +512,7 @@ def delete_message(
     group_id: UUID,
     message_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.chat import MessageService
@@ -508,6 +527,7 @@ def delete_message(
 def list_tasks(
     group_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
     limit: int = 50,
     offset: int = 0,
@@ -525,6 +545,7 @@ def create_task(
     group_id: UUID,
     request: CreateTaskRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> TaskResponse:
     from app.modules.travel_buddies.services.notes import ToDoListService
@@ -540,6 +561,7 @@ def update_task(
     task_id: UUID,
     request: UpdateTaskRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> TaskResponse:
     from app.modules.travel_buddies.services.notes import ToDoListService
@@ -554,6 +576,7 @@ def mark_task_done(
     group_id: UUID,
     task_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> TaskResponse:
     from app.modules.travel_buddies.services.notes import ToDoListService
@@ -568,6 +591,7 @@ def mark_task_pending(
     group_id: UUID,
     task_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> TaskResponse:
     from app.modules.travel_buddies.services.notes import ToDoListService
@@ -582,6 +606,7 @@ def delete_task(
     group_id: UUID,
     task_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.notes import ToDoListService
@@ -596,6 +621,7 @@ def delete_task(
 def list_packing_items(
     group_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
     limit: int = 100,
     offset: int = 0,
@@ -612,6 +638,7 @@ def list_packing_items(
 def get_packing_progress(
     group_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PackingProgressResponse:
     from app.modules.travel_buddies.services.notes import PackingListService
@@ -626,6 +653,7 @@ def add_packing_item(
     group_id: UUID,
     request: CreatePackingItemRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PackingItemResponse:
     from app.modules.travel_buddies.services.notes import PackingListService
@@ -641,6 +669,7 @@ def update_packing_item(
     item_id: UUID,
     request: UpdatePackingItemRequest,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PackingItemResponse:
     from app.modules.travel_buddies.services.notes import PackingListService
@@ -655,12 +684,12 @@ def mark_item_packed(
     group_id: UUID,
     item_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PackingItemResponse:
     from app.modules.travel_buddies.services.notes import PackingListService
 
     packing_repo = _repositories(connection)[8]
-    service = PackingListService(packing_repo)
     return service.mark_packed(item_id, current_user.id)
 
 
@@ -669,6 +698,7 @@ def mark_item_unpacked(
     group_id: UUID,
     item_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> PackingItemResponse:
     from app.modules.travel_buddies.services.notes import PackingListService
@@ -683,6 +713,7 @@ def delete_packing_item(
     group_id: UUID,
     item_id: UUID,
     current_user: Annotated[User, Depends(get_current_user)],
+    current_member: Annotated[GroupMember, Depends(get_current_group_member)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     from app.modules.travel_buddies.services.notes import PackingListService
