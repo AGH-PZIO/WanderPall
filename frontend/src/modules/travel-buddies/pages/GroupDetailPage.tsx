@@ -524,14 +524,20 @@ function PollCard({ poll, groupId, onVote }: { poll: { id: string; question: str
   const [detail, setDetail] = useState<PollDetailResponse | null | undefined>(undefined);
 
   useEffect(() => {
-    if (!accessToken) {
-      setDetail(null);
-      return;
-    }
     let cancelled = false;
-    getPoll(accessToken, groupId, poll.id)
-      .then((d) => { if (!cancelled) setDetail(d); })
-      .catch(() => { if (!cancelled) setDetail(null); });
+    async function load() {
+      if (!accessToken) {
+        if (!cancelled) setDetail(null);
+        return;
+      }
+      try {
+        const d = await getPoll(accessToken, groupId, poll.id);
+        if (!cancelled) setDetail(d);
+      } catch {
+        if (!cancelled) setDetail(null);
+      }
+    }
+    load();
     return () => { cancelled = true; };
   }, [accessToken, groupId, poll.id]);
 

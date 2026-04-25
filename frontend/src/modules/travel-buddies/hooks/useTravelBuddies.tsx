@@ -216,6 +216,7 @@ export function TravelBuddiesProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTravelBuddies(): TravelBuddiesContextValue {
   const ctx = useContext(TravelBuddiesContext);
   if (!ctx) {

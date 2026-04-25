@@ -26,7 +26,7 @@ export function ChatPage() {
     if (groupId) {
       refreshMessages(groupId);
     }
-  }, [groupId]);
+  }, [groupId, refreshMessages]);
 
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
