@@ -107,7 +107,7 @@
 }
 
 .tb-group-meta {
-  color: #555;
+  color: #444444;
   font-size: 0.8rem;
   margin-top: 0.25rem;
 }
@@ -144,7 +144,7 @@
 }
 
 .tb-group-description {
-  color: #444;
+  color: #333333;
   margin: 0;
 }
 
@@ -220,14 +220,6 @@
   color: #222;
 }
 
-.tb-note-content {
-  font-size: 0.9rem;
-  white-space: pre-wrap;
-  word-break: break-word;
-  margin-bottom: 0.25rem;
-  color: #222;
-}
-
 .tb-emoji-count {
   font-size: 0.75rem;
   margin-left: 0.5rem;
@@ -299,17 +291,6 @@
   margin: 0 0 0.75rem;
   font-size: 1rem;
   color: #222222;
-}
-
-.tb-group-description {
-  color: #333333;
-  margin: 0;
-}
-
-.tb-group-meta {
-  color: #444444;
-  font-size: 0.8rem;
-  margin-top: 0.25rem;
 }
 
 .tb-inline-form {
@@ -646,6 +627,11 @@
   color: #aaa;
 }
 
+.tb-task-done span {
+  text-decoration: line-through;
+  color: #555;
+}
+
 .tb-form-row {
   display: flex;
   gap: 0.5rem;
@@ -672,6 +658,7 @@
   white-space: pre-wrap;
   word-break: break-word;
   margin-bottom: 0.25rem;
+  color: #222;
 }
 
 .tb-note-footer {
