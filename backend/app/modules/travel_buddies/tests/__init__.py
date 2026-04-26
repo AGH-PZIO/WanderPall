@@ -1,0 +1,1 @@
+"""Tests package for travel_buddies module."""

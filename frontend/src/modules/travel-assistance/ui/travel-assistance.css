@@ -580,6 +580,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
 .ta-calendar {
   padding: 16px 20px;
 }
