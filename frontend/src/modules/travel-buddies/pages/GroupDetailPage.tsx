@@ -13,6 +13,7 @@ import type { PollDetailResponse, MessageDetailWithCountsResponse, AttachmentRes
 export function GroupDetailPage() {
   const { groupId } = useParams<{ groupId: string }>();
   const { currentGroup, members, polls, tasks, refreshGroup, refreshMembers, refreshPolls, refreshTasks, accessToken } = useTravelBuddies();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { user } = useAuth();
 
   const [activeTab, setActiveTab] = useState<"members" | "polls" | "tasks" | "notes">("members");
@@ -478,7 +479,7 @@ export function GroupDetailPage() {
                     </div>
                     <div className="tb-note-footer">
                       <div className="tb-note-date">{n.created_at ? new Date(n.created_at).toLocaleString("pl-PL") : ""}</div>
-                      {n.user_id === getUserId() && (
+                      {n.user_id === user?.id && (
                       <button type="button" className="tb-note-del" onClick={() => handleDeleteNote(n.id)} title="Usuń notatkę">✕</button>
                       )}
                     </div>
