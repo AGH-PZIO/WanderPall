@@ -1,29 +1,29 @@
 from typing import Annotated
-from uuid import UUID
 
-import psycopg
-from fastapi import Depends, Header, HTTPException
+from fastapi import Depends
+from psycopg import Connection
 
 from app.core.database import get_connection
+from app.modules.account.dependencies import get_current_user
+from app.modules.account.models import User
+from app.modules.travel_buddies.errors import ForbiddenError
+from app.modules.travel_buddies.models import GroupMember, MemberRole
+from app.modules.travel_buddies.repositories import PsycopgGroupMemberRepository
 
 
-def get_db_conn(
-    conn: Annotated[psycopg.Connection, Depends(get_connection)],
-) -> psycopg.Connection:
-    return conn
+def get_current_group_member(
+    user: Annotated[User, Depends(get_current_user)],
+    connection: Annotated[Connection, Depends(get_connection)],
+    group_id: str,
+    required_role: MemberRole = MemberRole.MEMBER,
+) -> GroupMember:
+    from uuid import UUID
 
-
-def get_dev_user_id(
-    x_dev_user_id: Annotated[str | None, Header(alias="X-Dev-User-Id")] = None,
-    x_user_id: Annotated[str | None, Header(alias="X-User-Id")] = None,
-) -> UUID:
-    raw = x_dev_user_id or x_user_id
-    if not raw:
-        raise HTTPException(
-            status_code=401,
-            detail="Missing X-Dev-User-Id or X-User-Id header (until module 1 auth is wired).",
-        )
-    try:
-        return UUID(raw.strip())
-    except ValueError as exc:
-        raise HTTPException(status_code=400, detail="Invalid user id UUID") from exc
+    group_uuid = UUID(group_id)
+    members = PsycopgGroupMemberRepository(connection)
+    member = members.get_by_group_and_user(group_uuid, user.id)
+    if member is None:
+        raise ForbiddenError("You are not a member of this group")
+    if not members.role_at_least(group_uuid, user.id, required_role):
+        raise ForbiddenError(f"Role {required_role.value} or higher is required")
+    return member
