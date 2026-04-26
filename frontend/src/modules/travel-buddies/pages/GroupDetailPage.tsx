@@ -13,7 +13,6 @@ import type { PollDetailResponse, MessageDetailWithCountsResponse, AttachmentRes
 export function GroupDetailPage() {
   const { groupId } = useParams<{ groupId: string }>();
   const { currentGroup, members, polls, tasks, refreshGroup, refreshMembers, refreshPolls, refreshTasks, accessToken } = useTravelBuddies();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { user } = useAuth();
 
   const [activeTab, setActiveTab] = useState<"members" | "polls" | "tasks" | "notes">("members");
@@ -57,7 +56,7 @@ export function GroupDetailPage() {
         })
         .finally(() => setLoadingNotes(false));
     }
-  }, [activeTab, groupId]);
+  }, [activeTab, groupId, accessToken]);
 
   function showMsg(ok: boolean, text: string) {
     setMsg({ ok, text });
