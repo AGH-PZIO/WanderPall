@@ -630,11 +630,11 @@ class PsycopgAttachmentRepository:
     def create(self, attachment: Attachment) -> Attachment:
         row = self.connection.execute(
             """
-            INSERT INTO travel_buddies.attachments (id, group_id, user_id, filename, content_type, size)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO travel_buddies.attachments (id, group_id, user_id, filename, original_filename, content_type, size)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             RETURNING *
             """,
-            (attachment.id, attachment.group_id, attachment.user_id, attachment.filename, attachment.content_type, attachment.size),
+            (attachment.id, attachment.group_id, attachment.user_id, attachment.filename, attachment.original_filename, attachment.content_type, attachment.size),
         ).fetchone()
         return attachment_from_row(row)
 
@@ -660,6 +660,7 @@ def attachment_from_row(row: Any) -> Attachment:
         filename=row["filename"],
         content_type=row["content_type"],
         size=row["size"],
+        original_filename=row.get("original_filename"),
         created_at=row.get("created_at"),
     )
 

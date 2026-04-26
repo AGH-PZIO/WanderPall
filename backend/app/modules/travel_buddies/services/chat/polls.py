@@ -79,11 +79,14 @@ class PollManagementService:
         if self.poll_options:
             db_options = []
             for i, text in enumerate(request.options):
+                stripped_text = text.strip()
+                if not stripped_text:
+                    raise ValidationError(f"Option {i + 1} cannot be empty")
                 db_options.append(
                     PollOption(
                         id=uuid4(),
                         poll_id=created_poll.id,
-                        text=text.strip(),
+                        text=stripped_text,
                         order_index=i,
                     )
                 )
@@ -131,10 +134,18 @@ class PollManagementService:
         if not self.poll_options:
             raise NotFoundError("Poll options repository not configured")
 
+        text = request.text.strip()
+        if not text:
+            raise ValidationError("Option text cannot be empty")
+
+        existing = self.poll_options.list_by_poll(poll_id)
+        next_order = max((o.order_index for o in existing), default=-1) + 1
+
         option = PollOption(
             id=uuid4(),
             poll_id=poll_id,
-            text=request.text.strip(),
+            text=text,
+            order_index=next_order,
         )
         created = self.poll_options.create(option)
         return _option_to_response(created, 0)

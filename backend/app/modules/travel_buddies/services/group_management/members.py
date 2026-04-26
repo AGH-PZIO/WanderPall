@@ -95,7 +95,10 @@ class GroupMembersService:
         if target.role == MemberRole.OWNER:
             raise ValidationError("Cannot change owner's role")
 
-        new_role = MemberRole(request.role)
+        try:
+            new_role = MemberRole(request.role)
+        except ValueError:
+            raise ValidationError(f"Invalid role: {request.role!r}")
         if new_role == MemberRole.OWNER:
             raise ValidationError("Cannot promote to owner")
         updated = self.members.update(

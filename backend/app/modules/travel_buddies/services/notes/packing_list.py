@@ -24,8 +24,9 @@ class PackingListService:
         category: str | None = None,
     ) -> PackingItemListResponse:
         if category is not None:
-            items = self.packing.list_by_category(group_id, category)
-            total = len(items)
+            all_items = self.packing.list_by_category(group_id, category)
+            total = len(all_items)
+            items = all_items[offset:offset + limit]
         else:
             items = self.packing.list_by_group(group_id, limit, offset)
             total = self.packing.count_by_group(group_id)

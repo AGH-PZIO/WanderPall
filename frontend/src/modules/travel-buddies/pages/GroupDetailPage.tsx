@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTravelBuddies } from "../hooks/useTravelBuddies";
+import { useAuth } from "../../account/hooks/useAuth";
 import {
   inviteMemberByEmail, createPoll, createTask, votePoll, markTaskDone,
   markTaskPending, deleteTask, getPoll, sendMessage,
@@ -9,36 +10,10 @@ import {
 } from "../api/travel-buddies-api";
 import type { PollDetailResponse, MessageDetailWithCountsResponse, AttachmentResponse } from "../api/travel-buddies-api";
 
-function getAccessToken(): string | null {
-  try {
-    const raw = localStorage.getItem("wanderpall.account.tokens");
-    if (!raw) return null;
-    const tokens = JSON.parse(raw);
-    return tokens.accessToken || null;
-  } catch {
-    return null;
-  }
-}
-
-function getUserId(): string | null {
-  try {
-    const raw = localStorage.getItem("wanderpall.account.tokens");
-    if (!raw) return null;
-    const tokens = JSON.parse(raw);
-    const token = tokens.accessToken;
-    if (!token) return null;
-    const payload = token.split(".")[1];
-    if (!payload) return null;
-    const decoded = JSON.parse(atob(payload));
-    return decoded.sub || null;
-  } catch {
-    return null;
-  }
-}
-
 export function GroupDetailPage() {
   const { groupId } = useParams<{ groupId: string }>();
-  const { currentGroup, members, polls, tasks, refreshGroup, refreshMembers, refreshPolls, refreshTasks } = useTravelBuddies();
+  const { currentGroup, members, polls, tasks, refreshGroup, refreshMembers, refreshPolls, refreshTasks, accessToken } = useTravelBuddies();
+  const { user } = useAuth();
 
   const [activeTab, setActiveTab] = useState<"members" | "polls" | "tasks" | "notes">("members");
   const [inviteEmail, setInviteEmail] = useState("");
@@ -67,12 +42,11 @@ export function GroupDetailPage() {
   useEffect(() => {
     if (activeTab === "notes" && groupId) {
       setLoadingNotes(true);
-      const token = getAccessToken();
-      if (!token) {
+      if (!accessToken) {
         setLoadingNotes(false);
         return;
       }
-      listMessages(token, groupId)
+      listMessages(accessToken, groupId)
         .then((data) => {
           setNotes(data.items);
         })
@@ -91,10 +65,10 @@ export function GroupDetailPage() {
 
   async function handleInvite(e: React.FormEvent) {
     e.preventDefault();
-    if (!inviteEmail.trim() || !groupId) return;
+    if (!inviteEmail.trim() || !groupId || !accessToken) return;
     setSaving(true);
     try {
-      await inviteMemberByEmail(getAccessToken()!, groupId, { email: inviteEmail.trim() });
+      await inviteMemberByEmail(accessToken, groupId, { email: inviteEmail.trim() });
       setInviteEmail("");
       refreshMembers(groupId);
       showMsg(true, "Zaproszenie wysłane!");
@@ -107,12 +81,12 @@ export function GroupDetailPage() {
 
   async function handleCreatePoll(e: React.FormEvent) {
     e.preventDefault();
-    if (!pollQuestion.trim() || !groupId) return;
+    if (!pollQuestion.trim() || !groupId || !accessToken) return;
     const opts = pollOptions.map((o) => o.trim()).filter(Boolean);
     if (opts.length < 2) return;
     setSaving(true);
     try {
-      await createPoll(getAccessToken()!, groupId, { question: pollQuestion.trim(), options: opts });
+      await createPoll(accessToken, groupId, { question: pollQuestion.trim(), options: opts });
       setPollQuestion("");
       setPollOptions(["", ""]);
       refreshPolls(groupId);
@@ -125,9 +99,9 @@ export function GroupDetailPage() {
   }
 
   async function handleVotePoll(pollId: string, optionId: string) {
-    if (!groupId) return;
+    if (!groupId || !accessToken) return;
     try {
-      await votePoll(getAccessToken()!, groupId, pollId, { option_id: optionId });
+      await votePoll(accessToken, groupId, pollId, { option_id: optionId });
       refreshPolls(groupId);
       showMsg(true, "Głos oddany!");
     } catch (err: unknown) {
@@ -136,12 +110,12 @@ export function GroupDetailPage() {
   }
 
   async function handleToggleTask(taskId: string, currentStatus: string) {
-    if (!groupId) return;
+    if (!groupId || !accessToken) return;
     try {
       if (currentStatus === "done") {
-        await markTaskPending(getAccessToken()!, groupId, taskId);
+        await markTaskPending(accessToken, groupId, taskId);
       } else {
-        await markTaskDone(getAccessToken()!, groupId, taskId);
+        await markTaskDone(accessToken, groupId, taskId);
       }
       refreshTasks(groupId);
     } catch (err: unknown) {
@@ -150,9 +124,9 @@ export function GroupDetailPage() {
   }
 
   async function handleDeleteTask(taskId: string) {
-    if (!groupId) return;
+    if (!groupId || !accessToken) return;
     try {
-      await deleteTask(getAccessToken()!, groupId, taskId);
+      await deleteTask(accessToken, groupId, taskId);
       refreshTasks(groupId);
       showMsg(true, "Zadanie usunięte!");
     } catch (err: unknown) {
@@ -162,10 +136,10 @@ export function GroupDetailPage() {
 
   async function handleCreateTask(e: React.FormEvent) {
     e.preventDefault();
-    if (!taskTitle.trim() || !groupId) return;
+    if (!taskTitle.trim() || !groupId || !accessToken) return;
     setSaving(true);
     try {
-      await createTask(getAccessToken()!, groupId, { title: taskTitle.trim(), description: taskDesc.trim() || undefined });
+      await createTask(accessToken, groupId, { title: taskTitle.trim(), description: taskDesc.trim() || undefined });
       setTaskTitle("");
       setTaskDesc("");
       refreshTasks(groupId);
@@ -179,17 +153,17 @@ export function GroupDetailPage() {
 
   async function handleAddNote(e: React.FormEvent) {
     e.preventDefault();
-    if (!noteText.trim() && pendingAttachments.length === 0 || !groupId) return;
+    if ((!noteText.trim() && pendingAttachments.length === 0) || !groupId || !accessToken) return;
     setSaving(true);
     try {
       if (pendingAttachments.length > 0) {
-        await sendMessage(getAccessToken()!, groupId, { content: noteText.trim() || "📎", attachment_ids: pendingAttachments.map((a) => a.id) });
+        await sendMessage(accessToken, groupId, { content: noteText.trim() || "📎", attachment_ids: pendingAttachments.map((a) => a.id) });
         setPendingAttachments([]);
       } else {
-        await sendMessage(getAccessToken()!, groupId, { content: noteText.trim(), attachment_ids: [] });
+        await sendMessage(accessToken, groupId, { content: noteText.trim(), attachment_ids: [] });
       }
       setNoteText("");
-      const data = await listMessages(getAccessToken()!, groupId);
+      const data = await listMessages(accessToken, groupId);
       setNotes(data.items);
       showMsg(true, "Notatka dodana!");
     } catch (err: unknown) {
@@ -203,9 +177,9 @@ export function GroupDetailPage() {
 
   async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (!file || !groupId) return;
+    if (!file || !groupId || !accessToken) return;
     try {
-      const att = await uploadAttachment(getAccessToken()!, groupId, file);
+      const att = await uploadAttachment(accessToken, groupId, file);
       setPendingAttachments((prev) => [...prev, att]);
     } catch (err: unknown) {
       showMsg(false, err instanceof Error ? err.message : "Błąd uploadu");
@@ -218,9 +192,9 @@ export function GroupDetailPage() {
   }
 
   async function handleDeleteNote(noteId: string) {
-    if (!groupId) return;
+    if (!groupId || !accessToken) return;
     try {
-      await deleteMessage(getAccessToken()!, groupId, noteId);
+      await deleteMessage(accessToken, groupId, noteId);
       setNotes((prev) => prev.filter((n) => n.id !== noteId));
       showMsg(true, "Notatka usunięta!");
     } catch (err: unknown) {
@@ -229,10 +203,10 @@ export function GroupDetailPage() {
   }
 
   async function handleAddReaction(noteId: string, emoji: string) {
-    if (!groupId) return;
+    if (!groupId || !accessToken) return;
     try {
-      await addReaction(getAccessToken()!, groupId, noteId, emoji);
-      const data = await listMessages(getAccessToken()!, groupId);
+      await addReaction(accessToken, groupId, noteId, emoji);
+      const data = await listMessages(accessToken, groupId);
       setNotes(data.items);
       showMsg(true, "Dodano reakcję!");
     } catch (err: unknown) {
@@ -241,10 +215,10 @@ export function GroupDetailPage() {
   }
 
   async function handleRemoveReaction(noteId: string, emoji: string) {
-    if (!groupId) return;
+    if (!groupId || !accessToken) return;
     try {
-      await removeReaction(getAccessToken()!, groupId, noteId, emoji);
-      const data = await listMessages(getAccessToken()!, groupId);
+      await removeReaction(accessToken, groupId, noteId, emoji);
+      const data = await listMessages(accessToken, groupId);
       setNotes(data.items);
       showMsg(true, "Reakcja usunięta!");
     } catch (err: unknown) {
@@ -257,9 +231,9 @@ export function GroupDetailPage() {
   }
 
   async function handleTransferOwnership(newOwnerId: string) {
-    if (!groupId) return;
+    if (!groupId || !accessToken) return;
     try {
-      await transferOwnership(getAccessToken()!, groupId, { new_owner_id: newOwnerId });
+      await transferOwnership(accessToken, groupId, { new_owner_id: newOwnerId });
       refreshMembers(groupId);
       refreshGroup(groupId);
       setEditingRoleId(null);
