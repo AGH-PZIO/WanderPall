@@ -637,18 +637,72 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/travel-buddies/status": {
+    "/travel-buddies/groups": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Travel Buddies Status */
-        get: operations["travel_buddies_status_travel_buddies_status_get"];
+        /** List Groups */
+        get: operations["list_groups_travel_buddies_groups_get"];
+        put?: never;
+        /** Create Group */
+        post: operations["create_group_travel_buddies_groups_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-buddies/groups/{group_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Group */
+        get: operations["get_group_travel_buddies_groups__group_id__get"];
         put?: never;
         post?: never;
+        /** Delete Group */
+        delete: operations["delete_group_travel_buddies_groups__group_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-buddies/groups/{group_id}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Members */
+        get: operations["list_members_travel_buddies_groups__group_id__members_get"];
+        put?: never;
+        /** Add Member */
+        post: operations["add_member_travel_buddies_groups__group_id__members_post"];
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/travel-buddies/groups/{group_id}/members/{member_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove Member */
+        delete: operations["remove_member_travel_buddies_groups__group_id__members__member_id__delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1193,6 +1247,102 @@ export interface components {
             registration_id: string;
             /** Code */
             code: string;
+        };
+        /** AddMemberRequest */
+        AddMemberRequest: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+        };
+        /** GroupCreate */
+        GroupCreate: {
+            /** Name */
+            name: string;
+            /** Description */
+            description?: string | null;
+        };
+        /** GroupMemberResponse */
+        GroupMemberResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Group Id
+             * Format: uuid
+             */
+            group_id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Role */
+            role: string;
+            /**
+             * Joined At
+             * Format: date-time
+             */
+            joined_at: string;
+        };
+        /** GroupResponse */
+        GroupResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Owner Id
+             * Format: uuid
+             */
+            owner_id: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** GroupWithMembersResponse */
+        GroupWithMembersResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Owner Id
+             * Format: uuid
+             */
+            owner_id: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Members */
+            members: components["schemas"]["GroupMemberResponse"][];
         };
     };
     responses: never;
@@ -2602,11 +2752,118 @@ export interface operations {
             };
         };
     };
-    travel_buddies_status_travel_buddies_status_get: {
+    list_groups_travel_buddies_groups_get: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "X-Dev-User-Id"?: string;
+                "X-User-Id"?: string;
+            };
             path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GroupResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_group_travel_buddies_groups_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string;
+                "X-User-Id"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GroupCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GroupResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_group_travel_buddies_groups__group_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string;
+                "X-User-Id"?: string;
+            };
+            path: {
+                group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GroupWithMembersResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_group_travel_buddies_groups__group_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string;
+                "X-User-Id"?: string;
+            };
+            path: {
+                group_id: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -2620,6 +2877,124 @@ export interface operations {
                     "application/json": {
                         [key: string]: string;
                     };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_members_travel_buddies_groups__group_id__members_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string;
+                "X-User-Id"?: string;
+            };
+            path: {
+                group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GroupMemberResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_member_travel_buddies_groups__group_id__members_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string;
+                "X-User-Id"?: string;
+            };
+            path: {
+                group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddMemberRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GroupMemberResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_member_travel_buddies_groups__group_id__members__member_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Dev-User-Id"?: string;
+                "X-User-Id"?: string;
+            };
+            path: {
+                group_id: string;
+                member_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

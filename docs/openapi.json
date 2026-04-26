@@ -2163,28 +2163,137 @@
         }
       }
     },
-    "/travel-buddies/status": {
+    "/travel-buddies/groups": {
       "get": {
-        "tags": [
-          "module-3-travel-buddies"
+        "tags": ["module-3-travel-buddies"],
+        "summary": "List Groups",
+        "operationId": "list_groups_travel_buddies_groups_get",
+        "parameters": [
+          {"name": "X-Dev-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-Dev-User-Id"}},
+          {"name": "X-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-User-Id"}}
         ],
-        "summary": "Travel Buddies Status",
-        "operationId": "travel_buddies_status_travel_buddies_status_get",
         "responses": {
           "200": {
             "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": {
-                    "type": "string"
-                  },
-                  "type": "object",
-                  "title": "Response Travel Buddies Status Travel Buddies Status Get"
-                }
-              }
-            }
-          }
+            "content": {"application/json": {"schema": {"type": "array", "items": {"$ref": "#/components/schemas/GroupResponse"}}}}
+          },
+          "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}
+        }
+      },
+      "post": {
+        "tags": ["module-3-travel-buddies"],
+        "summary": "Create Group",
+        "operationId": "create_group_travel_buddies_groups_post",
+        "parameters": [
+          {"name": "X-Dev-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-Dev-User-Id"}},
+          {"name": "X-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-User-Id"}}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GroupCreate"}}}
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GroupResponse"}}}
+          },
+          "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}
+        }
+      }
+    },
+    "/travel-buddies/groups/{group_id}": {
+      "get": {
+        "tags": ["module-3-travel-buddies"],
+        "summary": "Get Group",
+        "operationId": "get_group_travel_buddies_groups__group_id__get",
+        "parameters": [
+          {"name": "group_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid", "title": "Group Id"}},
+          {"name": "X-Dev-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-Dev-User-Id"}},
+          {"name": "X-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-User-Id"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GroupWithMembersResponse"}}}
+          },
+          "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}
+        }
+      },
+      "delete": {
+        "tags": ["module-3-travel-buddies"],
+        "summary": "Delete Group",
+        "operationId": "delete_group_travel_buddies_groups__group_id__delete",
+        "parameters": [
+          {"name": "group_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid", "title": "Group Id"}},
+          {"name": "X-Dev-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-Dev-User-Id"}},
+          {"name": "X-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-User-Id"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {"application/json": {"schema": {"additionalProperties": {"type": "string"}, "type": "object"}}}
+          },
+          "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}
+        }
+      }
+    },
+    "/travel-buddies/groups/{group_id}/members": {
+      "get": {
+        "tags": ["module-3-travel-buddies"],
+        "summary": "List Members",
+        "operationId": "list_members_travel_buddies_groups__group_id__members_get",
+        "parameters": [
+          {"name": "group_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid", "title": "Group Id"}},
+          {"name": "X-Dev-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-Dev-User-Id"}},
+          {"name": "X-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-User-Id"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {"application/json": {"schema": {"type": "array", "items": {"$ref": "#/components/schemas/GroupMemberResponse"}}}}
+          },
+          "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}
+        }
+      },
+      "post": {
+        "tags": ["module-3-travel-buddies"],
+        "summary": "Add Member",
+        "operationId": "add_member_travel_buddies_groups__group_id__members_post",
+        "parameters": [
+          {"name": "group_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid", "title": "Group Id"}},
+          {"name": "X-Dev-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-Dev-User-Id"}},
+          {"name": "X-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-User-Id"}}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AddMemberRequest"}}}
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GroupMemberResponse"}}}
+          },
+          "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}
+        }
+      }
+    },
+    "/travel-buddies/groups/{group_id}/members/{member_id}": {
+      "delete": {
+        "tags": ["module-3-travel-buddies"],
+        "summary": "Remove Member",
+        "operationId": "remove_member_travel_buddies_groups__group_id__members__member_id__delete",
+        "parameters": [
+          {"name": "group_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid", "title": "Group Id"}},
+          {"name": "member_id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid", "title": "Member Id"}},
+          {"name": "X-Dev-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-Dev-User-Id"}},
+          {"name": "X-User-Id", "in": "header", "required": false, "schema": {"type": "string", "title": "X-User-Id"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {"application/json": {"schema": {"additionalProperties": {"type": "string"}, "type": "object"}}}
+          },
+          "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}
         }
       }
     },
@@ -3523,6 +3632,62 @@
           "code"
         ],
         "title": "VerifyCodeRequest"
+      },
+      "AddMemberRequest": {
+        "properties": {
+          "user_id": {"type": "string", "format": "uuid", "title": "User Id"}
+        },
+        "type": "object",
+        "required": ["user_id"],
+        "title": "AddMemberRequest"
+      },
+      "GroupCreate": {
+        "properties": {
+          "name": {"type": "string", "title": "Name"},
+          "description": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Description"}
+        },
+        "type": "object",
+        "required": ["name"],
+        "title": "GroupCreate"
+      },
+      "GroupMemberResponse": {
+        "properties": {
+          "id": {"type": "string", "format": "uuid", "title": "Id"},
+          "group_id": {"type": "string", "format": "uuid", "title": "Group Id"},
+          "user_id": {"type": "string", "format": "uuid", "title": "User Id"},
+          "role": {"type": "string", "title": "Role"},
+          "joined_at": {"type": "string", "format": "date-time", "title": "Joined At"}
+        },
+        "type": "object",
+        "required": ["id", "group_id", "user_id", "role", "joined_at"],
+        "title": "GroupMemberResponse"
+      },
+      "GroupResponse": {
+        "properties": {
+          "id": {"type": "string", "format": "uuid", "title": "Id"},
+          "owner_id": {"type": "string", "format": "uuid", "title": "Owner Id"},
+          "name": {"type": "string", "title": "Name"},
+          "description": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Description"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"},
+          "updated_at": {"type": "string", "format": "date-time", "title": "Updated At"}
+        },
+        "type": "object",
+        "required": ["id", "owner_id", "name", "description", "created_at", "updated_at"],
+        "title": "GroupResponse"
+      },
+      "GroupWithMembersResponse": {
+        "properties": {
+          "id": {"type": "string", "format": "uuid", "title": "Id"},
+          "owner_id": {"type": "string", "format": "uuid", "title": "Owner Id"},
+          "name": {"type": "string", "title": "Name"},
+          "description": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Description"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"},
+          "updated_at": {"type": "string", "format": "date-time", "title": "Updated At"},
+          "members": {"type": "array", "items": {"$ref": "#/components/schemas/GroupMemberResponse"}, "title": "Members"}
+        },
+        "type": "object",
+        "required": ["id", "owner_id", "name", "description", "created_at", "updated_at", "members"],
+        "title": "GroupWithMembersResponse"
       }
     },
     "securitySchemes": {

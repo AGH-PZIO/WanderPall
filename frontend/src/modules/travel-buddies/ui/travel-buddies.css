@@ -1,0 +1,283 @@
+.tb-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #fafafa;
+}
+
+.tb-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #fff;
+}
+
+.tb-topbar h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.tb-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.tb-list {
+  width: 35%;
+  min-width: 240px;
+  border-right: 1px solid #e5e5e5;
+  overflow-y: auto;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.tb-create-form {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tb-create-form input {
+  padding: 7px 10px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.tb-create-form input:focus {
+  border-color: #4a90d9;
+}
+
+.tb-create-form button {
+  padding: 7px 12px;
+  background: #4a90d9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.tb-create-form button:hover {
+  background: #357abd;
+}
+
+.tb-group-card {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.tb-group-card:hover {
+  background: #f5f5f5;
+}
+
+.tb-group-card.active {
+  background: #e8f1fb;
+  border-left: 3px solid #4a90d9;
+}
+
+.tb-group-card p {
+  margin: 0 0 3px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.tb-group-card small {
+  color: #888;
+  font-size: 0.78rem;
+}
+
+.tb-loading {
+  padding: 16px;
+  color: #888;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.tb-empty-list {
+  padding: 24px 16px;
+  color: #aaa;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.tb-details {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.tb-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.tb-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.tb-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.tb-detail-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.tb-detail-desc {
+  color: #666;
+  font-size: 0.875rem;
+  margin-bottom: 20px;
+}
+
+.tb-members-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.tb-members-header h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.tb-member-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.875rem;
+}
+
+.tb-member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tb-member-uuid {
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #555;
+}
+
+.tb-member-role {
+  font-size: 0.72rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tb-add-member {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e5e5;
+  display: flex;
+  gap: 8px;
+}
+
+.tb-add-member input {
+  flex: 1;
+  padding: 7px 10px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: monospace;
+  outline: none;
+}
+
+.tb-add-member input:focus {
+  border-color: #4a90d9;
+}
+
+.tb-add-member button {
+  padding: 7px 14px;
+  background: #4a90d9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tb-add-member button:hover {
+  background: #357abd;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #666;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.btn-close:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.btn-danger {
+  padding: 5px 12px;
+  background: #c00;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #a00;
+}
+
+.btn-icon-danger {
+  background: none;
+  border: none;
+  color: #c00;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.btn-icon-danger:hover {
+  background: #fff0f0;
+}
+
+.tb-error {
+  margin: 8px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ffd3d3;
+  background: #fff5f5;
+  color: #a30000;
+  font-size: 0.875rem;
+}

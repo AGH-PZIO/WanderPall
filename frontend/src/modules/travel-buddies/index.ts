@@ -1,4 +1,5 @@
 import type { FrontendModule } from "../../shared/module";
+import { TravelBuddiesPage } from "./pages/TravelBuddiesPage";
 
 export const travelBuddiesModule: FrontendModule = {
   id: "travel-buddies",
@@ -7,3 +8,5 @@ export const travelBuddiesModule: FrontendModule = {
   summary: "Groups, members, roles, chat, polls, files, packing lists, and tasks.",
   owner: "unassigned"
 };
+
+export { TravelBuddiesPage };
