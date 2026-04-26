@@ -13,13 +13,10 @@ export function MailPage() {
     syncing,
     connected,
     googleEmail,
-    syncResult,
-    downloadError,
     sync,
     disconnect,
     connectToGoogle,
-    downloadAttachment,
-    deleteDocument,
+    downloadAttachment
   } = useTravelAssistance();
 
   if (!connected) {
@@ -67,12 +64,6 @@ export function MailPage() {
         </div>
       </div>
 
-      {syncResult && (
-        <p className="ta-sync-result">
-          Synced: {syncResult.scanned} scanned, {syncResult.imported} new, {syncResult.updated} updated
-        </p>
-      )}
-
       {/* BODY */}
       <div className="ta-body">
 
@@ -105,22 +96,10 @@ export function MailPage() {
             </div>
           ) : (
             <>
-              <div className="ta-doc-header">
-                <h3>{selected.subject}</h3>
-                <button
-                  onClick={() => deleteDocument(selected.id)}
-                  className="btn-danger"
-                >
-                  Delete
-                </button>
-              </div>
+              <h3>{selected.subject}</h3>
               <p>{selected.snippet}</p>
 
               <h4>Attachments</h4>
-
-              {downloadError && (
-                <p className="ta-error">{downloadError}</p>
-              )}
 
               {(selected.attachments ?? []).length === 0 ? (
                 <p>No attachments</p>
@@ -130,7 +109,7 @@ export function MailPage() {
                     <span>{a.filename}</span>
                     <button
                       onClick={() =>
-                        downloadAttachment(selected.id, a.attachment_id, a.filename)
+                        downloadAttachment(selected.id, a.attachment_id)
                       }
                       className="btn-download"
                     >

@@ -682,40 +682,4 @@
   background: #fff5f5;
   color: #a30000;
 }
-
-.ta-sync-result {
-  padding: 6px 20px;
-  font-size: 0.8rem;
-  color: #4a7c4e;
-  background: #f2faf3;
-  border-bottom: 1px solid #c8e6c9;
-  margin: 0;
-}
-
-.ta-doc-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  gap: 12px;
-}
-
-.ta-doc-header h3 {
-  margin: 0;
-  flex: 1;
-}
-
-.btn-danger {
-  padding: 5px 12px;
-  background: #c00;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.btn-danger:hover {
-  background: #a00;
 }

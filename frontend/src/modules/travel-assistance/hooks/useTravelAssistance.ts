@@ -4,7 +4,6 @@ import type { components } from "../../../shared/api-types";
 
 type TravelDocument = components["schemas"]["TravelDocumentResponse"];
 type GmailStatusResponse = components["schemas"]["GmailStatusResponse"];
-type SyncResult = components["schemas"]["SyncResponse"];
 
 const DEV_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
 
@@ -16,8 +15,6 @@ export function useTravelAssistance() {
   const [connected, setConnected] = useState(false);
   const [googleEmail, setGoogleEmail] = useState<string | null>(null);
   const [authorizeUrl, setAuthorizeUrl] = useState<string | null>(null);
-  const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
-  const [downloadError, setDownloadError] = useState<string | null>(null);
 
   const headers = {
     "X-Dev-User-Id": DEV_USER_ID
@@ -62,15 +59,10 @@ export function useTravelAssistance() {
 
   const sync = async () => {
     setSyncing(true);
-    setSyncResult(null);
 
-    const res = await apiClient.POST("/travel-assistance/gmail/sync", {
+    await apiClient.POST("/travel-assistance/gmail/sync", {
       headers
     });
-
-    if (!res.error && res.data) {
-      setSyncResult(res.data as SyncResult);
-    }
 
     await fetchDocs();
     setSyncing(false);
@@ -85,7 +77,6 @@ export function useTravelAssistance() {
     setGoogleEmail(null);
     setItems([]);
     setSelected(null);
-    setSyncResult(null);
     await checkGmailStatus();
   };
 
@@ -95,22 +86,7 @@ export function useTravelAssistance() {
     }
   };
 
-  const deleteDocument = async (id: string) => {
-    await apiClient.DELETE("/travel-assistance/travel-documents/{document_id}", {
-      headers,
-      params: { path: { document_id: id } }
-    });
-    setSelected(null);
-    await fetchDocs();
-  };
-
-  const downloadAttachment = async (
-    documentId: string,
-    attachmentId: string,
-    filename?: string | null
-  ): Promise<{ ok: boolean; error?: string }> => {
-    setDownloadError(null);
-
+  const downloadAttachment = async (documentId: string, attachmentId: string) => {
     const res = await apiClient.GET(
       "/travel-assistance/travel-documents/{document_id}/attachments/{attachment_id}",
       {
@@ -125,22 +101,17 @@ export function useTravelAssistance() {
       }
     );
 
-    if (res.error || !res.data) {
-      const msg = "Failed to download attachment";
-      setDownloadError(msg);
-      return { ok: false, error: msg };
-    }
+    if (res.error || !res.data) return;
 
     const blob = res.data as unknown as Blob;
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = filename ?? attachmentId;
+    a.download = attachmentId;
     a.click();
 
     URL.revokeObjectURL(url);
-    return { ok: true };
   };
 
   useEffect(() => {
@@ -171,13 +142,10 @@ export function useTravelAssistance() {
     connected,
     googleEmail,
     authorizeUrl,
-    syncResult,
-    downloadError,
     sync,
     disconnect,
     connectToGoogle,
     downloadAttachment,
-    deleteDocument,
     checkGmailStatus
   };
 }
