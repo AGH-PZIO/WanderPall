@@ -6,7 +6,7 @@ import { useCreateCalculation } from "../hooks/calculations/useCreateCalculation
 import { useDeleteCalculation } from "../hooks/calculations/useDeleteCalculation";
 import { tokenStore } from "../../account/auth-runtime";
 import { AuthRequiredGate } from "../ui/AuthRequiredGate";
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState } from "react";
 import type { Calculation, CreateCalculationDTO, Expense, ExpenseBase } from "../types/Calculation";
 import Calculator from "./Calculator";
 import "../ui/travel-assistance.css";
@@ -21,8 +21,6 @@ function CalculationPage() {
   const isNew = id === "new";
   const tokens = tokenStore.get();
   const accessToken = tokens?.accessToken;
-  const lastInitializedId = useRef<string | null>(null);
-
   const currentCalc = useMemo(() => {
     if (isNew) return null;
     return calculations.find((c: Calculation) => c.id === id) ?? null;
@@ -38,14 +36,6 @@ function CalculationPage() {
 
   const [expenses, setExpenses] = useState<ExpenseBase[]>(isNew ? defaultExpenses : []);
   const [title, setTitle] = useState("");
-
-  useEffect(() => {
-    if (currentCalc && lastInitializedId.current !== currentCalc.id) {
-      setTitle(currentCalc.title);
-      setExpenses(currentCalc.expenses);
-      lastInitializedId.current = currentCalc.id;
-    }
-  }, [currentCalc]);
 
   const handleExpenseChange = (index: number, field: keyof Expense, value: string | number) => {
     const next = [...(expenses || [])];

@@ -1,43 +1,43 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useMemo, useState } from "react";
 import { useNotes } from "../hooks/notes/useNotes";
 import { Note } from "../types/Note";
 import { useCreateNote } from "../hooks/notes/useCreateNote";
 import { useDeleteNote } from "../hooks/notes/useDeleteNote";
 import { useUpdateNote } from "../hooks/notes/useUpdateNote";
 import { useAuth } from "../../account/hooks/useAuth";
+import type { User } from "../../account/api/account-api";
 import { tokenStore } from "../../account/auth-runtime";
 import { AuthRequiredGate } from "../ui/AuthRequiredGate";
 import "../ui/travel-assistance.css";
 
-function NotePage() {
-  const { id } = useParams<{ id: string }>();
-  const { user } = useAuth();
-  const { notes, loading, refetch } = useNotes();
-  const navigate = useNavigate();
-  const { create } = useCreateNote(refetch);
-  const { remove } = useDeleteNote(refetch);
-  const { update } = useUpdateNote(refetch);
-  const isNew = id === "new";
-  const tokens = tokenStore.get();
-  const accessToken = tokens?.accessToken;
-  const lastInitializedId = useRef<string | null>(null);
+type NoteEditorProps = {
+  defaultTitle: string;
+  defaultContent: string;
+  noteId: string | undefined;
+  isNew: boolean;
+  user: User | null;
+  notes: Note[];
+  navigate: ReturnType<typeof useNavigate>;
+  create: ReturnType<typeof useCreateNote>["create"];
+  update: ReturnType<typeof useUpdateNote>["update"];
+  remove: ReturnType<typeof useDeleteNote>["remove"];
+};
 
-  const currentNote = useMemo(() => {
-    if (isNew) return null;
-    return notes.find((n: Note) => n.id === id) ?? null;
-  }, [notes, id, isNew]);
-
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-
-  useEffect(() => {
-    if (currentNote && currentNote.id !== lastInitializedId.current) {
-      setTitle(currentNote.title);
-      setContent(currentNote.content);
-      lastInitializedId.current = currentNote.id;
-    }
-  }, [currentNote]);
+function NoteEditor({
+  defaultTitle,
+  defaultContent,
+  noteId,
+  isNew,
+  user,
+  notes,
+  navigate,
+  create,
+  update,
+  remove
+}: NoteEditorProps) {
+  const [title, setTitle] = useState(defaultTitle);
+  const [content, setContent] = useState(defaultContent);
 
   function handleSave() {
     if (!user) {
@@ -54,7 +54,7 @@ function NotePage() {
     if (isNew) {
       create(noteData);
     } else {
-      update(id ? id : "", noteData);
+      update(noteId ? noteId : "", noteData);
     }
 
     navigate("/travel-assistance/notes");
@@ -87,23 +87,6 @@ function NotePage() {
       ));
   }
 
-  if (!accessToken) return <AuthRequiredGate feature="Notes" />;
-  if (loading) {
-    return (
-      <div className="ta-shell">
-        <div className="ta-header">
-          <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/notes")}>
-              ← Back
-            </button>
-            <h2>{isNew ? "New note" : "Edit note"}</h2>
-          </div>
-        </div>
-        <p className="ta-loading">Loading…</p>
-      </div>
-    );
-  }
-
   return (
     <div className="ta-shell">
       <div className="ta-header">
@@ -122,7 +105,7 @@ function NotePage() {
               type="button"
               className="btn-secondary"
               onClick={() => {
-                remove(id ?? "");
+                remove(noteId ?? "");
                 navigate("/travel-assistance/notes");
               }}
             >
@@ -162,6 +145,57 @@ function NotePage() {
         <div className="ta-notes-list">{renderNotes()}</div>
       </div>
     </div>
+  );
+}
+
+function NotePage() {
+  const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
+  const { notes, loading, refetch } = useNotes();
+  const navigate = useNavigate();
+  const { create } = useCreateNote(refetch);
+  const { remove } = useDeleteNote(refetch);
+  const { update } = useUpdateNote(refetch);
+  const isNew = id === "new";
+  const tokens = tokenStore.get();
+  const accessToken = tokens?.accessToken;
+
+  const currentNote = useMemo(() => {
+    if (isNew) return null;
+    return notes.find((n: Note) => n.id === id) ?? null;
+  }, [notes, id, isNew]);
+
+  if (!accessToken) return <AuthRequiredGate feature="Notes" />;
+  if (loading) {
+    return (
+      <div className="ta-shell">
+        <div className="ta-header">
+          <div className="ta-header-left">
+            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/notes")}>
+              ← Back
+            </button>
+            <h2>{isNew ? "New note" : "Edit note"}</h2>
+          </div>
+        </div>
+        <p className="ta-loading">Loading…</p>
+      </div>
+    );
+  }
+
+  return (
+    <NoteEditor
+      key={isNew ? "new" : (id ?? "")}
+      defaultTitle={isNew ? "" : (currentNote?.title ?? "")}
+      defaultContent={isNew ? "" : (currentNote?.content ?? "")}
+      noteId={id}
+      isNew={isNew}
+      user={user}
+      notes={notes}
+      navigate={navigate}
+      create={create}
+      update={update}
+      remove={remove}
+    />
   );
 }
 
