@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCalendar } from "../hooks/useCalendar";
 import "../ui/travel-assistance.css";
+import { AuthRequiredGate } from "../ui/AuthRequiredGate";
 import { tokenStore } from "../../account/auth-runtime";
 
 import { Calendar as BigCalendar, dateFnsLocalizer, type Event as RBCEvent, type View } from "react-big-calendar";
@@ -68,11 +69,7 @@ export function CalendarPage() {
   const [date, setDate] = useState<Date>(new Date());
 
   if (!accessToken) {
-    return (
-      <p style={{ marginLeft: "20px" }} onClick={() => navigate("/account/login")} role="presentation">
-        Log in first!
-      </p>
-    );
+    return <AuthRequiredGate feature="Calendar" />;
   }
 
   if (!connected) {

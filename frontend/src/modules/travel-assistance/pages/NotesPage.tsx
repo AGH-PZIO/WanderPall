@@ -3,6 +3,7 @@ import { Note } from "../types/Note";
 import { useNotes } from "../hooks/notes/useNotes";
 import { useDeleteNote } from "../hooks/notes/useDeleteNote";
 import { tokenStore } from "../../account/auth-runtime";
+import { AuthRequiredGate } from "../ui/AuthRequiredGate";
 
 function NotesPage() {
     const navigate = useNavigate();
@@ -28,7 +29,7 @@ function NotesPage() {
         </>)
     }
 
-    if (!accessToken) return <p style={{marginLeft: '20px'}} onClick={() => navigate('/account/login')}>Log in first!</p>
+    if (!accessToken) return <AuthRequiredGate feature="Notes" />;
     if (loading) return <p style={{marginLeft: '20px'}} >Loading...</p>;
 
     return (

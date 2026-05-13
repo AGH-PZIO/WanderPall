@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { useCreateCalculation } from "../hooks/calculations/useCreateCalculation";
 import { useDeleteCalculation } from "../hooks/calculations/useDeleteCalculation";
 import { tokenStore } from "../../account/auth-runtime";
+import { AuthRequiredGate } from "../ui/AuthRequiredGate";
 import { useMemo, useState, useEffect, useRef } from "react";
 import type { Calculation, CreateCalculationDTO, Expense, ExpenseBase } from "../types/Calculation";
 import Calculator from "./Calculator";
@@ -199,7 +200,7 @@ function Calculation() {
         )
     }
 
-    if (!accessToken) return <p style={{marginLeft: '20px'}} onClick={() => navigate('/account/login')}>Log in first!</p>
+    if (!accessToken) return <AuthRequiredGate feature="the trip calculator" />;
     if (loading) return <p style={{marginLeft: '20px'}}>Loading...</p>;
 
     return (

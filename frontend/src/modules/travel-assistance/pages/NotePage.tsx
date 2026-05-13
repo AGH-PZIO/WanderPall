@@ -7,6 +7,7 @@ import { useDeleteNote } from "../hooks/notes/useDeleteNote";
 import { useUpdateNote } from "../hooks/notes/useUpdateNote";
 import { useAuth } from "../../account/hooks/useAuth";
 import { tokenStore } from "../../account/auth-runtime";
+import { AuthRequiredGate } from "../ui/AuthRequiredGate";
 
 function NotePage() {
     const { id } = useParams<{ id: string }>();
@@ -81,7 +82,7 @@ function NotePage() {
         ));
     }
 
-    if (!accessToken) return <p style={{marginLeft: '20px'}} onClick={() => navigate('/account/login')}>Log in first!</p>
+    if (!accessToken) return <AuthRequiredGate feature="Notes" />;
     if (loading) return <p style={{marginLeft: '20px'}}>Loading...</p>;
 
     return (

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTravelAssistance } from "../hooks/useTravelAssistance";
 import "../ui/travel-assistance.css";
+import { AuthRequiredGate } from "../ui/AuthRequiredGate";
 import { tokenStore } from "../../account/auth-runtime";
 
 
@@ -23,11 +24,7 @@ export function MailPage() {
   } = useTravelAssistance();
 
   if (!accessToken) {
-    return (
-      <p style={{ marginLeft: "20px" }} onClick={() => navigate("/account/login")} role="presentation">
-        Log in first!
-      </p>
-    );
+    return <AuthRequiredGate feature="Email documents" />;
   }
 
   if (!connected) {

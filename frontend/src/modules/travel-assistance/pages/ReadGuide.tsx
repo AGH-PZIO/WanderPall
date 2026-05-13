@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useGuideAction } from '../hooks/guides/useGuideAction';
 import { useNavigate, useParams } from 'react-router';
 import { tokenStore } from '../../account/auth-runtime';
+import { AuthRequiredGate } from '../ui/AuthRequiredGate';
 import { Guide, GuideBlock } from '../types/Guide';
 import { useGuides } from '../hooks/guides/useGuides';
 
@@ -46,7 +47,7 @@ export default function ReadGuide() {
             ))
     }
 
-    if (!accessToken) return <p style={{marginLeft: '20px'}} onClick={() => navigate('/account/login')}>Log in first!</p>
+    if (!accessToken) return <AuthRequiredGate feature="this guide" />;
     if (!guide) return <p style={{marginLeft: '20px'}}>Loading...</p>;
 
     const renderBlock = (block: GuideBlock, idx: number) => {

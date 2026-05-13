@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { tokenStore } from "../../account/auth-runtime";
+import { AuthRequiredGate } from "../ui/AuthRequiredGate";
 import { useCalculations } from "../hooks/calculations/useCalculations";
 import { useDeleteCalculation } from "../hooks/calculations/useDeleteCalculation";
 import { Calculation } from "../types/Calculation";
@@ -31,7 +32,7 @@ function MyCalculations() {
             </>)
         }
 
-    if (!accessToken) return <p style={{marginLeft: '20px'}} onClick={() => navigate('/account/login')}>Log in first!</p>
+    if (!accessToken) return <AuthRequiredGate feature="the trip calculator" />;
     if (loading) return <p style={{marginLeft: '20px'}}>Loading...</p>;
 
     return (

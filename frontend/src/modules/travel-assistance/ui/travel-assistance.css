@@ -367,6 +367,73 @@
   color: #666;
 }
 
+.ta-auth-gate {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 48px;
+  min-height: min(420px, 70vh);
+  background: linear-gradient(165deg, #e8f4fc 0%, #f7fafc 42%, #ffffff 100%);
+}
+
+.ta-auth-gate-card {
+  max-width: 440px;
+  width: 100%;
+  padding: 36px 32px 32px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #d6e8f5;
+  box-shadow:
+    0 12px 40px rgba(25, 118, 210, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.ta-auth-gate-icon {
+  font-size: 2.75rem;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.ta-auth-gate-title {
+  margin: 0 0 14px 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0d47a1;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.ta-auth-gate-text {
+  margin: 0 0 28px 0;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: #4a5568;
+}
+
+.ta-auth-gate-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.ta-auth-gate-back {
+  background: none;
+  border: none;
+  color: #1976d2;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 6px 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ta-auth-gate-back:hover {
+  color: #0d47a1;
+}
+
 .btn-primary {
   padding: 12px 24px;
   background: #1976d2;
