@@ -9,225 +9,238 @@ import { AuthRequiredGate } from "../ui/AuthRequiredGate";
 import { useMemo, useState, useEffect, useRef } from "react";
 import type { Calculation, CreateCalculationDTO, Expense, ExpenseBase } from "../types/Calculation";
 import Calculator from "./Calculator";
+import "../ui/travel-assistance.css";
 
-function Calculation() {
-    const { id } = useParams<{ id: string }>();
-    const { user } = useAuth();
-    const { calculations, loading, refetch } = useCalculations();
-    const navigate = useNavigate();
-    const { create } = useCreateCalculation(refetch);
-    const { remove } = useDeleteCalculation(refetch);
-    const isNew = id === "new";
-    const tokens = tokenStore.get(); 
-    const accessToken = tokens?.accessToken;
-    const lastInitializedId = useRef<string | null>(null);
+function CalculationPage() {
+  const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
+  const { calculations, loading, refetch } = useCalculations();
+  const navigate = useNavigate();
+  const { create } = useCreateCalculation(refetch);
+  const { remove } = useDeleteCalculation(refetch);
+  const isNew = id === "new";
+  const tokens = tokenStore.get();
+  const accessToken = tokens?.accessToken;
+  const lastInitializedId = useRef<string | null>(null);
 
-    const currentCalc = useMemo(() => {
-        if (isNew) return null;
-        return calculations.find((c: Calculation) => c.id === id) ?? null;
-    }, [calculations, id, isNew]);
+  const currentCalc = useMemo(() => {
+    if (isNew) return null;
+    return calculations.find((c: Calculation) => c.id === id) ?? null;
+  }, [calculations, id, isNew]);
 
-    const defaultExpenses: ExpenseBase[] = [
-        { category: "get-to", amount: 0 },
-        { category: "transport", amount: 0 },
-        { category: "accommodation", amount: 0 },
-        { category: "food", amount: 0 },
-        { category: "entrances", amount: 0 },
-    ];
+  const defaultExpenses: ExpenseBase[] = [
+    { category: "get-to", amount: 0 },
+    { category: "transport", amount: 0 },
+    { category: "accommodation", amount: 0 },
+    { category: "food", amount: 0 },
+    { category: "entrances", amount: 0 }
+  ];
 
-    const [expenses, setExpenses] = useState<ExpenseBase[]>(isNew ? defaultExpenses : []);
-    const [title, setTitle] = useState("");
+  const [expenses, setExpenses] = useState<ExpenseBase[]>(isNew ? defaultExpenses : []);
+  const [title, setTitle] = useState("");
 
-    useEffect(() => {
-        if (currentCalc && lastInitializedId.current !== currentCalc.id) {
-            // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-            setTitle(currentCalc.title);
-            setExpenses(currentCalc.expenses);
-            lastInitializedId.current = currentCalc.id;
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentCalc]);
+  useEffect(() => {
+    if (currentCalc && lastInitializedId.current !== currentCalc.id) {
+      setTitle(currentCalc.title);
+      setExpenses(currentCalc.expenses);
+      lastInitializedId.current = currentCalc.id;
+    }
+  }, [currentCalc]);
 
-    const handleExpenseChange = (index: number, field: keyof Expense, value: string | number) => {
-        const newExpenses = [...(expenses || [])];
-        newExpenses[index] = { 
-            ...newExpenses[index], 
-            [field]: field === "amount" ? Number(value) : value 
-        };
-        setExpenses(newExpenses);
+  const handleExpenseChange = (index: number, field: keyof Expense, value: string | number) => {
+    const next = [...(expenses || [])];
+    next[index] = {
+      ...next[index],
+      [field]: field === "amount" ? Number(value) : value
     };
+    setExpenses(next);
+  };
 
-    const addExpenseField = () => {
-        setExpenses([...(expenses || []), { category: "", amount: 0 }]);
-    };
+  const addExpenseField = () => {
+    setExpenses([...(expenses || []), { category: "", amount: 0 }]);
+  };
 
-    const removeExpenseField = (index: number) => {
-        const newExpenses = (expenses || []).filter((_, i) => i !== index);
-        setExpenses(newExpenses);
-    };
+  const removeExpenseField = (index: number) => {
+    setExpenses((expenses || []).filter((_, i) => i !== index));
+  };
 
-    function handleSave() {
-        if (!user) {
-            alert("You have to be logged in!");
-            return;
-        }
-
-        if(expenses) {
-            const calcData: CreateCalculationDTO = {
-                title: title,
-                expenses: expenses,
-            };
-            create(calcData); 
-            navigate('/travel-assistance/my-calculations');
-        }
+  function handleSave() {
+    if (!user) {
+      alert("You have to be logged in!");
+      return;
     }
 
-    function renderCalculations() {
-        return [...calculations]
-            .sort(
-                (a: Calculation, b: Calculation) =>
-                    new Date(b.created_at).getTime() -
-                    new Date(a.created_at).getTime()
-            )
-            .map((c: Calculation) => (
-                <div
-                    key={c.id}
-                    className="ta-note-list-item"
-                    onClick={() => navigate(`/travel-assistance/calculation/${c.id}`)}
-                >
-                    <h3>{c.title}</h3>
-                    <p style={{color: 'gray'}}>
-                        {new Date(c.created_at).toLocaleString()}
-                    </p>
-                </div>
-        ));
+    if (expenses) {
+      const calcData: CreateCalculationDTO = {
+        title,
+        expenses
+      };
+      create(calcData);
+      navigate("/travel-assistance/my-calculations");
     }
-    
-    function renderEditor() {
-        return (
-            <>
-                <div className="ta-calc-editor">
-                    <div className="ta-calc-fields">
-                        <label>
-                            <h2>Title</h2>
-                        </label>
+  }
 
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
+  function renderCalculations() {
+    return [...calculations]
+      .sort(
+        (a: Calculation, b: Calculation) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      )
+      .map((c: Calculation) => (
+        <div
+          key={c.id}
+          className="ta-note-list-item"
+          onClick={() => navigate(`/travel-assistance/calculation/${c.id}`)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              navigate(`/travel-assistance/calculation/${c.id}`);
+            }
+          }}
+          role="button"
+          tabIndex={0}
+        >
+          <h3>{c.title}</h3>
+          <p>{new Date(c.created_at).toLocaleString()}</p>
+        </div>
+      ));
+  }
 
-                        <label>
-                            <h3>Content</h3>
-                        </label>
-
-                        <div className="ta-expenses-form">
-                            {expenses?.map((expense, index) => (
-                                <div key={index} className="ta-expense-row" style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'center' }}>
-                                    <input
-                                        type="text"
-                                        placeholder="Category"
-                                        value={expense.category}
-                                        onChange={(e) => handleExpenseChange(index, "category", e.target.value)}
-                                        style={{ flex: 2 }}
-                                        disabled={index < 5 ? true : false}
-                                    />
-                                    <input
-                                        type="number"
-                                        placeholder="Amount"
-                                        value={expense.amount}
-                                        onChange={(e) => handleExpenseChange(index, "amount", e.target.value)}
-                                        style={{ flex: 1 }}
-                                    />
-                                    <button 
-                                        className="del-small" 
-                                        onClick={() => removeExpenseField(index)}
-                                        style={{ background: '#ff4d4d', color: 'white', border: 'none', borderRadius: '4px', padding: '5px 10px', cursor: 'pointer' }}
-                                        disabled={index < 5 ? true : false}
-                                    >
-                                        ✕
-                                    </button>
-                                    
-                                </div>
-                            ))}
-                            
-                            <button 
-                                type="button" 
-                                onClick={addExpenseField}
-                                className="add-btn"
-                                style={{ marginTop: '10px', width: '100%', padding: '8px', cursor: 'pointer' }}
-                            >
-                                + Add next category
-                            </button>
-                        </div>
-
-                        <div style={{ marginTop: '20px', fontWeight: 'bold' }}>
-                            Total: {expenses?.reduce((sum, e) => sum + e.amount, 0)} PLN
-                        </div>
-
-                        <button className="create-btn" onClick={handleSave}>Create</button>
-                    </div>
-                    
-                    <div className="ta-calc" style={{marginRight: '20px'}}>
-                        <Calculator></Calculator>
-                    </div>
-                </div>
-            </>
-        )
-    }
-
-    function renderView() {
-        return (
-            <>
-                <div className="ta-calc-view">
-                    <h2>{currentCalc?.title}</h2>
-                    <ul>
-                        {currentCalc?.expenses.map((e: Expense) => {
-                            return (
-                                <li>
-                                    <b>{e.category}:</b> {e.amount}
-                                </li>
-                            )
-                        })}
-                    </ul>
-                    <div style={{ marginTop: '20px', fontWeight: 'bold' }}>
-                        Total: {expenses?.reduce((sum, e) => sum + Number(e.amount), 0).toFixed(2)} PLN
-                    </div>
-                    <button className="del-btn" onClick={() => { remove(id ? id : ""); navigate('/travel-assistance/my-calculations') }}>Delete</button>
-                </div>
-            </>
-        )
-    }
-
-    if (!accessToken) return <AuthRequiredGate feature="the trip calculator" />;
-    if (loading) return <p style={{marginLeft: '20px'}}>Loading...</p>;
-
+  function renderEditor() {
+    const total = expenses?.reduce((sum, e) => sum + e.amount, 0) ?? 0;
     return (
-        <>
-            <div className="ta-shell">
-                <div className="ta-header">
-                    <h2 onClick={() => navigate("/travel-assistance/my-calculations")}>
-                    {isNew ? "Create calculation" : "View note"}
-                    </h2>
-                </div>
+      <div className="ta-calc-editor">
+        <div className="ta-calc-fields">
+          <label className="ta-field-label" htmlFor="calc-title">
+            Title
+          </label>
+          <input
+            id="calc-title"
+            type="text"
+            className="ta-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Trip name"
+          />
 
-                <h3 style={{marginLeft: '20px'}} onClick={() => navigate("/travel-assistance")}> Back to travel assistance</h3>
+          <span className="ta-field-label">Expenses</span>
+          <div className="ta-expenses-form">
+            {expenses?.map((expense, index) => (
+              <div key={`${expense.category}-${index}`} className="ta-expense-row">
+                <input
+                  type="text"
+                  placeholder="Category"
+                  value={expense.category}
+                  onChange={(e) => handleExpenseChange(index, "category", e.target.value)}
+                  style={{ flex: 2 }}
+                  disabled={index < 5}
+                />
+                <input
+                  type="number"
+                  placeholder="Amount"
+                  value={expense.amount}
+                  onChange={(e) => handleExpenseChange(index, "amount", e.target.value)}
+                  style={{ flex: 1 }}
+                  disabled={false}
+                />
+                <button
+                  type="button"
+                  className="ta-expense-remove"
+                  onClick={() => removeExpenseField(index)}
+                  disabled={index < 5}
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
 
-                <div className="ta-calc-container">
-                    {
-                        isNew && renderEditor()
-                    }
-                    {
-                        !isNew && renderView()
-                    }
+            <button type="button" onClick={addExpenseField} className="ta-add-expense">
+              + Add category
+            </button>
+          </div>
 
-                    <div className="ta-notes-list">{renderCalculations()}</div>
-                </div>
+          <div className="ta-calc-total">Total: {total} PLN</div>
+        </div>
 
-            </div>
-        </>
-    )
+        <div className="ta-calc">
+          <Calculator />
+        </div>
+      </div>
+    );
+  }
+
+  function renderView() {
+    const list = currentCalc?.expenses ?? [];
+    const total = list.reduce((sum, e) => sum + Number(e.amount), 0);
+    return (
+      <div className="ta-calc-view">
+        <h2 style={{ marginTop: 0 }}>{currentCalc?.title}</h2>
+        <ul>
+          {list.map((e: Expense) => (
+            <li key={`${e.category}-${e.amount}`}>
+              <strong>{e.category}:</strong> {e.amount}
+            </li>
+          ))}
+        </ul>
+        <div className="ta-calc-total">Total: {total.toFixed(2)} PLN</div>
+        <div className="ta-form-actions">
+          <button
+            type="button"
+            className="ta-btn-danger"
+            onClick={() => {
+              remove(id ?? "");
+              navigate("/travel-assistance/my-calculations");
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!accessToken) return <AuthRequiredGate feature="the trip calculator" />;
+  if (loading) {
+    return (
+      <div className="ta-shell">
+        <div className="ta-header">
+          <div className="ta-header-left">
+            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/my-calculations")}>
+              ← Back
+            </button>
+            <h2>Calculator</h2>
+          </div>
+        </div>
+        <p className="ta-loading">Loading…</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="ta-shell">
+      <div className="ta-header">
+        <div className="ta-header-left">
+          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/my-calculations")}>
+            ← Back
+          </button>
+          <h2>{isNew ? "New calculation" : "Calculation"}</h2>
+        </div>
+        {isNew && (
+          <div className="ta-actions">
+            <button type="button" className="btn-primary" onClick={handleSave}>
+              Save
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="ta-calc-container">
+        {isNew && renderEditor()}
+        {!isNew && renderView()}
+        <div className="ta-notes-list">{renderCalculations()}</div>
+      </div>
+    </div>
+  );
 }
 
-export default Calculation
+export default CalculationPage;
