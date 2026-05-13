@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCalendar } from "../hooks/useCalendar";
 import "../ui/travel-assistance.css";
+import { tokenStore } from "../../account/auth-runtime";
 
 import { Calendar as BigCalendar, dateFnsLocalizer, type Event as RBCEvent, type View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -18,6 +19,8 @@ function formatWhen(iso: string | null | undefined, allDay?: boolean) {
 
 export function CalendarPage() {
   const navigate = useNavigate();
+  const tokens = tokenStore.get();
+  const accessToken = tokens?.accessToken;
   const { connected, googleEmail, connectToGoogle, items, loading, error, refresh } = useCalendar();
 
   const localizer = dateFnsLocalizer({
@@ -63,6 +66,14 @@ export function CalendarPage() {
 
   const [view, setView] = useState<View>("month");
   const [date, setDate] = useState<Date>(new Date());
+
+  if (!accessToken) {
+    return (
+      <p style={{ marginLeft: "20px" }} onClick={() => navigate("/account/login")} role="presentation">
+        Log in first!
+      </p>
+    );
+  }
 
   if (!connected) {
     return (

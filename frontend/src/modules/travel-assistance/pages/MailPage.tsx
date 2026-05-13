@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useTravelAssistance } from "../hooks/useTravelAssistance";
 import "../ui/travel-assistance.css";
+import { tokenStore } from "../../account/auth-runtime";
 
 
 export function MailPage() {
   const navigate = useNavigate();
+  const tokens = tokenStore.get();
+  const accessToken = tokens?.accessToken;
   const {
     items,
     selected,
@@ -18,6 +21,14 @@ export function MailPage() {
     connectToGoogle,
     downloadAttachment
   } = useTravelAssistance();
+
+  if (!accessToken) {
+    return (
+      <p style={{ marginLeft: "20px" }} onClick={() => navigate("/account/login")} role="presentation">
+        Log in first!
+      </p>
+    );
+  }
 
   if (!connected) {
     return (
