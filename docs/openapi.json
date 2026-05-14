@@ -619,40 +619,6 @@
         ],
         "summary": "Gmail Authorize Url",
         "operationId": "gmail_authorize_url_travel_assistance_gmail_oauth_authorize_url_get",
-        "parameters": [
-          {
-            "name": "X-Dev-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Dev-User-Id"
-            }
-          },
-          {
-            "name": "X-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-User-Id"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -663,18 +629,13 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/travel-assistance/gmail/oauth/callback": {
@@ -763,40 +724,6 @@
         ],
         "summary": "Gmail Status",
         "operationId": "gmail_status_travel_assistance_gmail_status_get",
-        "parameters": [
-          {
-            "name": "X-Dev-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Dev-User-Id"
-            }
-          },
-          {
-            "name": "X-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-User-Id"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -807,18 +734,13 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/travel-assistance/gmail/connection": {
@@ -828,66 +750,27 @@
         ],
         "summary": "Gmail Disconnect",
         "operationId": "gmail_disconnect_travel_assistance_gmail_connection_delete",
-        "parameters": [
-          {
-            "name": "X-Dev-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Dev-User-Id"
-            }
-          },
-          {
-            "name": "X-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-User-Id"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
                   "additionalProperties": {
                     "type": "string"
                   },
+                  "type": "object",
                   "title": "Response Gmail Disconnect Travel Assistance Gmail Connection Delete"
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/travel-assistance/gmail/sync": {
@@ -897,40 +780,6 @@
         ],
         "summary": "Gmail Sync",
         "operationId": "gmail_sync_travel_assistance_gmail_sync_post",
-        "parameters": [
-          {
-            "name": "X-Dev-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Dev-User-Id"
-            }
-          },
-          {
-            "name": "X-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-User-Id"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -941,18 +790,13 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/travel-assistance/travel-documents": {
@@ -962,6 +806,11 @@
         ],
         "summary": "List Travel Documents",
         "operationId": "list_travel_documents_travel_assistance_travel_documents_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "limit",
@@ -984,38 +833,6 @@
               "minimum": 0,
               "default": 0,
               "title": "Offset"
-            }
-          },
-          {
-            "name": "X-Dev-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Dev-User-Id"
-            }
-          },
-          {
-            "name": "X-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-User-Id"
             }
           }
         ],
@@ -1050,6 +867,11 @@
         ],
         "summary": "Remove Travel Document",
         "operationId": "remove_travel_document_travel_assistance_travel_documents__document_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "document_id",
@@ -1059,38 +881,6 @@
               "type": "string",
               "format": "uuid",
               "title": "Document Id"
-            }
-          },
-          {
-            "name": "X-Dev-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Dev-User-Id"
-            }
-          },
-          {
-            "name": "X-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-User-Id"
             }
           }
         ],
@@ -1129,6 +919,11 @@
         ],
         "summary": "Download Attachment",
         "operationId": "download_attachment_travel_assistance_travel_documents__document_id__attachments__attachment_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "document_id",
@@ -1147,38 +942,6 @@
             "schema": {
               "type": "string",
               "title": "Attachment Id"
-            }
-          },
-          {
-            "name": "X-Dev-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Dev-User-Id"
-            }
-          },
-          {
-            "name": "X-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-User-Id"
             }
           }
         ],
@@ -2051,6 +1814,11 @@
         "summary": "List Calendar Events",
         "description": "List upcoming events from Google Calendar.\nUses the same stored Google refresh token as the Gmail integration.",
         "operationId": "list_calendar_events_travel_assistance_calendar_events_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "calendar_id",
@@ -2104,38 +1872,6 @@
                 }
               ],
               "title": "Time Max"
-            }
-          },
-          {
-            "name": "X-Dev-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-Dev-User-Id"
-            }
-          },
-          {
-            "name": "X-User-Id",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "X-User-Id"
             }
           }
         ],

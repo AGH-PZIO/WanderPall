@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { apiClient } from "../../../shared/api-client";
 import type { components } from "../../../shared/api-types";
+import { tokenStore } from "../../account/auth-runtime";
 
 type TravelDocument = components["schemas"]["TravelDocumentResponse"];
 type GmailStatusResponse = components["schemas"]["GmailStatusResponse"];
-
-const DEV_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
 
 export function useTravelAssistance() {
   const [items, setItems] = useState<TravelDocument[]>([]);
@@ -16,14 +15,8 @@ export function useTravelAssistance() {
   const [googleEmail, setGoogleEmail] = useState<string | null>(null);
   const [authorizeUrl, setAuthorizeUrl] = useState<string | null>(null);
 
-  const headers = {
-    "X-Dev-User-Id": DEV_USER_ID
-  };
-
   const checkGmailStatus = useCallback(async () => {
-    const res = await apiClient.GET("/travel-assistance/gmail/status", {
-      headers
-    });
+    const res = await apiClient.GET("/travel-assistance/gmail/status", {});
 
     if (!res.error && res.data) {
       const status = res.data as GmailStatusResponse;
@@ -33,9 +26,7 @@ export function useTravelAssistance() {
   }, []);
 
   const getAuthorizeUrl = useCallback(async () => {
-    const res = await apiClient.GET("/travel-assistance/gmail/oauth/authorize-url", {
-      headers
-    });
+    const res = await apiClient.GET("/travel-assistance/gmail/oauth/authorize-url", {});
 
     if (!res.error && res.data) {
       const data = res.data as { url: string };
@@ -46,9 +37,7 @@ export function useTravelAssistance() {
   const fetchDocs = useCallback(async () => {
     setLoading(true);
 
-    const res = await apiClient.GET("/travel-assistance/travel-documents", {
-      headers
-    });
+    const res = await apiClient.GET("/travel-assistance/travel-documents", {});
 
     if (!res.error && res.data) {
       setItems(res.data.items);
@@ -60,18 +49,14 @@ export function useTravelAssistance() {
   const sync = async () => {
     setSyncing(true);
 
-    await apiClient.POST("/travel-assistance/gmail/sync", {
-      headers
-    });
+    await apiClient.POST("/travel-assistance/gmail/sync", {});
 
     await fetchDocs();
     setSyncing(false);
   };
 
   const disconnect = async () => {
-    await apiClient.DELETE("/travel-assistance/gmail/connection", {
-      headers
-    });
+    await apiClient.DELETE("/travel-assistance/gmail/connection", {});
 
     setConnected(false);
     setGoogleEmail(null);
@@ -96,7 +81,6 @@ export function useTravelAssistance() {
             attachment_id: attachmentId
           }
         },
-        headers,
         parseAs: "blob"
       }
     );
@@ -116,6 +100,7 @@ export function useTravelAssistance() {
 
   useEffect(() => {
     const init = async () => {
+      if (!tokenStore.get()?.accessToken) return;
       await checkGmailStatus();
       await getAuthorizeUrl();
     };
@@ -124,6 +109,7 @@ export function useTravelAssistance() {
   }, [checkGmailStatus, getAuthorizeUrl]);
 
   useEffect(() => {
+    if (!tokenStore.get()?.accessToken) return;
     if (!connected) return;
 
     const load = async () => {

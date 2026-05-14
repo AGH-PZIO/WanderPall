@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useTravelAssistance } from "../hooks/useTravelAssistance";
 import "../ui/travel-assistance.css";
+import { AuthRequiredGate } from "../ui/AuthRequiredGate";
+import { tokenStore } from "../../account/auth-runtime";
 
 
 export function MailPage() {
   const navigate = useNavigate();
+  const tokens = tokenStore.get();
+  const accessToken = tokens?.accessToken;
   const {
     items,
     selected,
@@ -18,6 +22,10 @@ export function MailPage() {
     connectToGoogle,
     downloadAttachment
   } = useTravelAssistance();
+
+  if (!accessToken) {
+    return <AuthRequiredGate feature="Email documents" />;
+  }
 
   if (!connected) {
     return (

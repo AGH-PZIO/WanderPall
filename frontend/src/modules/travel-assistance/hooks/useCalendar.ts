@@ -1,32 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { apiClient } from "../../../shared/api-client";
+import type { components } from "../../../shared/api-types";
+import { tokenStore } from "../../account/auth-runtime";
 
-type CalendarEvent = {
-  id?: string | null;
-  summary?: string | null;
-  description?: string | null;
-  location?: string | null;
-  html_link?: string | null;
-  start?: string | null;
-  end?: string | null;
-  all_day?: boolean;
-  organizer?: string | null;
-};
-
-type CalendarEventsResponse = {
-  calendar_id: string;
-  time_min: string;
-  time_max?: string | null;
-  items: CalendarEvent[];
-};
-
-type GmailStatusResponse = {
-  connected: boolean;
-  google_email?: string | null;
-  last_sync_at?: string | null;
-};
-
-const DEV_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
-const baseUrl = import.meta.env.VITE_API_BASE_URL ?? "/api";
+type CalendarEvent = components["schemas"]["CalendarEventResponse"];
+type CalendarEventsResponse = components["schemas"]["CalendarEventsResponse"];
+type GmailStatusResponse = components["schemas"]["GmailStatusResponse"];
 
 export function useCalendar() {
   const [connected, setConnected] = useState(false);
@@ -37,22 +16,18 @@ export function useCalendar() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const headers = {
-    "X-Dev-User-Id": DEV_USER_ID
-  };
-
   const checkGoogleStatus = useCallback(async () => {
-    const res = await fetch(`${baseUrl}/travel-assistance/gmail/status`, { headers });
-    if (!res.ok) return;
-    const status = (await res.json()) as GmailStatusResponse;
+    const res = await apiClient.GET("/travel-assistance/gmail/status", {});
+    if (res.error || !res.data) return;
+    const status = res.data as GmailStatusResponse;
     setConnected(Boolean(status.connected));
     setGoogleEmail(status.google_email ?? null);
   }, []);
 
   const getAuthorizeUrl = useCallback(async () => {
-    const res = await fetch(`${baseUrl}/travel-assistance/gmail/oauth/authorize-url`, { headers });
-    if (!res.ok) return;
-    const data = (await res.json()) as { url: string };
+    const res = await apiClient.GET("/travel-assistance/gmail/oauth/authorize-url", {});
+    if (res.error || !res.data) return;
+    const data = res.data as { url: string };
     setAuthorizeUrl(data.url);
   }, []);
 
@@ -64,12 +39,15 @@ export function useCalendar() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${baseUrl}/travel-assistance/calendar/events`, { headers });
-      if (!res.ok) {
-        const msg = await res.text();
-        throw new Error(msg || `HTTP ${res.status}`);
+      const res = await apiClient.GET("/travel-assistance/calendar/events", {});
+      if (res.error) {
+        const msg =
+          typeof res.error === "object" && res.error !== null && "detail" in res.error
+            ? String((res.error as { detail?: unknown }).detail)
+            : JSON.stringify(res.error);
+        throw new Error(msg || `HTTP error`);
       }
-      const data = (await res.json()) as CalendarEventsResponse;
+      const data = res.data as CalendarEventsResponse;
       setItems(data.items ?? []);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -81,6 +59,7 @@ export function useCalendar() {
 
   useEffect(() => {
     const init = async () => {
+      if (!tokenStore.get()?.accessToken) return;
       await checkGoogleStatus();
       await getAuthorizeUrl();
     };
@@ -88,6 +67,7 @@ export function useCalendar() {
   }, [checkGoogleStatus, getAuthorizeUrl]);
 
   useEffect(() => {
+    if (!tokenStore.get()?.accessToken) return;
     if (!connected) return;
     fetchEvents();
   }, [connected, fetchEvents]);
@@ -103,4 +83,3 @@ export function useCalendar() {
     refresh: fetchEvents
   };
 }
-

@@ -9,7 +9,7 @@ from fastapi.responses import RedirectResponse, StreamingResponse
 
 from app.core.config import settings
 from app.modules.travel_assistance.mail import repository
-from app.modules.travel_assistance.mail.dependencies import get_db_conn, get_dev_user_id
+from app.modules.travel_assistance.mail.dependencies import get_db_conn
 from app.modules.travel_assistance.mail.gmail_api import (
     build_gmail_service,
     get_attachment_body,
@@ -43,6 +43,7 @@ from app.modules.travel_assistance.translator.schemas import (
 from app.modules.travel_assistance.translator import service as translator_service
 
 from app.modules.account.dependencies import get_current_user
+from app.modules.account.models import User
 from app.modules.travel_assistance.guides.services import GuideService
 from app.modules.travel_assistance.guides.schemas import GuideCreate, GuideResponse
 
@@ -76,11 +77,11 @@ def travel_assistance_status() -> dict[str, str]:
 
 @router.get("/gmail/oauth/authorize-url", response_model=AuthorizeUrlResponse)
 def gmail_authorize_url(
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> AuthorizeUrlResponse:
     _require_oauth_config()
     try:
-        url = build_authorization_url(user_id)
+        url = build_authorization_url(current_user.id)
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     return AuthorizeUrlResponse(url=url)
@@ -143,9 +144,9 @@ def gmail_oauth_callback(
 @router.get("/gmail/status", response_model=GmailStatusResponse)
 def gmail_status(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> GmailStatusResponse:
-    row = repository.get_gmail_connection(conn, user_id)
+    row = repository.get_gmail_connection(conn, current_user.id)
     if not row:
         return GmailStatusResponse(connected=False)
     return GmailStatusResponse(
@@ -158,9 +159,9 @@ def gmail_status(
 @router.delete("/gmail/connection")
 def gmail_disconnect(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> dict[str, str]:
-    n = repository.delete_gmail_connection(conn, user_id)
+    n = repository.delete_gmail_connection(conn, current_user.id)
     if n == 0:
         raise HTTPException(status_code=404, detail="No Gmail connection for this user")
     return {"status": "disconnected"}
@@ -169,11 +170,11 @@ def gmail_disconnect(
 @router.post("/gmail/sync", response_model=SyncResponse)
 def gmail_sync(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> SyncResponse:
     _require_oauth_config()
     try:
-        scanned, imported, updated = run_gmail_sync(conn, user_id=user_id)
+        scanned, imported, updated = run_gmail_sync(conn, user_id=current_user.id)
     except RuntimeError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except ValueError as exc:
@@ -186,11 +187,11 @@ def gmail_sync(
 @router.get("/travel-documents", response_model=TravelDocumentListResponse)
 def list_travel_documents(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
     limit: Annotated[int, Query(ge=1, le=100)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> TravelDocumentListResponse:
-    rows, total = repository.list_travel_documents(conn, user_id=user_id, limit=limit, offset=offset)
+    rows, total = repository.list_travel_documents(conn, user_id=current_user.id, limit=limit, offset=offset)
     items = [TravelDocumentResponse(**repository.row_to_response(r)) for r in rows]
     return TravelDocumentListResponse(items=items, total=total)
 
@@ -198,10 +199,10 @@ def list_travel_documents(
 @router.delete("/travel-documents/{document_id}")
 def remove_travel_document(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
     document_id: UUID,
 ) -> dict[str, str]:
-    n = repository.soft_remove_document(conn, user_id=user_id, document_id=document_id)
+    n = repository.soft_remove_document(conn, user_id=current_user.id, document_id=document_id)
     if n == 0:
         raise HTTPException(status_code=404, detail="Document not found or already removed")
     return {"status": "removed"}
@@ -210,12 +211,12 @@ def remove_travel_document(
 @router.get("/travel-documents/{document_id}/attachments/{attachment_id}", response_model=None)
 def download_attachment(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
     document_id: UUID,
     attachment_id: str,
 ):
     _require_oauth_config()
-    row = repository.get_travel_document(conn, user_id=user_id, document_id=document_id)
+    row = repository.get_travel_document(conn, user_id=current_user.id, document_id=document_id)
     if not row or row.get("user_removed_at"):
         raise HTTPException(status_code=404, detail="Document not found")
 
@@ -225,7 +226,7 @@ def download_attachment(
     if attachment_id not in allowed:
         raise HTTPException(status_code=404, detail="Attachment not part of this document")
 
-    gmail_row = repository.get_gmail_connection(conn, user_id)
+    gmail_row = repository.get_gmail_connection(conn, current_user.id)
     if not gmail_row:
         raise HTTPException(status_code=400, detail="Gmail not connected")
 
@@ -507,7 +508,7 @@ async def translate(
 @router.get("/calendar/events", response_model=CalendarEventsResponse)
 def list_calendar_events(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
     calendar_id: str = "primary",
     max_results: Annotated[int, Query(ge=1, le=250)] = 50,
     time_min: str | None = None,
@@ -519,7 +520,7 @@ def list_calendar_events(
     """
     _require_oauth_config()
 
-    gmail_row = repository.get_gmail_connection(conn, user_id)
+    gmail_row = repository.get_gmail_connection(conn, current_user.id)
     if not gmail_row:
         raise HTTPException(status_code=400, detail="Google is not connected (connect via Gmail OAuth first).")
 
