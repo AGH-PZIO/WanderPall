@@ -2655,10 +2655,7 @@ export interface operations {
     gmail_authorize_url_travel_assistance_gmail_oauth_authorize_url_get: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Dev-User-Id"?: string | null;
-                "X-User-Id"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -2671,15 +2668,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AuthorizeUrlResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -2720,10 +2708,7 @@ export interface operations {
     gmail_status_travel_assistance_gmail_status_get: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Dev-User-Id"?: string | null;
-                "X-User-Id"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -2738,24 +2723,12 @@ export interface operations {
                     "application/json": components["schemas"]["GmailStatusResponse"];
                 };
             };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
         };
     };
     gmail_disconnect_travel_assistance_gmail_connection_delete: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Dev-User-Id"?: string | null;
-                "X-User-Id"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -2772,24 +2745,12 @@ export interface operations {
                     };
                 };
             };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
         };
     };
     gmail_sync_travel_assistance_gmail_sync_post: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Dev-User-Id"?: string | null;
-                "X-User-Id"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -2804,15 +2765,6 @@ export interface operations {
                     "application/json": components["schemas"]["SyncResponse"];
                 };
             };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
         };
     };
     list_travel_documents_travel_assistance_travel_documents_get: {
@@ -2821,10 +2773,7 @@ export interface operations {
                 limit?: number;
                 offset?: number;
             };
-            header?: {
-                "X-Dev-User-Id"?: string | null;
-                "X-User-Id"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -2853,10 +2802,7 @@ export interface operations {
     remove_travel_document_travel_assistance_travel_documents__document_id__delete: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Dev-User-Id"?: string | null;
-                "X-User-Id"?: string | null;
-            };
+            header?: never;
             path: {
                 document_id: string;
             };
@@ -2889,10 +2835,7 @@ export interface operations {
     download_attachment_travel_assistance_travel_documents__document_id__attachments__attachment_id__get: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Dev-User-Id"?: string | null;
-                "X-User-Id"?: string | null;
-            };
+            header?: never;
             path: {
                 document_id: string;
                 attachment_id: string;
@@ -3512,10 +3455,7 @@ export interface operations {
                 time_min?: string | null;
                 time_max?: string | null;
             };
-            header?: {
-                "X-Dev-User-Id"?: string | null;
-                "X-User-Id"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
