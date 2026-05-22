@@ -23,7 +23,7 @@ def get_current_group_member(
     members = PsycopgGroupMemberRepository(connection)
     member = members.get_by_group_and_user(group_uuid, user.id)
     if member is None:
-        raise ForbiddenError("You are not a member of this group")
+        raise ForbiddenError("Nie jesteś członkiem tej grupy")
     if not members.role_at_least(group_uuid, user.id, required_role):
-        raise ForbiddenError(f"Role {required_role.value} or higher is required")
+        raise ForbiddenError(f"Wymagana rola {required_role.value} lub wyższa")
     return member

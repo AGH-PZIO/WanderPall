@@ -9,12 +9,12 @@ class ValidationError(TravelBuddiesError):
 
 class NotFoundError(TravelBuddiesError):
     status_code = 404
-    message = "Resource not found"
+    message = "Nie znaleziono zasobu"
 
 
 class ConflictError(TravelBuddiesError):
     status_code = 409
-    message = "Resource already exists"
+    message = "Zasób już istnieje"
 
 
 class ForbiddenError(TravelBuddiesError):

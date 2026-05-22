@@ -61,11 +61,11 @@ class PollManagementService:
 
     def create_poll(self, group_id: UUID, user_id: UUID, request: CreatePollRequest) -> PollResponse:
         if not request.question.strip():
-            raise ValidationError("Poll question cannot be empty")
+            raise ValidationError("Pytanie ankiety nie może być puste")
         if len(request.options) < 2:
-            raise ValidationError("Poll must have at least 2 options")
+            raise ValidationError("Ankieta musi mieć co najmniej 2 opcje")
         if len(request.options) > 20:
-            raise ValidationError("Poll cannot have more than 20 options")
+            raise ValidationError("Ankieta nie może mieć więcej niż 20 opcji")
 
         poll = Poll(
             id=uuid4(),
@@ -81,7 +81,7 @@ class PollManagementService:
             for i, text in enumerate(request.options):
                 stripped_text = text.strip()
                 if not stripped_text:
-                    raise ValidationError(f"Option {i + 1} cannot be empty")
+                    raise ValidationError(f"Opcja {i + 1} nie może być pusta")
                 db_options.append(
                     PollOption(
                         id=uuid4(),
@@ -130,13 +130,13 @@ class PollManagementService:
     def add_option(self, poll_id: UUID, user_id: UUID, request: AddPollOptionRequest) -> PollOptionResponse:
         poll = self._get_poll(poll_id)
         if poll.status == PollStatus.CLOSED:
-            raise ValidationError("Cannot add option to closed poll")
+            raise ValidationError("Nie można dodać opcji do zamkniętej ankiety")
         if not self.poll_options:
-            raise NotFoundError("Poll options repository not configured")
+            raise NotFoundError("Repozytorium opcji ankiety nie jest skonfigurowane")
 
         text = request.text.strip()
         if not text:
-            raise ValidationError("Option text cannot be empty")
+            raise ValidationError("Tekst opcji nie może być pusty")
 
         existing = self.poll_options.list_by_poll(poll_id)
         next_order = max((o.order_index for o in existing), default=-1) + 1
@@ -153,13 +153,13 @@ class PollManagementService:
     def vote(self, poll_id: UUID, option_id: UUID, user_id: UUID) -> PollDetailResponse:
         poll = self._get_poll(poll_id)
         if poll.status == PollStatus.CLOSED:
-            raise ValidationError("Cannot vote on closed poll")
+            raise ValidationError("Nie można głosować na zamkniętej ankiecie")
         if not self.poll_options or not self.poll_votes:
-            raise NotFoundError("Poll repositories not configured")
+            raise NotFoundError("Repozytoria ankiety nie są skonfigurowane")
 
         option = self.poll_options.get_by_id(option_id)
         if option is None or option.poll_id != poll_id:
-            raise NotFoundError("Option not found in this poll")
+            raise NotFoundError("Opcja nie została znaleziona w tej ankiecie")
 
         if self.poll_votes.has_voted(poll_id, user_id):
             self.poll_votes.delete_by_poll_and_user(poll_id, user_id)
@@ -175,18 +175,18 @@ class PollManagementService:
 
     def remove_vote(self, poll_id: UUID, user_id: UUID) -> None:
         if not self.poll_votes:
-            raise NotFoundError("Poll votes repository not configured")
+            raise NotFoundError("Repozytorium głosów nie jest skonfigurowane")
         self.poll_votes.delete_by_poll_and_user(poll_id, user_id)
 
     def close_poll(self, poll_id: UUID, user_id: UUID) -> PollResponse:
         poll = self._get_poll(poll_id)
         if poll.status == PollStatus.CLOSED:
-            raise ValidationError("Poll is already closed")
+            raise ValidationError("Ankieta jest już zamknięta")
         closed_poll = self.polls.close(poll_id)
         return _poll_to_response(closed_poll)
 
     def _get_poll(self, poll_id: UUID) -> Poll:
         poll = self.polls.get_by_id(poll_id)
         if poll is None:
-            raise NotFoundError("Poll not found")
+            raise NotFoundError("Ankieta nie została znaleziona")
         return poll

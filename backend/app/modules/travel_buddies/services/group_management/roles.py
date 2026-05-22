@@ -25,7 +25,7 @@ class MemberRoleService:
         try:
             role = MemberRole(new_role)
         except ValueError:
-            raise ValidationError(f"Invalid role: {new_role}")
+            raise ValidationError(f"Nieprawidłowa rola: {new_role}")
         if role == MemberRole.OWNER:
-            raise ValidationError("Cannot set role to owner")
+            raise ValidationError("Nie można ustawić roli właściciela")
         return role

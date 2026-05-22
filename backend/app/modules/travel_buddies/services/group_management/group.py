@@ -38,9 +38,9 @@ class GroupService:
     def create(self, request: CreateGroupRequest, user_id: UUID) -> GroupResponse:
         name = request.name.strip()
         if not name:
-            raise ValidationError("Group name cannot be empty")
+            raise ValidationError("Nazwa grupy nie może być pusta")
         if self.groups.name_exists(name):
-            raise ValidationError("Group with this name already exists")
+            raise ValidationError("Grupa o tej nazwie już istnieje")
 
         group = Group(
             id=uuid4(),
@@ -69,15 +69,15 @@ class GroupService:
 
     def update(self, group_id: UUID, user_id: UUID, request: UpdateGroupRequest) -> GroupResponse:
         if not self.members.is_admin(group_id, user_id):
-            raise ForbiddenError("Admin role or higher required")
+            raise ForbiddenError("Wymagana rola administratora lub wyższa")
         group = self._get_group(group_id)
 
         if request.name is not None:
             name = request.name.strip()
             if not name:
-                raise ValidationError("Group name cannot be empty")
+                raise ValidationError("Nazwa grupy nie może być pusta")
             if self.groups.name_exists(name, exclude_group_id=group_id):
-                raise ValidationError("Group with this name already exists")
+                raise ValidationError("Grupa o tej nazwie już istnieje")
 
         updated = self.groups.update(
             Group(
@@ -92,9 +92,9 @@ class GroupService:
 
     def delete(self, group_id: UUID, user_id: UUID) -> None:
         if not self.members.is_owner(group_id, user_id):
-            raise ForbiddenError("Only group owner can delete the group")
+            raise ForbiddenError("Tylko właściciel grupy może ją usunąć")
         if not self.groups.get_by_id(group_id):
-            raise NotFoundError("Group not found")
+            raise NotFoundError("Grupa nie została znaleziona")
         self.groups.delete(group_id)
 
     def list_groups(self, user_id: UUID, limit: int, offset: int) -> list[GroupResponse]:
@@ -108,5 +108,5 @@ class GroupService:
     def _get_group(self, group_id: UUID) -> Group:
         group = self.groups.get_by_id(group_id)
         if group is None:
-            raise NotFoundError("Group not found")
+            raise NotFoundError("Grupa nie została znaleziona")
         return group

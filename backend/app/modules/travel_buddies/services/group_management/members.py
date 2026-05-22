@@ -50,9 +50,9 @@ class GroupMembersService:
 
     def add_member(self, group_id: UUID, requester_id: UUID, request: AddMemberRequest) -> GroupMemberResponse:
         if not self.members.is_admin(group_id, requester_id):
-            raise ForbiddenError("Admin role or higher required")
+            raise ForbiddenError("Wymagana rola administratora lub wyższa")
         if self.members.get_by_group_and_user(group_id, request.user_id):
-            raise ConflictError("User is already a member of this group")
+            raise ConflictError("Użytkownik jest już członkiem tej grupy")
 
         member = GroupMember(
             id=uuid4(),
@@ -71,14 +71,14 @@ class GroupMembersService:
         user_repo: "UserRepository | None" = None,
     ) -> GroupMemberResponse:
         if not self.members.is_admin(group_id, requester_id):
-            raise ForbiddenError("Admin role or higher required")
+            raise ForbiddenError("Wymagana rola administratora lub wyższa")
         if user_repo is None:
-            raise ValidationError("User repository not available")
+            raise ValidationError("Repozytorium użytkowników niedostępne")
         user = user_repo.get_by_email(email)
         if user is None:
-            raise NotFoundError(f"User with email '{email}' not found")
+            raise NotFoundError(f"Użytkownik z adresem e-mail '{email}' nie istnieje")
         if self.members.get_by_group_and_user(group_id, user.id):
-            raise ConflictError("User is already a member of this group")
+            raise ConflictError("Użytkownik jest już członkiem tej grupy")
         member = GroupMember(
             id=uuid4(),
             group_id=group_id,
@@ -90,17 +90,17 @@ class GroupMembersService:
 
     def update_role(self, group_id: UUID, user_id: UUID, requester_id: UUID, request: UpdateMemberRoleRequest) -> GroupMemberResponse:
         if not self.members.is_admin(group_id, requester_id):
-            raise ForbiddenError("Admin role or higher required")
+            raise ForbiddenError("Wymagana rola administratora lub wyższa")
         target = self._get_member(group_id, user_id)
         if target.role == MemberRole.OWNER:
-            raise ValidationError("Cannot change owner's role")
+            raise ValidationError("Nie można zmienić roli właściciela grupy")
 
         try:
             new_role = MemberRole(request.role)
         except ValueError:
-            raise ValidationError(f"Invalid role: {request.role!r}")
+            raise ValidationError(f"Nieprawidłowa rola: {request.role!r}")
         if new_role == MemberRole.OWNER:
-            raise ValidationError("Cannot promote to owner")
+            raise ValidationError("Nie można awansować na właściciela")
         updated = self.members.update(
             GroupMember(
                 id=target.id,
@@ -115,25 +115,25 @@ class GroupMembersService:
     def remove_member(self, group_id: UUID, user_id: UUID, requester_id: UUID) -> None:
         target = self._get_member(group_id, user_id)
         if target.role == MemberRole.OWNER:
-            raise ValidationError("Cannot remove the group owner")
+            raise ValidationError("Nie można usunąć właściciela grupy")
         if target.user_id != requester_id and not self.members.is_admin(group_id, requester_id):
-            raise ForbiddenError("Admin role or higher required")
+            raise ForbiddenError("Wymagana rola administratora lub wyższa")
         self.members.delete_by_group_and_user(group_id, user_id)
 
     def leave(self, group_id: UUID, user_id: UUID) -> None:
         member = self._get_member(group_id, user_id)
         if member.role == MemberRole.OWNER:
-            raise ValidationError("Group owner cannot leave. Transfer ownership or delete the group.")
+            raise ValidationError("Właściciel grupy nie może jej opuścić. Przekaż własność lub usuń grupę.")
         self.members.delete_by_group_and_user(group_id, user_id)
 
     def transfer_ownership(self, group_id: UUID, new_owner_id: UUID, current_owner_id: UUID) -> GroupMemberResponse:
         current = self._get_member(group_id, current_owner_id)
         if current.role != MemberRole.OWNER:
-            raise ForbiddenError("Only the current owner can transfer ownership")
+            raise ForbiddenError("Tylko aktualny właściciel może przekazać własność grupy")
 
         new_member = self._get_member(group_id, new_owner_id)
         if new_member.role == MemberRole.OWNER:
-            raise ValidationError("User is already the owner")
+            raise ValidationError("Użytkownik jest już właścicielem grupy")
 
         old_updated = self.members.update(
             GroupMember(
@@ -158,5 +158,5 @@ class GroupMembersService:
     def _get_member(self, group_id: UUID, user_id: UUID) -> GroupMember:
         member = self.members.get_by_group_and_user(group_id, user_id)
         if member is None:
-            raise NotFoundError("Member not found in this group")
+            raise NotFoundError("Członek nie został znaleziony w tej grupie")
         return member

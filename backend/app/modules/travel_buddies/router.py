@@ -742,9 +742,9 @@ def get_attachment(
     attachments_repo = _repositories(connection)[6]
     group_attachments = attachments_repo.list_by_group(group_id)
     if not any(a.filename == filename for a in group_attachments):
-        raise HTTPException(status_code=404, detail="File not found")
+        raise HTTPException(status_code=404, detail="Plik nie został znaleziony")
 
     filepath = UPLOAD_DIR / "travel_buddies" / filename
     if not filepath.exists():
-        raise HTTPException(status_code=404, detail="File not found")
+        raise HTTPException(status_code=404, detail="Plik nie został znaleziony")
     return FileResponse(filepath)

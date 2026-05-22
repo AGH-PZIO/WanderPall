@@ -211,7 +211,7 @@ export async function listGroups(
     headers: authHeaders(accessToken),
     params: { query: { limit: options?.limit, offset: options?.offset, search: options?.search } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not fetch groups"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się pobrać grup"));
   return data;
 }
 
@@ -223,7 +223,7 @@ export async function createGroup(
     body,
     headers: authHeaders(accessToken)
   });
-  if (error || !data) throw new Error(describeError(error, "Could not create group"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się utworzyć grupy"));
   return data;
 }
 
@@ -235,7 +235,7 @@ export async function getGroup(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not fetch group"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się pobrać grupy"));
   return data;
 }
 
@@ -249,7 +249,7 @@ export async function updateGroup(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not update group"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się zaktualizować grupy"));
   return data;
 }
 
@@ -258,7 +258,7 @@ export async function deleteGroup(accessToken: string, groupId: string): Promise
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error) throw new Error(describeError(error, "Could not delete group"));
+  if (error) throw new Error(describeError(error, "Nie udało się usunąć grupy"));
 }
 
 export async function listGroupMembers(
@@ -270,7 +270,7 @@ export async function listGroupMembers(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId }, query: { limit: options?.limit, offset: options?.offset } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not fetch members"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się pobrać członków"));
   return data;
 }
 
@@ -284,7 +284,7 @@ export async function addGroupMember(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not add member"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się dodać członka"));
   return data;
 }
 
@@ -298,7 +298,7 @@ export async function inviteMemberByEmail(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not invite member"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się zaprosić użytkownika"));
   return data;
 }
 
@@ -313,7 +313,7 @@ export async function updateMemberRole(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, user_id: userId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not update role"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się zaktualizować roli"));
   return data;
 }
 
@@ -326,7 +326,7 @@ export async function removeGroupMember(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, user_id: userId } }
   });
-  if (error) throw new Error(describeError(error, "Could not remove member"));
+  if (error) throw new Error(describeError(error, "Nie udało się usunąć członka"));
 }
 
 export async function leaveGroup(
@@ -337,7 +337,7 @@ export async function leaveGroup(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error) throw new Error(describeError(error, "Could not leave group"));
+  if (error) throw new Error(describeError(error, "Nie udało się opuścić grupy"));
 }
 
 export async function transferOwnership(
@@ -350,7 +350,7 @@ export async function transferOwnership(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not transfer ownership"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się przekazać własności grupy"));
   return data;
 }
 
@@ -363,7 +363,7 @@ export async function listPolls(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId }, query: { limit: options?.limit, offset: options?.offset } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not fetch polls"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się pobrać ankiet"));
   return data;
 }
 
@@ -377,7 +377,7 @@ export async function createPoll(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not create poll"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się utworzyć ankiety"));
   return data;
 }
 
@@ -390,7 +390,7 @@ export async function getPoll(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, poll_id: pollId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not fetch poll"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się pobrać ankiety"));
   return data;
 }
 
@@ -405,7 +405,7 @@ export async function votePoll(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, poll_id: pollId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not vote"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się oddać głosu"));
   return data;
 }
 
@@ -418,7 +418,7 @@ export async function closePoll(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, poll_id: pollId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not close poll"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się zamknąć ankiety"));
   return data;
 }
 
@@ -431,7 +431,7 @@ export async function listMessages(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId }, query: { limit: options?.limit, offset: options?.offset } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not fetch messages"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się pobrać notatek"));
   return data;
 }
 
@@ -445,7 +445,7 @@ export async function sendMessage(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not send message"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się wysłać notatki"));
   return data;
 }
 
@@ -461,7 +461,7 @@ export async function uploadAttachment(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId }, query: {} }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not upload file"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się przesłać pliku"));
   return data;
 }
 
@@ -476,7 +476,7 @@ export async function addReaction(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, message_id: messageId, emoji: encodedEmoji } }
   });
-  if (error) throw new Error(describeError(error, "Could not add reaction"));
+  if (error) throw new Error(describeError(error, "Nie udało się dodać reakcji"));
 }
 
 export async function removeReaction(
@@ -490,7 +490,7 @@ export async function removeReaction(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, message_id: messageId, emoji: encodedEmoji } }
   });
-  if (error) throw new Error(describeError(error, "Could not remove reaction"));
+  if (error) throw new Error(describeError(error, "Nie udało się usunąć reakcji"));
 }
 
 export async function deleteMessage(
@@ -502,7 +502,7 @@ export async function deleteMessage(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, message_id: messageId } }
   });
-  if (error) throw new Error(describeError(error, "Could not delete message"));
+  if (error) throw new Error(describeError(error, "Nie udało się usunąć notatki"));
 }
 
 export async function listTasks(
@@ -514,7 +514,7 @@ export async function listTasks(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId }, query: { limit: options?.limit, offset: options?.offset, status_filter: options?.status_filter ?? null } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not fetch tasks"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się pobrać zadań"));
   return data;
 }
 
@@ -528,7 +528,7 @@ export async function createTask(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not create task"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się utworzyć zadania"));
   return data;
 }
 
@@ -543,7 +543,7 @@ export async function updateTask(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, task_id: taskId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not update task"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się zaktualizować zadania"));
   return data;
 }
 
@@ -556,7 +556,7 @@ export async function markTaskDone(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, task_id: taskId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not mark task done"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się oznaczyć zadania jako ukończone"));
   return data;
 }
 
@@ -569,7 +569,7 @@ export async function markTaskPending(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, task_id: taskId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not mark task pending"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się oznaczyć zadania jako nieukończone"));
   return data;
 }
 
@@ -582,7 +582,7 @@ export async function deleteTask(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, task_id: taskId } }
   });
-  if (error) throw new Error(describeError(error, "Could not delete task"));
+  if (error) throw new Error(describeError(error, "Nie udało się usunąć zadania"));
 }
 
 export async function listPackingItems(
@@ -594,7 +594,7 @@ export async function listPackingItems(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId }, query: { limit: options?.limit, offset: options?.offset, category: options?.category ?? null } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not fetch packing items"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się pobrać listy pakowania"));
   return data;
 }
 
@@ -608,7 +608,7 @@ export async function createPackingItem(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not create packing item"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się dodać przedmiotu"));
   return data;
 }
 
@@ -623,7 +623,7 @@ export async function updatePackingItem(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, item_id: itemId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not update packing item"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się zaktualizować przedmiotu"));
   return data;
 }
 
@@ -636,7 +636,7 @@ export async function markItemPacked(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId, item_id: itemId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not mark item packed"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się oznaczyć jako spakowane"));
   return data;
 }
 
@@ -648,6 +648,31 @@ export async function getPackingProgress(
     headers: authHeaders(accessToken),
     params: { path: { group_id: groupId } }
   });
-  if (error || !data) throw new Error(describeError(error, "Could not create packing item"));
+  if (error || !data) throw new Error(describeError(error, "Nie udało się pobrać postępu pakowania"));
   return data;
+}
+
+export async function markItemUnpacked(
+  accessToken: string,
+  groupId: string,
+  itemId: string
+): Promise<PackingItemResponse> {
+  const { data, error } = await apiClient.POST("/travel-buddies/groups/{group_id}/packing/{item_id}/unpacked", {
+    headers: authHeaders(accessToken),
+    params: { path: { group_id: groupId, item_id: itemId } }
+  });
+  if (error || !data) throw new Error(describeError(error, "Nie udało się oznaczyć jako niespakowane"));
+  return data;
+}
+
+export async function deletePackingItem(
+  accessToken: string,
+  groupId: string,
+  itemId: string
+): Promise<void> {
+  const { error } = await apiClient.DELETE("/travel-buddies/groups/{group_id}/packing/{item_id}", {
+    headers: authHeaders(accessToken),
+    params: { path: { group_id: groupId, item_id: itemId } }
+  });
+  if (error) throw new Error(describeError(error, "Nie udało się usunąć przedmiotu"));
 }

@@ -9,6 +9,7 @@ export function GroupsPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
+  const [creating, setCreating] = useState(false);
 
   function handleGroupClick(group: { id: string }) {
     navigate(`/travel-buddies/groups/${group.id}`);
@@ -21,26 +22,32 @@ export function GroupsPage() {
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     if (!accessToken || !newName.trim()) return;
-    await createGroup(accessToken, {
-      name: newName,
-      description: newDesc || undefined,
-    });
-    setNewName("");
-    setNewDesc("");
-    setShowCreate(false);
-    refreshGroups();
+    setCreating(true);
+    try {
+      await createGroup(accessToken, {
+        name: newName.trim(),
+        description: newDesc.trim() || undefined,
+      });
+      setNewName("");
+      setNewDesc("");
+      setShowCreate(false);
+      refreshGroups();
+    } finally {
+      setCreating(false);
+    }
   }
 
   if (!accessToken) {
     return (
       <div className="tb-empty">
-        Please sign in to view your groups.
+        <div className="tb-empty-icon">🔐</div>
+        Zaloguj się, aby zobaczyć swoje grupy.
       </div>
     );
   }
 
   if (loading) {
-    return <div className="tb-loading">Loading groups...</div>;
+    return <div className="tb-loading">Ładowanie grup...</div>;
   }
 
   if (error) {
@@ -50,9 +57,9 @@ export function GroupsPage() {
   return (
     <div className="tb-groups-page">
       <div className="tb-header">
-        <h1>My Groups</h1>
-        <button type="button" onClick={() => setShowCreate(true)}>
-          + New Group
+        <h1>Moje grupy</h1>
+        <button type="button" onClick={() => setShowCreate((v) => !v)}>
+          {showCreate ? "Anuluj" : "+ Nowa grupa"}
         </button>
       </div>
 
@@ -62,28 +69,34 @@ export function GroupsPage() {
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            placeholder="Group name"
+            placeholder="Nazwa grupy"
             minLength={2}
             maxLength={100}
             required
+            autoFocus
           />
           <textarea
             value={newDesc}
             onChange={(e) => setNewDesc(e.target.value)}
-            placeholder="Description (optional)"
+            placeholder="Opis (opcjonalnie)"
             maxLength={500}
           />
           <div className="tb-form-actions">
-            <button type="submit">Create</button>
+            <button type="submit" disabled={creating}>
+              {creating ? "Tworzenie..." : "Utwórz"}
+            </button>
             <button type="button" onClick={() => setShowCreate(false)}>
-              Cancel
+              Anuluj
             </button>
           </div>
         </form>
       )}
 
       {groups.length === 0 ? (
-        <div className="tb-empty">No groups yet. Create one to get started!</div>
+        <div className="tb-empty">
+          <div className="tb-empty-icon">✈️</div>
+          Brak grup – utwórz pierwszą i zaproś znajomych!
+        </div>
       ) : (
         <ul className="tb-group-list">
           {groups.map((group) => (
@@ -95,13 +108,24 @@ export function GroupsPage() {
               tabIndex={0}
               onKeyDown={(e) => e.key === "Enter" && handleGroupClick(group)}
             >
-              <div className="tb-group-name">{group.name}</div>
-              {group.description && (
-                <div className="tb-group-desc">{group.description}</div>
-              )}
-              <div className="tb-group-meta">
-                {group.member_count} member{group.member_count !== 1 ? "s" : ""}
+              <div className="tb-group-item-body">
+                <div className="tb-group-name">{group.name}</div>
+                {group.description && (
+                  <div className="tb-group-desc">{group.description}</div>
+                )}
+                <div className="tb-group-meta">
+                  <span>
+                    {group.member_count}{" "}
+                    {group.member_count === 1 ? "członek" : "członków"}
+                  </span>
+                  {group.created_at && (
+                    <span>
+                      {new Date(group.created_at).toLocaleDateString("pl-PL")}
+                    </span>
+                  )}
+                </div>
               </div>
+              <span className="tb-group-chevron">›</span>
             </li>
           ))}
         </ul>

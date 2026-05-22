@@ -30,9 +30,9 @@ class ToDoListService:
     def create_task(self, group_id: UUID, user_id: UUID, request: CreateTaskRequest) -> TaskResponse:
         title = request.title.strip()
         if not title:
-            raise ValidationError("Task title cannot be empty")
+            raise ValidationError("Tytuł zadania nie może być pusty")
         if len(title) > 200:
-            raise ValidationError("Task title too long (max 200 characters)")
+            raise ValidationError("Tytuł zadania jest zbyt długi (max 200 znaków)")
 
         task = Task(
             id=uuid4(),
@@ -54,7 +54,7 @@ class ToDoListService:
         if request.title is not None:
             title = request.title.strip()
             if not title:
-                raise ValidationError("Task title cannot be empty")
+                raise ValidationError("Tytuł zadania nie może być pusty")
 
         updated = self.tasks.update(
             Task(
@@ -100,7 +100,7 @@ class ToDoListService:
     def _get_task(self, task_id: UUID) -> Task:
         task = self.tasks.get_by_id(task_id)
         if task is None:
-            raise NotFoundError("Task not found")
+            raise NotFoundError("Zadanie nie zostało znalezione")
         return task
 
     def _task_to_response(self, task: Task) -> TaskResponse:

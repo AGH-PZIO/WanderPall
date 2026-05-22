@@ -40,9 +40,9 @@ class PackingListService:
     def add_item(self, group_id: UUID, user_id: UUID, request: CreatePackingItemRequest) -> PackingItemResponse:
         name = request.name.strip()
         if not name:
-            raise ValidationError("Item name cannot be empty")
+            raise ValidationError("Nazwa przedmiotu nie może być pusta")
         if len(name) > 200:
-            raise ValidationError("Item name too long (max 200 characters)")
+            raise ValidationError("Nazwa przedmiotu jest zbyt długa (max 200 znaków)")
 
         item = PackingItem(
             id=uuid4(),
@@ -63,7 +63,7 @@ class PackingListService:
         if request.name is not None:
             name = request.name.strip()
             if not name:
-                raise ValidationError("Item name cannot be empty")
+                raise ValidationError("Nazwa przedmiotu nie może być pusta")
 
         updated = self.packing.update(
             PackingItem(
@@ -110,7 +110,7 @@ class PackingListService:
     def _get_item(self, item_id: UUID) -> PackingItem:
         item = self.packing.get_by_id(item_id)
         if item is None:
-            raise NotFoundError("Packing item not found")
+            raise NotFoundError("Przedmiot nie został znaleziony na liście pakowania")
         return item
 
     def _item_to_response(self, item: PackingItem) -> PackingItemResponse:
