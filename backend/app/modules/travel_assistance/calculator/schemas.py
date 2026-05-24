@@ -7,12 +7,14 @@ from decimal import Decimal
 class ExpenseBase(BaseModel):
     category: str
     amount: Decimal
+    currency: str
 
 class ExpenseCreate(ExpenseBase):
     pass
 
 class CalculationBase(BaseModel):
     title: str
+    total: Decimal
 
 class CalculationCreate(CalculationBase):
     expenses: List[ExpenseCreate]

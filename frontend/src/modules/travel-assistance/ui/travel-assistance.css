@@ -103,7 +103,7 @@
   color: #1976d2;
   cursor: pointer;
   font-size: 1rem;
-  padding: 4px 8px;
+  padding: 4px 0px;
   margin-bottom: 8px;
 }
 
@@ -129,6 +129,7 @@
 .ta-header-left {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .ta-header-left h2 {
@@ -854,10 +855,6 @@
   border-color: #ef9a9a;
 }
 
-.ta-read-pane {
-  max-width: 720px;
-}
-
 .ta-read-pane h1 {
   margin: 0 0 12px 0;
   font-size: 1.75rem;
@@ -1064,6 +1061,21 @@
   flex: 1;
   overflow: auto;
   padding: 20px 24px 32px;
+}
+
+.ta-guide-cat-level {
+  padding: 20px 0px;
+}
+
+.ta-guide-cat-level label {
+  margin-right: 10px;
+}
+
+.ta-guide-cat-level select {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid gray;
 }
 
 .ta-guide-title-input {

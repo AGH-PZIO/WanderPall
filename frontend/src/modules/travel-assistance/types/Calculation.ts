@@ -3,11 +3,13 @@ export type Expense = {
   calculation_id: string;
   category: string;
   amount: number;
+  currency: string;
 };
 
 export interface ExpenseBase {
   category: string;
   amount: number;
+  currency: string;
 }
 
 export type Calculation = {
@@ -16,9 +18,11 @@ export type Calculation = {
   title: string;
   created_at: string;
   expenses: Expense[];
+  total: number;
 };
 
 export type CreateCalculationDTO = {
   title: string;
   expenses: ExpenseBase[];
+  total: number;
 };

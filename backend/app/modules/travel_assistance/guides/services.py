@@ -10,7 +10,7 @@ class GuideService:
         if resource_user_id != current_user_id:
             raise PermissionError("Forbidden")
     
-    def validate_guide(self, title: str, content: Any):
+    def validate_guide(self, title: str, content: Any, level: str, category: str):
         if not content or content == []:
             raise ValueError("Guide cannot be empty")
         if not isinstance(content, (dict, list)):
@@ -19,10 +19,14 @@ class GuideService:
             raise ValueError("Title cannot be empty")
         if len(title) > 100:
             raise ValueError("Length of the title cannot exceed 100 characters")
+        if not level or level == "---":
+            raise ValueError("Level must be selected")
+        if not category or category == "---":
+            raise ValueError("Category must be selected")
         
-    def create_guide(self, user_id: UUID, title: str, content: str):
-        self.validate_guide(title, content)
-        return guides_repo.create_guide(self.conn, user_id, title, content)
+    def create_guide(self, user_id: UUID, title: str, content: str, level: str, category: str):
+        self.validate_guide(title, content, level, category)
+        return guides_repo.create_guide(self.conn, user_id, title, content, level, category)
 
     def publish_guide(self, user_id: UUID, guide_id: UUID):
         guide = guides_repo.get_guide(self.conn, guide_id)
@@ -38,13 +42,13 @@ class GuideService:
         self.ensure_owner(guide.user_id, user_id)
         return guides_repo.unpublish_guide(self.conn, guide_id, user_id)
 
-    def update_guide(self, user_id: UUID, guide_id: UUID, title: str, data: Any):
+    def update_guide(self, user_id: UUID, guide_id: UUID, title: str, data: Any, level: str, category: str):
         guide = guides_repo.get_guide(self.conn, guide_id)
         if guide is None:
             raise ValueError("Guide not found")
         self.ensure_owner(guide.user_id, user_id)
-        self.validate_guide(title, data)
-        return guides_repo.update_guide(self.conn, guide_id, title, data, user_id)
+        self.validate_guide(title, data, level, category)
+        return guides_repo.update_guide(self.conn, guide_id, title, data, user_id, level, category)
 
     def get_user_guides(self, user_id: UUID):
         return guides_repo.get_guides(self.conn, user_id)
@@ -53,7 +57,6 @@ class GuideService:
         guide = guides_repo.get_guide(self.conn, guide_id)
         if guide is None:
             raise ValueError("Guide not found")
-        self.ensure_owner(guide.user_id, user_id)
         return guide
 
     def get_published_guides(self):

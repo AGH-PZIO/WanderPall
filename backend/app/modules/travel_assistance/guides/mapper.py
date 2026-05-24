@@ -9,6 +9,8 @@ def map_guide(row) -> schemas.GuideResponse:
         created_at=row["created_at"],
         updated_at=row["updated_at"],
         published=row["published"],
+        level=row["level"],
+        category=row["category"]
     )
 
 def map_guides(rows) -> list[schemas.GuideResponse]:

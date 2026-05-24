@@ -2056,6 +2056,18 @@
             "type": "string",
             "title": "Title"
           },
+          "total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Total"
+          },
           "expenses": {
             "items": {
               "$ref": "#/components/schemas/ExpenseCreate"
@@ -2067,6 +2079,7 @@
         "type": "object",
         "required": [
           "title",
+          "total",
           "expenses"
         ],
         "title": "CalculationCreate"
@@ -2076,6 +2089,11 @@
           "title": {
             "type": "string",
             "title": "Title"
+          },
+          "total": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total"
           },
           "id": {
             "type": "string",
@@ -2103,6 +2121,7 @@
         "type": "object",
         "required": [
           "title",
+          "total",
           "id",
           "user_id",
           "created_at",
@@ -2283,12 +2302,17 @@
               }
             ],
             "title": "Amount"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
           }
         },
         "type": "object",
         "required": [
           "category",
-          "amount"
+          "amount",
+          "currency"
         ],
         "title": "ExpenseCreate"
       },
@@ -2302,6 +2326,10 @@
             "type": "string",
             "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Amount"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
           },
           "id": {
             "type": "string",
@@ -2318,6 +2346,7 @@
         "required": [
           "category",
           "amount",
+          "currency",
           "id",
           "calculation_id"
         ],
@@ -2417,13 +2446,23 @@
           "published": {
             "type": "boolean",
             "title": "Published"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
           }
         },
         "type": "object",
         "required": [
           "title",
           "content",
-          "published"
+          "published",
+          "level",
+          "category"
         ],
         "title": "GuideCreate"
       },
@@ -2443,6 +2482,14 @@
           "published": {
             "type": "boolean",
             "title": "Published"
+          },
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
           },
           "id": {
             "type": "string",
@@ -2477,6 +2524,8 @@
           "title",
           "content",
           "published",
+          "level",
+          "category",
           "id",
           "user_id",
           "created_at",

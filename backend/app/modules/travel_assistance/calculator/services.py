@@ -1,5 +1,6 @@
 from . import repository as calculations_repo
 from uuid import UUID
+from decimal import Decimal
 
 class CalculationService:
     def __init__(self, conn):
@@ -17,9 +18,9 @@ class CalculationService:
         if len(title) > 100:
             raise ValueError("Length of the title cannot exceed 100 characters")
         
-    def create_calculation(self, user_id: UUID, title: str, expenses: list[dict]):
+    def create_calculation(self, user_id: UUID, title: str, total: Decimal, expenses: list[dict]):
         self.validate_calculation(title, expenses)
-        return calculations_repo.create_calculation(self.conn, user_id, title, expenses)
+        return calculations_repo.create_calculation(self.conn, user_id, title, total, expenses)
 
     def get_calculations(self, user_id):
         return calculations_repo.get_calculations(self.conn, user_id)

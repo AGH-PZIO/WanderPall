@@ -12,16 +12,22 @@ export type Guide = {
   published: boolean;
   created_at: string;
   updated_at?: string;
+  level: string;
+  category: string;
 };
 
 export type CreateGuideDTO = {
   title: string;
   content: GuideBlock[];
   published: boolean;
+  level: string;
+  category: string;
 };
 
 export type UpdateGuideDTO = {
   title: string;
   content: GuideBlock[];
   published: boolean;
+  level: string;
+  category: string;
 };

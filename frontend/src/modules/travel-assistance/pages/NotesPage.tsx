@@ -51,7 +51,7 @@ function NotesPage() {
           <h2>My notes</h2>
         </div>
         <div className="ta-actions">
-          <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/note/new")}>
+          <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/edit-note/new")}>
             + New note
           </button>
         </div>
@@ -62,7 +62,7 @@ function NotesPage() {
           <div className="ta-empty-state" style={{ minHeight: 200 }}>
             <div className="ta-empty-icon">🗒️</div>
             <p>No notes yet. Create your first note.</p>
-            <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/note/new")}>
+            <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/edit-note/new")}>
               New note
             </button>
           </div>

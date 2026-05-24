@@ -717,6 +717,8 @@ export interface components {
         CalculationCreate: {
             /** Title */
             title: string;
+            /** Total */
+            total: number | string;
             /** Expenses */
             expenses: components["schemas"]["ExpenseCreate"][];
         };
@@ -724,6 +726,8 @@ export interface components {
         CalculationWithExpenses: {
             /** Title */
             title: string;
+            /** Total */
+            total: string;
             /**
              * Id
              * Format: uuid
@@ -798,6 +802,8 @@ export interface components {
             category: string;
             /** Amount */
             amount: number | string;
+            /** Currency */
+            currency: string;
         };
         /** ExpenseResponse */
         ExpenseResponse: {
@@ -805,6 +811,8 @@ export interface components {
             category: string;
             /** Amount */
             amount: string;
+            /** Currency */
+            currency: string;
             /**
              * Id
              * Format: uuid
@@ -845,6 +853,10 @@ export interface components {
             content: components["schemas"]["GuideBlock"][];
             /** Published */
             published: boolean;
+            /** Level */
+            level: string;
+            /** Category */
+            category: string;
         };
         /** GuideResponse */
         GuideResponse: {
@@ -854,6 +866,10 @@ export interface components {
             content: components["schemas"]["GuideBlock"][];
             /** Published */
             published: boolean;
+            /** Level */
+            level: string;
+            /** Category */
+            category: string;
             /**
              * Id
              * Format: uuid

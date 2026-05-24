@@ -8,7 +8,7 @@ def get_calculations(conn: psycopg.Connection, user_id: UUID):
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT c.id as calc_id, c.user_id, c.title, c.created_at, e.id AS expense_id, e.category, e.amount
+            SELECT c.id as calc_id, c.user_id, c.title, c.created_at, c.total, e.id AS expense_id, e.category, e.amount, e.currency
             FROM travel_assistance.calculations c
             LEFT JOIN travel_assistance.expenses e on c.id = e.calculation_id
             WHERE c.user_id = %s
@@ -28,6 +28,7 @@ def get_calculations(conn: psycopg.Connection, user_id: UUID):
                 "user_id": row['user_id'],
                 "title": row['title'],
                 "created_at": row['created_at'],
+                "total": row["total"],
                 "expenses": []
             }
 
@@ -36,7 +37,8 @@ def get_calculations(conn: psycopg.Connection, user_id: UUID):
                 "id": row['expense_id'],
                 "calculation_id": cid,
                 "category": row['category'],
-                "amount": row['amount']
+                "amount": row['amount'],
+                "currency": row['currency']
             })
 
     return list(calculations.values())
@@ -45,8 +47,8 @@ def get_calculation(conn, calculation_id: UUID) -> schemas.CalculationResponse |
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT c.id as calc_id, c.user_id, c.title, c.created_at,
-                   e.id as expense_id, e.category, e.amount
+            SELECT c.id as calc_id, c.user_id, c.title, c.created_at, c.total,
+                   e.id as expense_id, e.category, e.amount, e.currency
             FROM travel_assistance.calculations c
             LEFT JOIN travel_assistance.expenses e
                 ON c.id = e.calculation_id
@@ -66,6 +68,7 @@ def get_calculation(conn, calculation_id: UUID) -> schemas.CalculationResponse |
         "user_id": first['user_id'],
         "title": first['title'],
         "created_at": first['created_at'],
+        "total": first['total'],
         "expenses": []
     }
 
@@ -75,20 +78,21 @@ def get_calculation(conn, calculation_id: UUID) -> schemas.CalculationResponse |
                 "id": row['expense_id'],
                 "calculation_id": first['calc_id'],
                 "category": row['category'],
-                "amount": row['amount']
+                "amount": row['amount'],
+                "currency": row['currency']
             })
 
     return result
 
-def create_calculation(conn: psycopg.Connection, user_id: UUID, title: str, expenses: List[Dict]):
+def create_calculation(conn: psycopg.Connection, user_id: UUID, title: str, total: Decimal, expenses: List[Dict]):
     with conn.cursor() as cur:
         cur.execute(
             """
-            INSERT INTO travel_assistance.calculations (user_id, title, created_at)
-            VALUES (%s, %s, now())
+            INSERT INTO travel_assistance.calculations (user_id, title, total, created_at)
+            VALUES (%s, %s, %s, now())
             RETURNING id
             """,
-            (str(user_id), title),
+            (str(user_id), title, total),
         )
         row = cur.fetchone()
         calculation_id = row['id'] if isinstance(row, dict) else row[0]
@@ -96,10 +100,10 @@ def create_calculation(conn: psycopg.Connection, user_id: UUID, title: str, expe
         for expense in expenses:
             cur.execute(
                 """
-                INSERT INTO travel_assistance.expenses (calculation_id, category, amount)
-                VALUES (%s, %s, %s)
+                INSERT INTO travel_assistance.expenses (calculation_id, category, amount, currency)
+                VALUES (%s, %s, %s, %s)
                 """,
-                (str(calculation_id), expense["category"], expense["amount"]),
+                (str(calculation_id), expense["category"], expense["amount"], expense["currency"]),
             )
         return calculation_id
 

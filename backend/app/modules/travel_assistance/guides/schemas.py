@@ -13,6 +13,8 @@ class GuideBase(BaseModel):
     title: str
     content: List[GuideBlock]
     published: bool
+    level: str
+    category: str
 
 class GuideCreate(GuideBase):
     pass
