@@ -7,9 +7,7 @@ CREATE TABLE IF NOT EXISTS travel_assistance.guides (
     content jsonb NOT NULL,
     created_at timestamptz default now(),
     updated_at timestamptz default now(),
-    published boolean default false,
-    level text NOT NULL,
-    category text NOT NULL
+    published boolean default false
 );
 
 CREATE INDEX ON travel_assistance.guides (user_id);
