@@ -5,6 +5,7 @@ import "./travel-assistance.css";
 import NotesPage from "../pages/NotesPage";
 import BrowseGuides from "../pages/BrowseGuidesPage";
 import NotePage from "../pages/NotePage";
+import EditNotePage from "../pages/EditNotePage";
 import MyGuides from "../pages/MyGuides";
 import ReadGuide from "../pages/ReadGuide";
 import MyCalculations from "../pages/MyCalculations";
@@ -37,6 +38,7 @@ function TravelAssistanceContent({
 
           <Route path="/notes" element={<NotesPage />} />
           <Route path="/note/:id" element={<NotePage />} />
+          <Route path="/edit-note/:id" element={<EditNotePage />} />
 
           <Route path="/browse-guides" element={<BrowseGuides />} />
           <Route path="/my-guides" element={<MyGuides />} />

@@ -12,6 +12,8 @@ export default function GuideEditor() {
   const isNew = id === "new";
 
   const [title, setTitle] = useState("");
+  const [level, setLevel] = useState("");
+  const [category, setCategory] = useState("");
   const [content, setContent] = useState<GuideBlock[]>([]);
   const [published, setPublished] = useState(false);
 
@@ -20,6 +22,8 @@ export default function GuideEditor() {
       getGuide(id).then((g) => {
         if (g) {
           setTitle(g.title);
+          setLevel(g.level);
+          setCategory(g.category);
           setContent(typeof g.content === "string" ? JSON.parse(g.content) : g.content);
           setPublished(g.published);
         }
@@ -65,7 +69,9 @@ export default function GuideEditor() {
     const payload: CreateGuideDTO = {
       title,
       content,
-      published
+      published,
+      level,
+      category
     };
 
     try {
@@ -111,23 +117,39 @@ export default function GuideEditor() {
           className="ta-guide-title-input"
         />
 
-        <div className="ta-guide-toolbar">
-          <strong>Add block</strong>
-          <button type="button" onClick={() => addBlock("heading")}>
-            Heading
-          </button>
-          <button type="button" onClick={() => addBlock("paragraph")}>
-            Paragraph
-          </button>
-          <button type="button" onClick={() => addBlock("image")}>
-            Image
-          </button>
-          <button type="button" onClick={() => addBlock("video")}>
-            Video
-          </button>
-          <button type="button" onClick={() => addBlock("audio")}>
-            Audio
-          </button>
+        <div className="ta-guide-cat-level">
+          <label htmlFor="level">Level:</label>
+          <select 
+            name="level" 
+            id="level" 
+            value={level || "---"}
+            onChange={(e) => setLevel(e.target.value)}
+          >
+            <option value="---" disabled>---</option>
+            <option value="beginner">beginner</option>
+            <option value="intermediate">intermediate</option>
+            <option value="advanced">advanced</option>
+          </select>
+        </div>
+
+        <div className="ta-guide-cat-level">
+          <label htmlFor="category">Category:</label>
+          <select 
+            name="category" 
+            id="category" 
+            value={category || "---"}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="---" disabled>---</option>
+            <option value="flights">flights</option>
+            <option value="transport">transport</option>
+            <option value="accommodation">accommodation</option>
+            <option value="food">food</option>
+            <option value="monuments">monuments</option>
+            <option value="museums">museums</option>
+            <option value="nature">nature</option>
+            <option value="entertainment">entertainment</option>
+          </select>
         </div>
 
         <div>
@@ -160,6 +182,25 @@ export default function GuideEditor() {
               )}
             </div>
           ))}
+        </div>
+
+        <div className="ta-guide-toolbar">
+          <strong>Add block</strong>
+          <button type="button" onClick={() => addBlock("heading")}>
+            Heading
+          </button>
+          <button type="button" onClick={() => addBlock("paragraph")}>
+            Paragraph
+          </button>
+          <button type="button" onClick={() => addBlock("image")}>
+            Image
+          </button>
+          <button type="button" onClick={() => addBlock("video")}>
+            Video
+          </button>
+          <button type="button" onClick={() => addBlock("audio")}>
+            Audio
+          </button>
         </div>
 
         <div className="ta-guide-footer-actions">
