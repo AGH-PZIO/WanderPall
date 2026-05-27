@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     frontend_oauth_redirect_url: str = ""
     gmail_sync_max_results_per_page: int = 100
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     @computed_field  # type: ignore[prop-decorator]
     @property
