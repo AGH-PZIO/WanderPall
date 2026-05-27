@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNotes } from "../hooks/notes/useNotes";
 import { Note } from "../types/Note";
 import { useCreateNote } from "../hooks/notes/useCreateNote";
@@ -11,8 +11,9 @@ import { tokenStore } from "../../account/auth-runtime";
 import { AuthRequiredGate } from "../ui/AuthRequiredGate";
 import "../ui/travel-assistance.css";
 
-type NoteViewerProps = {
-  note: Note | null;
+type NoteEditorProps = {
+  defaultTitle: string;
+  defaultContent: string;
   noteId: string | undefined;
   isNew: boolean;
   user: User | null;
@@ -23,16 +24,41 @@ type NoteViewerProps = {
   remove: ReturnType<typeof useDeleteNote>["remove"];
 };
 
-function NoteViewer({
-  note,
+function NoteEditor({
+  defaultTitle,
+  defaultContent,
   noteId,
   isNew,
+  user,
   notes,
   navigate,
+  create,
+  update,
   remove
-}: NoteViewerProps) {
-  const title = note?.title ?? "";
-  const content = note?.content ?? "";
+}: NoteEditorProps) {
+  const [title, setTitle] = useState(defaultTitle);
+  const [content, setContent] = useState(defaultContent);
+
+  function handleSave() {
+    if (!user) {
+      alert("You have to be logged in!");
+      return;
+    }
+
+    const noteData = {
+      title,
+      content,
+      user_id: user.id
+    };
+
+    if (isNew) {
+      create(noteData);
+    } else {
+      update(noteId ? noteId : "", noteData);
+    }
+
+    navigate("/travel-assistance/notes");
+  }
 
   function renderNotes() {
     return [...notes]
@@ -68,11 +94,11 @@ function NoteViewer({
           <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/notes")}>
             ← Back
           </button>
-          <h2>Browse note</h2>
+          <h2>{isNew ? "New note" : "Edit note"}</h2>
         </div>
         <div className="ta-actions">
-          <button type="button" onClick={() => navigate(`/travel-assistance/edit-note/${noteId}`)} className="btn-primary">
-            Edit
+          <button type="button" onClick={handleSave} className="btn-primary">
+            {isNew ? "Create" : "Save"}
           </button>
           {!isNew && (
             <button
@@ -91,8 +117,29 @@ function NoteViewer({
 
       <div className="ta-note-container">
         <div className="ta-note-editor">
-          <h2>{title}</h2>
-          <p style={{ whiteSpace: 'pre-line' }}>{content}</p>
+          <label className="ta-field-label" htmlFor="note-title">
+            Title
+          </label>
+          <input
+            id="note-title"
+            type="text"
+            className="ta-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Note title"
+          />
+
+          <label className="ta-field-label" htmlFor="note-content">
+            Content
+          </label>
+          <textarea
+            id="note-content"
+            className="ta-textarea"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            rows={14}
+            placeholder="Write your note…"
+          />
         </div>
 
         <div className="ta-notes-list">{renderNotes()}</div>
@@ -101,7 +148,7 @@ function NoteViewer({
   );
 }
 
-function NotePage() {
+function EditNotePage() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
   const { notes, loading, refetch } = useNotes();
@@ -136,9 +183,10 @@ function NotePage() {
   }
 
   return (
-    <NoteViewer
+    <NoteEditor
       key={isNew ? "new" : (id ?? "")}
-      note={currentNote}
+      defaultTitle={isNew ? "" : (currentNote?.title ?? "")}
+      defaultContent={isNew ? "" : (currentNote?.content ?? "")}
       noteId={id}
       isNew={isNew}
       user={user}
@@ -151,4 +199,4 @@ function NotePage() {
   );
 }
 
-export default NotePage;
+export default EditNotePage;

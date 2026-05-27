@@ -10,7 +10,7 @@ def get_guides(conn: psycopg.Connection, user_id: UUID) -> list[schemas.GuideRes
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT id, user_id, title, content, created_at, updated_at, published
+            SELECT id, user_id, title, content, created_at, updated_at, published, level, category
             FROM travel_assistance.guides
             WHERE user_id = %s
             """,
@@ -23,7 +23,7 @@ def get_guide(conn: psycopg.Connection, guide_id: UUID) -> schemas.GuideResponse
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT id, user_id, title, content, created_at, updated_at, published
+            SELECT id, user_id, title, content, created_at, updated_at, published, level, category
             FROM travel_assistance.guides
             WHERE id = %s
             """,
@@ -36,7 +36,7 @@ def get_published_guides(conn: psycopg.Connection) -> list[schemas.GuideResponse
     with conn.cursor() as cur:
         cur.execute(
             """
-            SELECT id, user_id, title, content, created_at, updated_at, published
+            SELECT id, user_id, title, content, created_at, updated_at, published, level, category
             FROM travel_assistance.guides
             WHERE published = TRUE
             """
@@ -44,16 +44,16 @@ def get_published_guides(conn: psycopg.Connection) -> list[schemas.GuideResponse
         rows = cur.fetchall()
         return mapper.map_guides(rows)
 
-def create_guide(conn: psycopg.Connection, user_id: UUID, title: str, content: Any) -> int:
+def create_guide(conn: psycopg.Connection, user_id: UUID, title: str, content: Any, level: str, category: str) -> int:
     with conn.cursor() as cur:
         cur.execute(
             """
             INSERT INTO travel_assistance.guides
-                (user_id, title, content, created_at)
-            VALUES (%s, %s, %s, now())
+                (user_id, title, content, level, category, created_at)
+            VALUES (%s, %s, %s, %s, %s, now())
             RETURNING id
             """,
-            (str(user_id), title, json.dumps(jsonable_encoder(content))),
+            (str(user_id), title, json.dumps(jsonable_encoder(content)), level, category),
         )
         row = cur.fetchone()        
         if row is None:
@@ -93,13 +93,13 @@ def unpublish_guide(conn: psycopg.Connection, guide_id: UUID, user_id: UUID) -> 
             (str(guide_id), str(user_id),),
         )
 
-def update_guide(conn: psycopg.Connection, guide_id: UUID, title: str, content: Any, user_id: UUID) -> None:
+def update_guide(conn: psycopg.Connection, guide_id: UUID, title: str, content: Any, user_id: UUID, level: str, category: str) -> None:
     with conn.cursor() as cur:
         cur.execute(
             """
             UPDATE travel_assistance.guides
-            SET title = %s, content = %s, updated_at = now()
+            SET title = %s, content = %s, level = %s, category = %s, updated_at = now()
             WHERE id = %s AND user_id = %s
             """,
-            (title, json.dumps(jsonable_encoder(content)), str(guide_id), str(user_id)),
+            (title, json.dumps(jsonable_encoder(content)), level, category, str(guide_id), str(user_id)),
         )

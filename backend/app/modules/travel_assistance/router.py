@@ -290,7 +290,7 @@ def create_guide(
     user=Depends(get_current_user),
 ):
     try:
-        return service.create_guide(user.id, data.title, data.content)
+        return service.create_guide(user.id, data.title, data.content, data.level, data.category)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -302,7 +302,7 @@ def update_guide(
     user=Depends(get_current_user),
 ):
     try:
-        return service.update_guide(user.id, guide_id, data.title, data.content)
+        return service.update_guide(user.id, guide_id, data.title, data.content, data.level, data.category)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except PermissionError:
@@ -454,7 +454,7 @@ def create_calculation(
 ):
     try:
         expenses_data = [e.model_dump() for e in data.expenses]
-        return service.create_calculation(user.id, data.title, expenses_data)
+        return service.create_calculation(user.id, data.title, data.total, expenses_data)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 

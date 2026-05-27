@@ -6,7 +6,7 @@ import { useCreateCalculation } from "../hooks/calculations/useCreateCalculation
 import { useDeleteCalculation } from "../hooks/calculations/useDeleteCalculation";
 import { tokenStore } from "../../account/auth-runtime";
 import { AuthRequiredGate } from "../ui/AuthRequiredGate";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import type { Calculation, CreateCalculationDTO, Expense, ExpenseBase } from "../types/Calculation";
 import Calculator from "./Calculator";
 import "../ui/travel-assistance.css";
@@ -25,13 +25,38 @@ function CalculationPage() {
     if (isNew) return null;
     return calculations.find((c: Calculation) => c.id === id) ?? null;
   }, [calculations, id, isNew]);
+  const [rates, setRates] = useState<Record<string, number>>({ PLN: 1.0 });
+
+  useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const response = await fetch("https://api.nbp.pl/api/exchangerates/tables/A/?format=json");
+        if (!response.ok) throw new Error("Failed to fetch rates");
+        
+        const data = await response.json();
+        const nbpRates = data[0].rates;
+        
+        const newRates: Record<string, number> = { PLN: 1.0 };
+        
+        nbpRates.forEach((r: { code: string; mid: number }) => {
+          newRates[r.code] = r.mid;
+        });
+        
+        setRates(newRates);
+      } catch (err) {
+        console.error("ERROR when fetching currencies exchanges from NBP:", err);
+      }
+    };
+
+    fetchRates();
+  }, []);
 
   const defaultExpenses: ExpenseBase[] = [
-    { category: "get-to", amount: 0 },
-    { category: "transport", amount: 0 },
-    { category: "accommodation", amount: 0 },
-    { category: "food", amount: 0 },
-    { category: "entrances", amount: 0 }
+    { category: "get-to", amount: 0, currency: "PLN" },
+    { category: "transport", amount: 0, currency: "PLN" },
+    { category: "accommodation", amount: 0, currency: "PLN" },
+    { category: "food", amount: 0, currency: "PLN" },
+    { category: "entrances", amount: 0, currency: "PLN" }
   ];
 
   const [expenses, setExpenses] = useState<ExpenseBase[]>(isNew ? defaultExpenses : []);
@@ -47,7 +72,7 @@ function CalculationPage() {
   };
 
   const addExpenseField = () => {
-    setExpenses([...(expenses || []), { category: "", amount: 0 }]);
+    setExpenses([...(expenses || []), { category: "", amount: 0, currency: "PLN" }]);
   };
 
   const removeExpenseField = (index: number) => {
@@ -60,10 +85,17 @@ function CalculationPage() {
       return;
     }
 
+    const total = expenses?.reduce((sum, e) => {
+      const currencyCode = e.currency || "PLN";
+      const rate = rates[currencyCode] ?? 1.0; 
+      return sum + (e.amount * rate);
+    }, 0) ?? 0;
+
     if (expenses) {
       const calcData: CreateCalculationDTO = {
         title,
-        expenses
+        expenses,
+        total
       };
       create(calcData);
       navigate("/travel-assistance/my-calculations");
@@ -97,7 +129,12 @@ function CalculationPage() {
   }
 
   function renderEditor() {
-    const total = expenses?.reduce((sum, e) => sum + e.amount, 0) ?? 0;
+    const total = expenses?.reduce((sum, e) => {
+      const currencyCode = e.currency || "PLN";
+      const rate = rates[currencyCode] ?? 1.0; 
+      return sum + (e.amount * rate);
+    }, 0) ?? 0;
+
     return (
       <div className="ta-calc-editor">
         <div className="ta-calc-fields">
@@ -116,7 +153,7 @@ function CalculationPage() {
           <span className="ta-field-label">Expenses</span>
           <div className="ta-expenses-form">
             {expenses?.map((expense, index) => (
-              <div key={`${expense.category}-${index}`} className="ta-expense-row">
+              <div key={index} className="ta-expense-row">
                 <input
                   type="text"
                   placeholder="Category"
@@ -133,6 +170,19 @@ function CalculationPage() {
                   style={{ flex: 1 }}
                   disabled={false}
                 />
+                <select
+                  value={expense.currency || "PLN"}
+                  onChange={(e) => handleExpenseChange(index, "currency", e.target.value)}
+                  style={{ flex: 0.8, padding: "8px", borderRadius: "4px", border: "1px solid #ccc", backgroundColor: 'white' }}
+                >
+                  {Object.keys(rates)
+                    .sort()
+                    .map((currencyCode) => (
+                      <option key={currencyCode} value={currencyCode}>
+                        {currencyCode} {currencyCode === "PLN" ? "(zł)" : ""}
+                      </option>
+                  ))}
+                </select>
                 <button
                   type="button"
                   className="ta-expense-remove"
@@ -149,7 +199,7 @@ function CalculationPage() {
             </button>
           </div>
 
-          <div className="ta-calc-total">Total: {total} PLN</div>
+          <div className="ta-calc-total">Total: {total.toFixed(2)} PLN</div>
         </div>
 
         <div className="ta-calc">
@@ -161,18 +211,18 @@ function CalculationPage() {
 
   function renderView() {
     const list = currentCalc?.expenses ?? [];
-    const total = list.reduce((sum, e) => sum + Number(e.amount), 0);
+    const total = currentCalc?.total;
     return (
       <div className="ta-calc-view">
         <h2 style={{ marginTop: 0 }}>{currentCalc?.title}</h2>
         <ul>
           {list.map((e: Expense) => (
             <li key={`${e.category}-${e.amount}`}>
-              <strong>{e.category}:</strong> {e.amount}
+              <strong>{e.category}:</strong> {e.amount} {e.currency}
             </li>
           ))}
         </ul>
-        <div className="ta-calc-total">Total: {total.toFixed(2)} PLN</div>
+        <div className="ta-calc-total">Total: {total} PLN</div>
         <div className="ta-form-actions">
           <button
             type="button"

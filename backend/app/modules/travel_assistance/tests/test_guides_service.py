@@ -21,15 +21,15 @@ class TestGuideService:
         return GuideService(mock_conn)
 
     def test_validate_guide_success(self, service):
-        service.validate_guide("My Guide", [{"type": "text", "value": "Hello"}])
+        service.validate_guide("My Guide", [{"type": "text", "value": "Hello"}], "beginner", "monuments")
 
     def test_validate_guide_empty_content(self, service):
         with pytest.raises(ValueError, match="Guide cannot be empty"):
-            service.validate_guide("Title", [])
+            service.validate_guide("Title", [], "beginner", "monuments")
 
     def test_validate_guide_invalid_format(self, service):
         with pytest.raises(ValueError, match="Invalid content format"):
-            service.validate_guide("Title", "string content instead of list/dict")
+            service.validate_guide("Title", "string content instead of list/dict", "beginner", "monuments")
 
     @patch('app.modules.travel_assistance.guides.services.guides_repo')
     def test_publish_guide_success(self, mock_repo, service, users):
