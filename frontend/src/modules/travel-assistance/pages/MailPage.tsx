@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useTravelAssistance } from "../hooks/useTravelAssistance";
 import "../ui/travel-assistance.css";
+import { AuthRequiredGate } from "../ui/AuthRequiredGate";
+import { tokenStore } from "../../account/auth-runtime";
 
 
 export function MailPage() {
   const navigate = useNavigate();
+  const tokens = tokenStore.get();
+  const accessToken = tokens?.accessToken;
   const {
     items,
     selected,
@@ -19,11 +23,20 @@ export function MailPage() {
     downloadAttachment
   } = useTravelAssistance();
 
+  if (!accessToken) {
+    return <AuthRequiredGate feature="Email documents" />;
+  }
+
   if (!connected) {
     return (
       <div className="ta-shell">
         <div className="ta-header">
+          <div className="ta-header-left">
+          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+            ← Back
+          </button>
           <h2>Email Documents</h2>
+        </div>
         </div>
 
         <div className="ta-disconnected">

@@ -23,7 +23,8 @@ export function Home() {
 
         <button
           className="ta-home-card"
-          style={{ background: "none", border: "none", cursor: "default" }}
+          onClick={() => navigate("browse-guides")}
+          style={{ background: "none", border: "none", cursor: "pointer" }}
         >
           <div className="ta-card-icon">📖</div>
           <h3>Travel Guides</h3>
@@ -48,6 +49,26 @@ export function Home() {
           <div className="ta-card-icon">📅</div>
           <h3>Calendar</h3>
           <p>Sync with Google Calendar</p>
+        </button>
+
+        <button
+          className="ta-home-card"
+          onClick={() => navigate("notes")}
+          style={{ background: "none", border: "none", cursor: "pointer" }}
+        >
+          <div className="ta-card-icon">🗒️</div>
+          <h3>Notes</h3>
+          <p>Browse and manage your notes</p>
+        </button>
+
+        <button
+          className="ta-home-card"
+          onClick={() => navigate("my-calculations")}
+          style={{ background: "none", border: "none", cursor: "pointer" }}
+        >
+          <div className="ta-card-icon">🖩</div>
+          <h3>Calculator</h3>
+          <p>Use calculator and manage your expenses</p>
         </button>
       </div>
     </div>

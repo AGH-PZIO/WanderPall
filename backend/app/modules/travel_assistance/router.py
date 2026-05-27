@@ -1,13 +1,15 @@
-from typing import Annotated
+from typing import Annotated, List
 from uuid import UUID
+import os
+import shutil
 
 import psycopg
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, File, UploadFile
 from fastapi.responses import RedirectResponse, StreamingResponse
 
 from app.core.config import settings
 from app.modules.travel_assistance.mail import repository
-from app.modules.travel_assistance.mail.dependencies import get_db_conn, get_dev_user_id
+from app.modules.travel_assistance.mail.dependencies import get_db_conn
 from app.modules.travel_assistance.mail.gmail_api import (
     build_gmail_service,
     get_attachment_body,
@@ -40,8 +42,20 @@ from app.modules.travel_assistance.translator.schemas import (
 )
 from app.modules.travel_assistance.translator import service as translator_service
 
-router = APIRouter(prefix="/travel-assistance", tags=["module-2-travel-assistance"])
+from app.modules.account.dependencies import get_current_user
+from app.modules.account.models import User
+from app.modules.travel_assistance.guides.services import GuideService
+from app.modules.travel_assistance.guides.schemas import GuideCreate, GuideResponse
 
+from app.modules.travel_assistance.notes.services import NotesService
+from app.modules.travel_assistance.notes.schemas import NotesCreate, NotesResponse
+
+from app.modules.travel_assistance.calculator.services import CalculationService
+from app.modules.travel_assistance.calculator.schemas import CalculationCreate, CalculationWithExpenses
+
+from app.utils.file_storage.storage import UploadResponse, save_file_with_uuid
+
+router = APIRouter(prefix="/travel-assistance", tags=["module-2-travel-assistance"])
 
 def _require_oauth_config() -> None:
     if not settings.google_oauth_client_id or not settings.google_oauth_client_secret:
@@ -63,11 +77,11 @@ def travel_assistance_status() -> dict[str, str]:
 
 @router.get("/gmail/oauth/authorize-url", response_model=AuthorizeUrlResponse)
 def gmail_authorize_url(
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> AuthorizeUrlResponse:
     _require_oauth_config()
     try:
-        url = build_authorization_url(user_id)
+        url = build_authorization_url(current_user.id)
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     return AuthorizeUrlResponse(url=url)
@@ -130,9 +144,9 @@ def gmail_oauth_callback(
 @router.get("/gmail/status", response_model=GmailStatusResponse)
 def gmail_status(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> GmailStatusResponse:
-    row = repository.get_gmail_connection(conn, user_id)
+    row = repository.get_gmail_connection(conn, current_user.id)
     if not row:
         return GmailStatusResponse(connected=False)
     return GmailStatusResponse(
@@ -145,9 +159,9 @@ def gmail_status(
 @router.delete("/gmail/connection")
 def gmail_disconnect(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> dict[str, str]:
-    n = repository.delete_gmail_connection(conn, user_id)
+    n = repository.delete_gmail_connection(conn, current_user.id)
     if n == 0:
         raise HTTPException(status_code=404, detail="No Gmail connection for this user")
     return {"status": "disconnected"}
@@ -156,11 +170,11 @@ def gmail_disconnect(
 @router.post("/gmail/sync", response_model=SyncResponse)
 def gmail_sync(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> SyncResponse:
     _require_oauth_config()
     try:
-        scanned, imported, updated = run_gmail_sync(conn, user_id=user_id)
+        scanned, imported, updated = run_gmail_sync(conn, user_id=current_user.id)
     except RuntimeError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except ValueError as exc:
@@ -173,11 +187,11 @@ def gmail_sync(
 @router.get("/travel-documents", response_model=TravelDocumentListResponse)
 def list_travel_documents(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
     limit: Annotated[int, Query(ge=1, le=100)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> TravelDocumentListResponse:
-    rows, total = repository.list_travel_documents(conn, user_id=user_id, limit=limit, offset=offset)
+    rows, total = repository.list_travel_documents(conn, user_id=current_user.id, limit=limit, offset=offset)
     items = [TravelDocumentResponse(**repository.row_to_response(r)) for r in rows]
     return TravelDocumentListResponse(items=items, total=total)
 
@@ -185,10 +199,10 @@ def list_travel_documents(
 @router.delete("/travel-documents/{document_id}")
 def remove_travel_document(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
     document_id: UUID,
 ) -> dict[str, str]:
-    n = repository.soft_remove_document(conn, user_id=user_id, document_id=document_id)
+    n = repository.soft_remove_document(conn, user_id=current_user.id, document_id=document_id)
     if n == 0:
         raise HTTPException(status_code=404, detail="Document not found or already removed")
     return {"status": "removed"}
@@ -197,12 +211,12 @@ def remove_travel_document(
 @router.get("/travel-documents/{document_id}/attachments/{attachment_id}", response_model=None)
 def download_attachment(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
     document_id: UUID,
     attachment_id: str,
 ):
     _require_oauth_config()
-    row = repository.get_travel_document(conn, user_id=user_id, document_id=document_id)
+    row = repository.get_travel_document(conn, user_id=current_user.id, document_id=document_id)
     if not row or row.get("user_removed_at"):
         raise HTTPException(status_code=404, detail="Document not found")
 
@@ -212,7 +226,7 @@ def download_attachment(
     if attachment_id not in allowed:
         raise HTTPException(status_code=404, detail="Attachment not part of this document")
 
-    gmail_row = repository.get_gmail_connection(conn, user_id)
+    gmail_row = repository.get_gmail_connection(conn, current_user.id)
     if not gmail_row:
         raise HTTPException(status_code=400, detail="Gmail not connected")
 
@@ -237,6 +251,226 @@ def download_attachment(
     mime = next((a.mime_type for a in atts if a.attachment_id == attachment_id), "application/octet-stream")
     return StreamingResponse(iter([data]), media_type=mime or "application/octet-stream")
 
+# === TRAVEL GUIDES ===
+
+def get_guide_service(conn=Depends(get_db_conn)):
+    return GuideService(conn)
+
+@router.get("/guides", response_model=List[GuideResponse])
+def get_user_guides(
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    return service.get_user_guides(user.id)
+
+@router.get("/guides/public", response_model=List[GuideResponse])
+def get_published_guides(
+    service: GuideService = Depends(get_guide_service),
+):
+    return service.get_published_guides()
+
+@router.get("/guides/{guide_id}", response_model=GuideResponse)
+def get_guide(
+    guide_id: UUID,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        guide = service.get_guide(guide_id, user.id)
+    except PermissionError as e:
+        raise HTTPException(status_code=403, detail=str(e))
+    if not guide:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    return guide
+
+@router.post("/guides", response_model=UUID)
+def create_guide(
+    data: GuideCreate,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        return service.create_guide(user.id, data.title, data.content, data.level, data.category)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.put("/guides/{guide_id}")
+def update_guide(
+    guide_id: UUID,
+    data: GuideCreate,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        return service.update_guide(user.id, guide_id, data.title, data.content, data.level, data.category)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    
+@router.post("/guides/{guide_id}/publish")
+def publish_guide(
+    guide_id: UUID,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        service.publish_guide(user.id, guide_id)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+@router.post("/guides/{guide_id}/unpublish")
+def unpublish_guide(
+    guide_id: UUID,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        service.unpublish_guide(user.id, guide_id)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+@router.delete("/guides/{guide_id}")
+def delete_guide(
+    guide_id: UUID,
+    service: GuideService = Depends(get_guide_service),
+    user=Depends(get_current_user),
+):
+    try:
+        service.delete_guide(user.id, guide_id)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+@router.post("/guides/upload", response_model=UploadResponse)
+async def upload_guide_image(
+    file: UploadFile = File(...),
+    user=Depends(get_current_user)
+):
+    saved_file_id = await save_file_with_uuid(file, module_folder="guides")
+    
+    return UploadResponse(
+        file_id=saved_file_id,
+        original_name=file.filename
+    )
+
+# === NOTES ===
+
+def get_notes_service(conn=Depends(get_db_conn)):
+    return NotesService(conn)
+
+@router.get("/notes", response_model=List[NotesResponse])
+def get_user_notes(
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    return service.get_user_notes(user.id)
+
+@router.get("/notes/{note_id}", response_model=NotesResponse)
+def get_notes(
+    note_id: UUID,
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    try:
+        return service.get_note(user.id, note_id)
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+@router.post("/notes", response_model=UUID)
+def create_note(
+    data: NotesCreate,
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    try:
+        return service.create_note(user.id, data.title, data.content)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.put("/notes/{note_id}")
+def update_note(
+    note_id: UUID,
+    data: NotesCreate,
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    try:
+        return service.update_note(user.id, note_id, data.title, data.content)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    
+@router.delete("/notes/{note_id}")
+def delete_note(
+    note_id: UUID,
+    service: NotesService = Depends(get_notes_service),
+    user: UUID = Depends(get_current_user),
+):
+    try:
+        service.delete_note(user.id, note_id)
+        return {"status": "deleted"}
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+# === CALCULATIONS ===
+
+def get_calculation_service(conn=Depends(get_db_conn)):
+    return CalculationService(conn)
+
+@router.get("/calculator", response_model=List[CalculationWithExpenses])
+def get_calculations(
+    service: CalculationService = Depends(get_calculation_service),
+    user = Depends(get_current_user),
+):
+    return service.get_calculations(user.id)
+
+@router.get("/calculator/{calculation_id}", response_model=CalculationWithExpenses)
+def get_calculation(
+    calculation_id: UUID,
+    service: CalculationService = Depends(get_calculation_service),
+    user = Depends(get_current_user),
+):
+    try:
+        return service.get_calculation(calculation_id, user.id)
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.post("/calculator", response_model=UUID)
+def create_calculation(
+    data: CalculationCreate,
+    service: CalculationService = Depends(get_calculation_service),
+    user = Depends(get_current_user),
+):
+    try:
+        expenses_data = [e.model_dump() for e in data.expenses]
+        return service.create_calculation(user.id, data.title, data.total, expenses_data)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.delete("/calculator/{calculation_id}")
+def delete_calculation(
+    calculation_id: UUID,
+    service: CalculationService = Depends(get_calculation_service),
+    user = Depends(get_current_user),
+):
+    try:
+        service.delete_calculation(user.id, calculation_id)
+        return {"status": "deleted"}
+    except PermissionError:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 # Translator endpoints
 @router.get("/translator/supported-languages", response_model=SupportedLanguagesResponse)
@@ -274,7 +508,7 @@ async def translate(
 @router.get("/calendar/events", response_model=CalendarEventsResponse)
 def list_calendar_events(
     conn: Annotated[psycopg.Connection, Depends(get_db_conn)],
-    user_id: Annotated[UUID, Depends(get_dev_user_id)],
+    current_user: Annotated[User, Depends(get_current_user)],
     calendar_id: str = "primary",
     max_results: Annotated[int, Query(ge=1, le=250)] = 50,
     time_min: str | None = None,
@@ -286,7 +520,7 @@ def list_calendar_events(
     """
     _require_oauth_config()
 
-    gmail_row = repository.get_gmail_connection(conn, user_id)
+    gmail_row = repository.get_gmail_connection(conn, current_user.id)
     if not gmail_row:
         raise HTTPException(status_code=400, detail="Google is not connected (connect via Gmail OAuth first).")
 
