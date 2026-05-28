@@ -12,11 +12,7 @@ export function MapsGroupsPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (authLoading) return;
-    if (!accessToken) {
-      setLoading(false);
-      return;
-    }
+    if (authLoading || !accessToken) return;
     setLoading(true);
     listGroups(accessToken, { limit: 100 })
       .then((data) => setGroups(data.items))
