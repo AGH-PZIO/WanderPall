@@ -309,10 +309,7 @@ export function GroupMapPage() {
   // Search ---------------------------------------------------------------
 
   useEffect(() => {
-    if (searchQuery.trim().length < 3) {
-      setSearchResults([]);
-      return;
-    }
+    if (searchQuery.trim().length < 3) return;
     if (searchAbortRef.current) searchAbortRef.current.abort();
     const ctrl = new AbortController();
     searchAbortRef.current = ctrl;
@@ -742,7 +739,7 @@ export function GroupMapPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="maps-text-input"
             />
-            {searchResults.length > 0 && (
+            {searchResults.length > 0 && searchQuery.trim().length >= 3 && (
               <ul className="maps-search-results">
                 {searching && <li className="maps-search-loading">Szukam...</li>}
                 {searchResults.map((hit, i) => (

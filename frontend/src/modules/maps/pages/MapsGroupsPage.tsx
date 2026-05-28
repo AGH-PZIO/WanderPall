@@ -13,7 +13,6 @@ export function MapsGroupsPage() {
 
   useEffect(() => {
     if (authLoading || !accessToken) return;
-    setLoading(true);
     listGroups(accessToken, { limit: 100 })
       .then((data) => setGroups(data.items))
       .catch((err) => setError(err instanceof Error ? err.message : "Błąd pobierania grup"))
