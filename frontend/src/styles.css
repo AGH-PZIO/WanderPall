@@ -101,6 +101,19 @@ h1 {
   border: 1px solid #d2d8c8;
   border-radius: 8px;
   background: #ffffff;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.module-card:hover {
+  border-color: #1e6f5c;
+  box-shadow: 0 6px 18px rgba(30, 111, 92, 0.12);
+  transform: translateY(-2px);
+}
+
+:root[data-theme="dark"] .module-card:hover {
+  border-color: #4ade80;
+  box-shadow: 0 6px 18px rgba(74, 222, 128, 0.12);
 }
 
 .module-card h2 {

@@ -1126,6 +1126,178 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/maps/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Marker Categories
+         * @description UC 4.7: predefined functional marker groups.
+         */
+        get: operations["list_marker_categories_maps_categories_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/maps/groups/{group_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Group Map
+         * @description Single-shot render payload: markers + routes + comments per marker.
+         */
+        get: operations["get_group_map_maps_groups__group_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/maps/groups/{group_id}/markers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Markers */
+        get: operations["list_markers_maps_groups__group_id__markers_get"];
+        put?: never;
+        /**
+         * Create Marker
+         * @description UC 4.1: Add a marker to the group's map.
+         */
+        post: operations["create_marker_maps_groups__group_id__markers_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/maps/groups/{group_id}/markers/{marker_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete Marker
+         * @description UC 4.2: Remove a marker.
+         */
+        delete: operations["delete_marker_maps_groups__group_id__markers__marker_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Marker
+         * @description UC 4.6 / 4.7: mark as visited / change category / rename.
+         */
+        patch: operations["update_marker_maps_groups__group_id__markers__marker_id__patch"];
+        trace?: never;
+    };
+    "/maps/groups/{group_id}/markers/{marker_id}/comments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Marker Comments */
+        get: operations["list_marker_comments_maps_groups__group_id__markers__marker_id__comments_get"];
+        put?: never;
+        /**
+         * Add Marker Comment
+         * @description UC 4.5: Add a comment under a marker.
+         */
+        post: operations["add_marker_comment_maps_groups__group_id__markers__marker_id__comments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/maps/groups/{group_id}/markers/{marker_id}/comments/{comment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Marker Comment */
+        delete: operations["delete_marker_comment_maps_groups__group_id__markers__marker_id__comments__comment_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Marker Comment
+         * @description UC 4.5 (extended): Edit author's own comment.
+         */
+        patch: operations["update_marker_comment_maps_groups__group_id__markers__marker_id__comments__comment_id__patch"];
+        trace?: never;
+    };
+    "/maps/groups/{group_id}/routes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Routes */
+        get: operations["list_routes_maps_groups__group_id__routes_get"];
+        put?: never;
+        /**
+         * Create Route
+         * @description UC 4.3: Draw a route on the group's map.
+         */
+        post: operations["create_route_maps_groups__group_id__routes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/maps/groups/{group_id}/routes/{route_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete Route
+         * @description UC 4.4: Remove a route.
+         */
+        delete: operations["delete_route_maps_groups__group_id__routes__route_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Update Route
+         * @description Extension to UC 4.3: edit existing route (name/color/points).
+         */
+        patch: operations["update_route_maps_groups__group_id__routes__route_id__patch"];
+        trace?: never;
+    };
     "/journals/status": {
         parameters: {
             query?: never;
@@ -1542,6 +1714,128 @@ export interface components {
             /** Refresh Token */
             refresh_token: string;
         };
+        /**
+         * MapSnapshotResponse
+         * @description Single payload to render a group's map: markers + routes + per-marker comments.
+         */
+        MapSnapshotResponse: {
+            /**
+             * Group Id
+             * Format: uuid
+             */
+            group_id: string;
+            /** Markers */
+            markers: components["schemas"]["MarkerResponse"][];
+            /** Routes */
+            routes: components["schemas"]["RouteResponse"][];
+            /** Comments By Marker */
+            comments_by_marker: {
+                [key: string]: components["schemas"]["MarkerCommentResponse"][];
+            };
+        };
+        /** MarkerCategoryItem */
+        MarkerCategoryItem: {
+            /** Value */
+            value: string;
+            /** Label */
+            label: string;
+        };
+        /** MarkerCategoryListResponse */
+        MarkerCategoryListResponse: {
+            /** Items */
+            items: components["schemas"]["MarkerCategoryItem"][];
+        };
+        /** MarkerCommentCreateRequest */
+        MarkerCommentCreateRequest: {
+            /** Body */
+            body: string;
+        };
+        /** MarkerCommentResponse */
+        MarkerCommentResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Marker Id
+             * Format: uuid
+             */
+            marker_id: string;
+            /**
+             * Author Id
+             * Format: uuid
+             */
+            author_id: string;
+            /** Body */
+            body: string;
+            /** Created At */
+            created_at?: string | null;
+        };
+        /** MarkerCommentUpdateRequest */
+        MarkerCommentUpdateRequest: {
+            /** Body */
+            body: string;
+        };
+        /** MarkerCreateRequest */
+        MarkerCreateRequest: {
+            /** Name */
+            name: string;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /**
+             * Category
+             * @default other
+             */
+            category: string;
+        };
+        /** MarkerResponse */
+        MarkerResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Group Id
+             * Format: uuid
+             */
+            group_id: string;
+            /** Name */
+            name: string;
+            /** Category */
+            category: string;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /** Visited */
+            visited: boolean;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /** Created At */
+            created_at?: string | null;
+            /** Updated At */
+            updated_at?: string | null;
+        };
+        /** MarkerUpdateRequest */
+        MarkerUpdateRequest: {
+            /** Name */
+            name?: string | null;
+            /** Category */
+            category?: string | null;
+            /** Visited */
+            visited?: boolean | null;
+            /** Latitude */
+            latitude?: number | null;
+            /** Longitude */
+            longitude?: number | null;
+        };
         /** MemberListResponse */
         MemberListResponse: {
             /** Items */
@@ -1860,6 +2154,66 @@ export interface components {
             email_verification_required: boolean;
             /** Phone Verification Required */
             phone_verification_required: boolean;
+        };
+        /** RouteCreateRequest */
+        RouteCreateRequest: {
+            /** Name */
+            name?: string | null;
+            /**
+             * Color
+             * @default #2563eb
+             */
+            color: string;
+            /** Points */
+            points: components["schemas"]["RoutePointModel"][];
+        };
+        /**
+         * RoutePointModel
+         * @description A single waypoint of a polyline route.
+         */
+        RoutePointModel: {
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+        };
+        /** RouteResponse */
+        RouteResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Group Id
+             * Format: uuid
+             */
+            group_id: string;
+            /** Name */
+            name?: string | null;
+            /** Color */
+            color: string;
+            /** Points */
+            points: components["schemas"]["RoutePointModel"][];
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /** Created At */
+            created_at?: string | null;
+        };
+        /**
+         * RouteUpdateRequest
+         * @description Partial update for an existing route. All fields optional.
+         */
+        RouteUpdateRequest: {
+            /** Name */
+            name?: string | null;
+            /** Color */
+            color?: string | null;
+            /** Points */
+            points?: components["schemas"]["RoutePointModel"][] | null;
         };
         /** SupportedLanguage */
         SupportedLanguage: {
@@ -4888,6 +5242,457 @@ export interface operations {
                     "application/json": {
                         [key: string]: string;
                     };
+                };
+            };
+        };
+    };
+    list_marker_categories_maps_categories_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarkerCategoryListResponse"];
+                };
+            };
+        };
+    };
+    get_group_map_maps_groups__group_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MapSnapshotResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_markers_maps_groups__group_id__markers_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarkerResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_marker_maps_groups__group_id__markers_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MarkerCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarkerResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_marker_maps_groups__group_id__markers__marker_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+                marker_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_marker_maps_groups__group_id__markers__marker_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+                marker_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MarkerUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarkerResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_marker_comments_maps_groups__group_id__markers__marker_id__comments_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+                marker_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarkerCommentResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_marker_comment_maps_groups__group_id__markers__marker_id__comments_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+                marker_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MarkerCommentCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarkerCommentResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_marker_comment_maps_groups__group_id__markers__marker_id__comments__comment_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+                marker_id: string;
+                comment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_marker_comment_maps_groups__group_id__markers__marker_id__comments__comment_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+                marker_id: string;
+                comment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MarkerCommentUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MarkerCommentResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_routes_maps_groups__group_id__routes_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RouteResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_route_maps_groups__group_id__routes_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RouteCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RouteResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_route_maps_groups__group_id__routes__route_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+                route_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_route_maps_groups__group_id__routes__route_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                group_id: string;
+                route_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RouteUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RouteResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

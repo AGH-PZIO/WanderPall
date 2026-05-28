@@ -8,6 +8,7 @@ from app.core.config import get_cors_origins
 from app.core.schemas import TestResponse
 from app.modules.account.errors import AccountError
 from app.modules.account.router import router as account_router
+from app.modules.maps.errors import MapsError
 from app.modules.travel_buddies.errors import TravelBuddiesError
 from app.modules.journal.router import router as journal_router
 from app.modules.maps.router import router as maps_router
@@ -35,6 +36,14 @@ def account_error_handler(_: Request, exc: AccountError) -> JSONResponse:
 
 @app.exception_handler(TravelBuddiesError)
 def travel_buddies_error_handler(_: Request, exc: TravelBuddiesError) -> JSONResponse:
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": str(exc) or exc.message},
+    )
+
+
+@app.exception_handler(MapsError)
+def maps_error_handler(_: Request, exc: MapsError) -> JSONResponse:
     return JSONResponse(
         status_code=exc.status_code,
         content={"detail": str(exc) or exc.message},
