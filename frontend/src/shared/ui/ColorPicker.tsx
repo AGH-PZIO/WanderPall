@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { HexColorPicker } from "react-colorful";
 
 import "./color-picker.css";
@@ -39,33 +40,34 @@ export function ColorPicker({
     setHexInput(value);
   }, [value]);
 
-  // Outside-click handling. We listen on 'mousedown' (not 'click') so that
-  // clicking a preset color, the hex input, or any control inside the
-  // popover registers a "down inside" event and does NOT close the picker.
-  //
-  // Known limitation: starting a drag on the saturation/hue gradient and
-  // releasing the mouse OUTSIDE the popover can close it (the next gesture
-  // happens to land outside). We tried several mitigations (pointerdown
-  // tracking, capture-phase click suppression) but each broke other
-  // interactions (preset clicks). For now this stays as documented edge.
+  const close = useCallback(() => setOpen(false), []);
+
+  // Close on outside click (mousedown, not click, to capture before mouseup)
   useEffect(() => {
     if (!open) return;
-    function handleMouseDown(e: MouseEvent) {
+    function handleOutside(e: MouseEvent) {
       const target = e.target as Node;
-      if (popoverRef.current?.contains(target)) return;
-      if (swatchRef.current?.contains(target)) return;
-      setOpen(false);
+      if (
+        popoverRef.current?.contains(target) ||
+        swatchRef.current?.contains(target)
+      ) {
+        return;
+      }
+      close();
     }
+    document.addEventListener("mousedown", handleOutside);
+    return () => document.removeEventListener("mousedown", handleOutside);
+  }, [open, close]);
+
+  // Close on Escape
+  useEffect(() => {
+    if (!open) return;
     function handleEsc(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") close();
     }
-    document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("keydown", handleEsc);
-    return () => {
-      document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("keydown", handleEsc);
-    };
-  }, [open]);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [open, close]);
 
   // Position the popover anchored to the swatch via fixed positioning, so it
   // is NOT clipped by parent overflows or covered by navbars at lower z-index.
@@ -82,20 +84,16 @@ export function ColorPicker({
       const vh = window.innerHeight;
       const margin = 8;
 
-      // Default: open downward and align left edges.
       let top = swatchRect.bottom + margin;
       let left = swatchRect.left;
 
-      // Flip up if there's not enough room below.
       if (top + popoverRect.height > vh - margin) {
         top = swatchRect.top - popoverRect.height - margin;
       }
-      // Clamp horizontally inside the viewport.
       if (left + popoverRect.width > vw - margin) {
         left = vw - popoverRect.width - margin;
       }
       if (left < margin) left = margin;
-      // Don't let it scroll off the top either.
       if (top < margin) top = margin;
 
       setPopoverStyle({
@@ -121,6 +119,50 @@ export function ColorPicker({
     }
   }
 
+  function handlePopoverMouseDown(e: React.MouseEvent) {
+    e.stopPropagation();
+  }
+
+  const popover = open ? (
+    <div
+      ref={popoverRef}
+      className="color-picker-popover"
+      style={popoverStyle}
+      role="dialog"
+      onMouseDown={handlePopoverMouseDown}
+    >
+      <HexColorPicker color={value} onChange={onChange} />
+      <div className="color-picker-presets">
+        {presets.map((c) => (
+          <button
+            key={c}
+            type="button"
+            className={`color-picker-preset ${
+              c.toLowerCase() === value.toLowerCase() ? "active" : ""
+            }`}
+            style={{ background: c }}
+            onClick={() => onChange(c)}
+            aria-label={c}
+          />
+        ))}
+      </div>
+      <div className="color-picker-hex-row">
+        <span className="color-picker-hex-label">#</span>
+        <input
+          type="text"
+          value={hexInput.replace(/^#/, "")}
+          onChange={(e) => {
+            const raw = e.target.value.replace(/[^0-9A-Fa-f]/g, "").slice(0, 6);
+            commitHex(`#${raw}`);
+          }}
+          placeholder="2563eb"
+          maxLength={6}
+          spellCheck={false}
+        />
+      </div>
+    </div>
+  ) : null;
+
   return (
     <span className="color-picker">
       {label && <span className="color-picker-label">{label}</span>}
@@ -133,44 +175,7 @@ export function ColorPicker({
         aria-label="Wybierz kolor"
         aria-expanded={open}
       />
-      {open && (
-        <div
-          ref={popoverRef}
-          className="color-picker-popover"
-          style={popoverStyle}
-          role="dialog"
-        >
-          <HexColorPicker color={value} onChange={onChange} />
-          <div className="color-picker-presets">
-            {presets.map((c) => (
-              <button
-                key={c}
-                type="button"
-                className={`color-picker-preset ${
-                  c.toLowerCase() === value.toLowerCase() ? "active" : ""
-                }`}
-                style={{ background: c }}
-                onClick={() => onChange(c)}
-                aria-label={c}
-              />
-            ))}
-          </div>
-          <div className="color-picker-hex-row">
-            <span className="color-picker-hex-label">#</span>
-            <input
-              type="text"
-              value={hexInput.replace(/^#/, "")}
-              onChange={(e) => {
-                const raw = e.target.value.replace(/[^0-9A-Fa-f]/g, "").slice(0, 6);
-                commitHex(`#${raw}`);
-              }}
-              placeholder="2563eb"
-              maxLength={6}
-              spellCheck={false}
-            />
-          </div>
-        </div>
-      )}
+      {popover && createPortal(popover, document.body)}
     </span>
   );
 }
