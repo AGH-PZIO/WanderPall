@@ -25,7 +25,7 @@ jobs:
 
       - name: Export OpenAPI
         working-directory: backend
-        run: ../.venv/bin/python -m scripts.export_openapi
+        run: PYTHONPATH=. ../.venv/bin/python -m scripts.export_openapi
 
       - name: Check OpenAPI is up to date
         run: git diff --exit-code docs/openapi.json

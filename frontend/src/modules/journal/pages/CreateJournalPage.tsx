@@ -22,7 +22,7 @@ export function CreateJournalPage() {
 
   const previews = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files]);
 
-  async function useMyLocation() {
+  async function handleUseMyLocation() {
     if (!navigator.geolocation) {
       window.alert("Geolocation not supported in this browser.");
       return;
@@ -117,7 +117,7 @@ export function CreateJournalPage() {
           </div>
 
           <div className="jr-actions" style={{ justifyContent: "flex-start" }}>
-            <button className="jr-btn-secondary jr-btn" type="button" onClick={() => void useMyLocation()}>
+            <button className="jr-btn-secondary jr-btn" type="button" onClick={() => void handleUseMyLocation()}>
               Use my location
             </button>
           </div>

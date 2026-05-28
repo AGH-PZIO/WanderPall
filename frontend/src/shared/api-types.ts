@@ -1143,6 +1143,263 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/journals/explorer/my-public": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List My Public Journals
+         * @description List the current user's own public journals with reactions and comments.
+         */
+        get: operations["list_my_public_journals_journals_explorer_my_public_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals/explorer": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Explorer Feed */
+        get: operations["list_explorer_feed_journals_explorer_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals/explorer/{journal_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Explorer Journal */
+        get: operations["get_explorer_journal_journals_explorer__journal_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals/explorer/{journal_id}/reactions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Upsert Reaction */
+        put: operations["upsert_reaction_journals_explorer__journal_id__reactions_put"];
+        post?: never;
+        /** Delete Reaction */
+        delete: operations["delete_reaction_journals_explorer__journal_id__reactions_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals/explorer/{journal_id}/comments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Comments */
+        get: operations["list_comments_journals_explorer__journal_id__comments_get"];
+        put?: never;
+        /** Create Comment */
+        post: operations["create_comment_journals_explorer__journal_id__comments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals/explorer/{journal_id}/comments/{comment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Comment */
+        delete: operations["delete_comment_journals_explorer__journal_id__comments__comment_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals/explorer/{journal_id}/entries/{entry_id}/images/{image_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Public Image
+         * @description Public endpoint for explorer images - no authentication required.
+         *     Only serves images from public journals.
+         */
+        get: operations["get_public_image_journals_explorer__journal_id__entries__entry_id__images__image_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List My Journals */
+        get: operations["list_my_journals_journals_get"];
+        put?: never;
+        /** Create Journal */
+        post: operations["create_journal_journals_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals/{journal_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Journal */
+        get: operations["get_journal_journals__journal_id__get"];
+        put?: never;
+        post?: never;
+        /** Delete Journal */
+        delete: operations["delete_journal_journals__journal_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Journal */
+        patch: operations["update_journal_journals__journal_id__patch"];
+        trace?: never;
+    };
+    "/journals/{journal_id}/visibility": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Visibility */
+        patch: operations["update_visibility_journals__journal_id__visibility_patch"];
+        trace?: never;
+    };
+    "/journals/{journal_id}/entries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Entries */
+        get: operations["list_entries_journals__journal_id__entries_get"];
+        put?: never;
+        /** Create Entry */
+        post: operations["create_entry_journals__journal_id__entries_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals/{journal_id}/entries/{entry_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Entry */
+        delete: operations["delete_entry_journals__journal_id__entries__entry_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Entry */
+        patch: operations["update_entry_journals__journal_id__entries__entry_id__patch"];
+        trace?: never;
+    };
+    "/journals/{journal_id}/entries/{entry_id}/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Upload Images */
+        post: operations["upload_images_journals__journal_id__entries__entry_id__images_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/journals/{journal_id}/entries/{entry_id}/images/{image_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Image
+         * @description Public endpoint for journal images - no authentication required.
+         *     Images are accessible to journal owners without auth for browser loading.
+         */
+        get: operations["get_image_journals__journal_id__entries__entry_id__images__image_id__get"];
+        put?: never;
+        post?: never;
+        /** Delete Image */
+        delete: operations["delete_image_journals__journal_id__entries__entry_id__images__image_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1201,6 +1458,11 @@ export interface components {
         Body_upload_guide_image_travel_assistance_guides_upload_post: {
             /** File */
             file: string;
+        };
+        /** Body_upload_images_journals__journal_id__entries__entry_id__images_post */
+        Body_upload_images_journals__journal_id__entries__entry_id__images_post: {
+            /** Files */
+            files: string[];
         };
         /** CalculationCreate */
         CalculationCreate: {
@@ -1280,6 +1542,50 @@ export interface components {
             /** Items */
             items: components["schemas"]["CalendarEventResponse"][];
         };
+        /** CommentCreateRequest */
+        CommentCreateRequest: {
+            /** Body */
+            body: string;
+            /** Parent Comment Id */
+            parent_comment_id?: string | null;
+        };
+        /** CommentListResponse */
+        CommentListResponse: {
+            /** Items */
+            items: components["schemas"]["CommentResponse"][];
+            /** Total */
+            total: number;
+        };
+        /** CommentResponse */
+        CommentResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Journal Id
+             * Format: uuid
+             */
+            journal_id: string;
+            user: components["schemas"]["PublicAuthorResponse"];
+            /** Parent Comment Id */
+            parent_comment_id?: string | null;
+            /** Body */
+            body?: string | null;
+            /** Is Deleted */
+            is_deleted: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
         /** CreateGroupRequest */
         CreateGroupRequest: {
             /** Name */
@@ -1335,6 +1641,87 @@ export interface components {
             /** Confirm */
             confirm: boolean;
         };
+        /** EntryCreateRequest */
+        EntryCreateRequest: {
+            /** Lat */
+            lat: number;
+            /** Lng */
+            lng: number;
+            /**
+             * Text
+             * @default
+             */
+            text: string;
+        };
+        /** EntryImageResponse */
+        EntryImageResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Mime Type */
+            mime_type: string;
+            /** Byte Size */
+            byte_size: number;
+            /** Url */
+            url: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** EntryListResponse */
+        EntryListResponse: {
+            /** Items */
+            items: components["schemas"]["EntryResponse"][];
+            /** Total */
+            total: number;
+        };
+        /** EntryResponse */
+        EntryResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Journal Id
+             * Format: uuid
+             */
+            journal_id: string;
+            /** Lat */
+            lat: number;
+            /** Lng */
+            lng: number;
+            /** Text */
+            text: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /**
+             * Images
+             * @default []
+             */
+            images: components["schemas"]["EntryImageResponse"][];
+        };
+        /** EntryUpdateRequest */
+        EntryUpdateRequest: {
+            /** Lat */
+            lat?: number | null;
+            /** Lng */
+            lng?: number | null;
+            /** Text */
+            text?: string | null;
+        };
         /** ExpenseCreate */
         ExpenseCreate: {
             /** Category */
@@ -1362,6 +1749,129 @@ export interface components {
              * Format: uuid
              */
             calculation_id: string;
+        };
+        /** ExplorerEntryImageResponse */
+        ExplorerEntryImageResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Url */
+            url: string;
+            /** Mime Type */
+            mime_type: string;
+            /** Byte Size */
+            byte_size: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** ExplorerEntryResponse */
+        ExplorerEntryResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Lat */
+            lat: number;
+            /** Lng */
+            lng: number;
+            /** Text */
+            text: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /**
+             * Images
+             * @default []
+             */
+            images: components["schemas"]["ExplorerEntryImageResponse"][];
+        };
+        /** ExplorerJournalDetailResponse */
+        ExplorerJournalDetailResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Title */
+            title: string;
+            visibility: components["schemas"]["JournalVisibility"];
+            author: components["schemas"]["PublicAuthorResponse"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Reaction Count */
+            reaction_count: number;
+            /** Reactions */
+            reactions?: {
+                [key: string]: number;
+            };
+            /** Comment Count */
+            comment_count: number;
+            my_reaction?: components["schemas"]["ReactionEmoji"] | null;
+            /**
+             * Entries
+             * @default []
+             */
+            entries: components["schemas"]["ExplorerEntryResponse"][];
+        };
+        /** ExplorerJournalListResponse */
+        ExplorerJournalListResponse: {
+            /** Items */
+            items: components["schemas"]["ExplorerJournalPreviewResponse"][];
+            /** Total */
+            total: number;
+        };
+        /** ExplorerJournalPreviewResponse */
+        ExplorerJournalPreviewResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Title */
+            title: string;
+            visibility: components["schemas"]["JournalVisibility"];
+            author: components["schemas"]["PublicAuthorResponse"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Reaction Count */
+            reaction_count: number;
+            /** Reactions */
+            reactions?: {
+                [key: string]: number;
+            };
+            /** Comment Count */
+            comment_count: number;
+            my_reaction?: components["schemas"]["ReactionEmoji"] | null;
+            first_entry?: components["schemas"]["ExplorerEntryResponse"] | null;
         };
         /** GmailStatusResponse */
         GmailStatusResponse: {
@@ -1526,6 +2036,53 @@ export interface components {
         InviteMemberRequest: {
             /** Email */
             email: string;
+        };
+        /** JournalCreateRequest */
+        JournalCreateRequest: {
+            /** Title */
+            title: string;
+        };
+        /** JournalListResponse */
+        JournalListResponse: {
+            /** Items */
+            items: components["schemas"]["JournalResponse"][];
+            /** Total */
+            total: number;
+        };
+        /** JournalResponse */
+        JournalResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Title */
+            title: string;
+            visibility: components["schemas"]["JournalVisibility"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** JournalUpdateRequest */
+        JournalUpdateRequest: {
+            /** Title */
+            title?: string | null;
+        };
+        /**
+         * JournalVisibility
+         * @enum {string}
+         */
+        JournalVisibility: "private" | "friends_only" | "public";
+        /** JournalVisibilityUpdateRequest */
+        JournalVisibilityUpdateRequest: {
+            visibility: components["schemas"]["JournalVisibility"];
         };
         /** LoginRequest */
         LoginRequest: {
@@ -1809,6 +2366,31 @@ export interface components {
             created_at?: string | null;
             /** Closed At */
             closed_at?: string | null;
+        };
+        /** PublicAuthorResponse */
+        PublicAuthorResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** First Name */
+            first_name: string;
+            /** Last Name */
+            last_name: string;
+        };
+        /**
+         * ReactionEmoji
+         * @enum {string}
+         */
+        ReactionEmoji: "like" | "heart" | "haha" | "sad";
+        /** ReactionResponse */
+        ReactionResponse: {
+            emoji: components["schemas"]["ReactionEmoji"];
+        };
+        /** ReactionUpsertRequest */
+        ReactionUpsertRequest: {
+            emoji: components["schemas"]["ReactionEmoji"];
         };
         /** RefreshTokenRequest */
         RefreshTokenRequest: {
@@ -4910,6 +5492,727 @@ export interface operations {
                     "application/json": {
                         [key: string]: string;
                     };
+                };
+            };
+        };
+    };
+    list_my_public_journals_journals_explorer_my_public_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExplorerJournalListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_explorer_feed_journals_explorer_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExplorerJournalListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_explorer_journal_journals_explorer__journal_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExplorerJournalDetailResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upsert_reaction_journals_explorer__journal_id__reactions_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReactionUpsertRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReactionResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_reaction_journals_explorer__journal_id__reactions_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_comments_journals_explorer__journal_id__comments_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommentListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_comment_journals_explorer__journal_id__comments_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommentCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommentResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_comment_journals_explorer__journal_id__comments__comment_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+                comment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_public_image_journals_explorer__journal_id__entries__entry_id__images__image_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+                entry_id: string;
+                image_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_my_journals_journals_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JournalListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_journal_journals_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["JournalCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JournalResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_journal_journals__journal_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JournalResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_journal_journals__journal_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_journal_journals__journal_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["JournalUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JournalResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_visibility_journals__journal_id__visibility_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["JournalVisibilityUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JournalResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_entries_journals__journal_id__entries_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EntryListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_entry_journals__journal_id__entries_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EntryCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EntryResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_entry_journals__journal_id__entries__entry_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+                entry_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_entry_journals__journal_id__entries__entry_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+                entry_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EntryUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EntryResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upload_images_journals__journal_id__entries__entry_id__images_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+                entry_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_upload_images_journals__journal_id__entries__entry_id__images_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EntryImageResponse"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_image_journals__journal_id__entries__entry_id__images__image_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+                entry_id: string;
+                image_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_image_journals__journal_id__entries__entry_id__images__image_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journal_id: string;
+                entry_id: string;
+                image_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
