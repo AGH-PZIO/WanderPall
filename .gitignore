@@ -40,3 +40,9 @@ pnpm-debug.log*
 *.swo
 .DS_Store
 Thumbs.db
+
+#assety
+assets/
+
+#stare dema
+misc/demo/trash/
