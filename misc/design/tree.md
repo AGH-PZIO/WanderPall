@@ -65,5 +65,3 @@ Zamiast kart `Module 1`, `Module 2`, `Module 3`, strona główna powinna prowadz
 ```text
 Dashboard | Trips | Groups | Guides | Journal | Tools | Account
 ```
-
-Nazwy modułów technicznych powinny zniknąć z UI użytkownika. Można je zostawić wyłącznie w dokumentacji lub panelu developerskim.
