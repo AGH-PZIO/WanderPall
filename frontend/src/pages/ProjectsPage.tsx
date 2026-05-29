@@ -18,10 +18,10 @@ const modules: FrontendModule[] = [
 
 const MODULE_ROUTES: Record<string, string> = {
   account: "/account",
-  "travel-assistance": "/guides",
+  "travel-assistance": "/projects/travel-assistance",
   "travel-buddies": "/groups",
   maps: "/trips",
-  journal: "/journal"
+  journal: "/projects/journal"
 };
 
 export function ProjectsPage() {

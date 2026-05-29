@@ -135,25 +135,23 @@ export function RegisterPage() {
 
         {step === "details" && (
           <form className="acc-form" onSubmit={submitDetails}>
-            <div className="acc-field-row">
-              <div className="acc-field">
-                <label htmlFor="reg-first">First name</label>
-                <input
-                  id="reg-first"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="acc-field">
-                <label htmlFor="reg-last">Last name</label>
-                <input
-                  id="reg-last"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  required
-                />
-              </div>
+            <div className="acc-field">
+              <label htmlFor="reg-first">First name</label>
+              <input
+                id="reg-first"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="acc-field">
+              <label htmlFor="reg-last">Last name</label>
+              <input
+                id="reg-last"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
             </div>
             <div className="acc-field">
               <label htmlFor="reg-birth">Birth date</label>

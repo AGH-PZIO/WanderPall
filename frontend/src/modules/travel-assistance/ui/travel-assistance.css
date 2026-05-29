@@ -1,9 +1,20 @@
+/* Travel Assistance — C1 tokens */
+:root {
+  --ta-accent: var(--accent-500);
+  --ta-accent-hover: var(--accent-600);
+  --ta-surface: var(--surface-0);
+  --ta-surface-muted: var(--surface-2);
+  --ta-border: var(--border);
+  --ta-text: var(--text-primary);
+  --ta-text-muted: var(--text-secondary);
+}
+
 .ta-full-page {
   display: flex;
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background: white;
+  background: var(--surface-0);
 }
 
 .ta-topbar {
@@ -11,8 +22,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
-  border-bottom: 2px solid #f0f0f0;
-  background: linear-gradient(to bottom, #fafbfc, #ffffff);
+  border-bottom: 2px solid var(--surface-2);
+  background: linear-gradient(to bottom, var(--surface-1), var(--surface-0));
 }
 
 .btn-close {
@@ -26,7 +37,7 @@
 }
 
 .btn-close:hover {
-  color: #1976d2;
+  color: var(--ta-accent);
 }
 
 .ta-page-content {
@@ -51,7 +62,7 @@
 }
 
 .ta-home-header p {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
@@ -63,7 +74,7 @@
 
 .ta-home-card {
   padding: 24px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -76,7 +87,7 @@
 }
 
 .ta-home-card:hover {
-  border-color: #1976d2;
+  border-color: var(--ta-accent);
   box-shadow: 0 4px 12px rgba(25, 118, 210, 0.1);
   transform: translateY(-2px);
 }
@@ -93,14 +104,14 @@
 
 .ta-home-card p {
   margin: 0;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
 .btn-back {
   background: none;
   border: none;
-  color: #1976d2;
+  color: var(--ta-accent);
   cursor: pointer;
   font-size: 1rem;
   padding: 4px 0px;
@@ -108,7 +119,7 @@
 }
 
 .btn-back:hover {
-  color: #1565c0;
+  color: var(--ta-accent-hover);
 }
 
 .ta-shell {
@@ -122,8 +133,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  border-bottom: 2px solid #f0f0f0;
-  background: linear-gradient(to bottom, #fafbfc, #ffffff);
+  border-bottom: 2px solid var(--surface-2);
+  background: linear-gradient(to bottom, var(--surface-1), var(--surface-0));
 }
 
 .ta-header-left {
@@ -136,7 +147,7 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .ta-header-left small {
@@ -157,8 +168,8 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  background: white;
-  color: #333;
+  background: var(--surface-0);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -193,7 +204,7 @@
 .ta-list h4 {
   margin: 0;
   font-size: 14px;
-  color: #666;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
@@ -203,8 +214,8 @@
   min-height: 180px;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  background: #fafafa;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
   font-size: 14px;
   resize: none;
   outline: none;
@@ -212,8 +223,8 @@
 }
 
 .ta-textarea:focus {
-  background: white;
-  border-color: #1976d2;
+  background: var(--surface-0);
+  border-color: var(--ta-accent);
   box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.08);
 }
 
@@ -232,15 +243,15 @@
   gap: 6px;
 
   padding: 10px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   border-radius: 10px;
-  background: #fafafa;
+  background: var(--surface-2);
 }
 
 /* LABEL */
 .ta-row label {
   font-size: 12px;
-  color: #666;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -249,8 +260,8 @@
   width: 100%;
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #ddd;
-  background: white;
+  border: 1px solid var(--border);
+  background: var(--surface-0);
   font-size: 13px;
   outline: none;
   cursor: pointer;
@@ -258,29 +269,29 @@
 }
 
 .ta-row select:focus {
-  border-color: #1976d2;
+  border-color: var(--ta-accent);
   box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.08);
 }
 
 .btn-secondary {
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #e0e0e0;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: #e8e8e8;
+  background: var(--surface-3);
   border-color: #d0d0d0;
 }
 
 .btn-syncing {
-  background: #1976d2;
+  background: var(--ta-accent);
   color: white;
   border: none;
 }
 
 .btn-syncing:hover:not(:disabled) {
-  background: #1565c0;
+  background: var(--ta-accent-hover);
 }
 
 .ta-body {
@@ -290,7 +301,7 @@
 
 .ta-list {
   width: 35%;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid var(--border);
   overflow: auto;
 }
 
@@ -323,21 +334,21 @@
 .ta-card {
   padding: 12px 16px;
   cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--surface-2);
   transition: all 0.2s ease;
   border-left: 3px solid transparent;
 }
 
 .ta-card:hover {
   background: #f8f9fa;
-  border-left-color: #1976d2;
+  border-left-color: var(--ta-accent);
 }
 
 .ta-card p {
   margin: 6px 0;
   font-weight: 500;
   font-size: 0.95rem;
-  color: #1a1a1a;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -354,7 +365,7 @@
 
 .ta-card.active {
   background: #e3f2fd;
-  border-left-color: #1976d2;
+  border-left-color: var(--ta-accent);
 }
 
 .ta-disconnected {
@@ -368,7 +379,7 @@
 
 .ta-disconnected p {
   font-size: 1.1rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .ta-auth-gate {
@@ -378,7 +389,7 @@
   justify-content: center;
   padding: 40px 20px 48px;
   min-height: min(420px, 70vh);
-  background: linear-gradient(165deg, #e8f4fc 0%, #f7fafc 42%, #ffffff 100%);
+  background: linear-gradient(165deg, #e8f4fc 0%, #f7fafc 42%, var(--surface-0) 100%);
 }
 
 .ta-auth-gate-card {
@@ -386,7 +397,7 @@
   width: 100%;
   padding: 36px 32px 32px;
   text-align: center;
-  background: #ffffff;
+  background: var(--surface-0);
   border-radius: 14px;
   border: 1px solid #d6e8f5;
   box-shadow:
@@ -404,7 +415,7 @@
   margin: 0 0 14px 0;
   font-size: 1.4rem;
   font-weight: 600;
-  color: #0d47a1;
+  color: var(--accent-700);
   letter-spacing: -0.02em;
   line-height: 1.25;
 }
@@ -426,7 +437,7 @@
 .ta-auth-gate-back {
   background: none;
   border: none;
-  color: #1976d2;
+  color: var(--ta-accent);
   cursor: pointer;
   font-size: 0.95rem;
   padding: 6px 12px;
@@ -435,12 +446,12 @@
 }
 
 .ta-auth-gate-back:hover {
-  color: #0d47a1;
+  color: var(--accent-700);
 }
 
 .btn-primary {
   padding: 12px 24px;
-  background: #1976d2;
+  background: var(--ta-accent);
   color: white;
   border: none;
   border-radius: 6px;
@@ -452,7 +463,7 @@
 }
 
 .btn-primary:hover {
-  background: #1565c0;
+  background: var(--ta-accent-hover);
   box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
   transform: translateY(-2px);
 }
@@ -463,14 +474,14 @@
 
 /* .ta-actions button beats .btn-primary specificity — restore contrast for header actions */
 .ta-actions .btn-primary {
-  background: #1976d2;
+  background: var(--ta-accent);
   color: #fff;
   border: none;
   box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
 }
 
 .ta-actions .btn-primary:hover:not(:disabled) {
-  background: #1565c0;
+  background: var(--ta-accent-hover);
   box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
   transform: translateY(-2px);
 }
@@ -480,29 +491,29 @@
 }
 
 .ta-actions .btn-secondary {
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #e0e0e0;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
 }
 
 .ta-actions .btn-secondary:hover:not(:disabled) {
-  background: #e8e8e8;
+  background: var(--surface-3);
   border-color: #d0d0d0;
 }
 
 .ta-actions .btn-syncing {
-  background: #1976d2;
+  background: var(--ta-accent);
   color: #fff;
   border: none;
 }
 
 .ta-actions .btn-syncing:hover:not(:disabled) {
-  background: #1565c0;
+  background: var(--ta-accent-hover);
 }
 
 .btn-download {
   padding: 8px 16px;
-  background: #1976d2;
+  background: var(--ta-accent);
   color: white;
   border: none;
   border-radius: 4px;
@@ -516,7 +527,7 @@
 }
 
 .btn-download:hover {
-  background: #1565c0;
+  background: var(--ta-accent-hover);
   box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
 }
 
@@ -536,8 +547,8 @@
   display: inline-block;
   width: 16px;
   height: 16px;
-  border: 2px solid #ffffff;
-  border-top-color: #1976d2;
+  border: 2px solid var(--surface-0);
+  border-top-color: var(--ta-accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -563,7 +574,7 @@
 }
 
 .ta-calendar-grid {
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 12px;
   background: #fff;
@@ -573,12 +584,12 @@
 
 .ta-calendar-grid .rbc-toolbar button {
   border-radius: 10px;
-  border-color: #e0e0e0;
+  border-color: var(--border);
 }
 
 .ta-calendar-grid .rbc-toolbar button.rbc-active {
-  background: #1976d2;
-  border-color: #1976d2;
+  background: var(--ta-accent);
+  border-color: var(--ta-accent);
   color: white;
 }
 
@@ -587,8 +598,8 @@
 }
 
 .ta-calendar-grid .rbc-event {
-  background: #1976d2;
-  border: 1px solid #1976d2;
+  background: var(--ta-accent);
+  border: 1px solid var(--ta-accent);
 }
 
 .ta-calendar-grid .rbc-off-range-bg {
@@ -602,7 +613,7 @@
 }
 
 .ta-calendar-list-compact .ta-event {
-  background: #fafafa;
+  background: var(--surface-2);
   box-shadow: none;
 }
 
@@ -611,7 +622,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 12px 14px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   border-radius: 10px;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
@@ -619,7 +630,7 @@
 
 .ta-event-title {
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .ta-event-time {
@@ -641,10 +652,10 @@
   align-self: center;
   padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  color: #1976d2;
+  border: 1px solid var(--border);
+  color: var(--ta-accent);
   text-decoration: none;
-  background: #fafafa;
+  background: var(--surface-2);
 }
 
 .ta-event-link:hover {
@@ -674,7 +685,7 @@
 
 .ta-stack-card {
   padding: 14px 16px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   border-radius: 10px;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
@@ -687,14 +698,14 @@
   border-color: #cfe6ff;
   box-shadow: 0 4px 12px rgba(25, 118, 210, 0.1);
   background: #fafcff;
-  border-left-color: #1976d2;
+  border-left-color: var(--ta-accent);
 }
 
 .ta-stack-card__title {
   margin: 0 0 8px 0;
   font-size: 1.05rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .ta-stack-card__preview {
@@ -742,7 +753,7 @@
 .ta-stack-card__actions button:hover {
   background: #e3f2fd;
   border-color: #64b5f6;
-  color: #0d47a1;
+  color: var(--accent-700);
 }
 
 .ta-stack-card__actions .ta-btn-danger {
@@ -764,7 +775,7 @@
   gap: 10px;
   padding: 12px 20px 14px;
   border-bottom: 1px solid #e3e8ee;
-  background: linear-gradient(180deg, #f0f4f8 0%, #fafbfc 100%);
+  background: linear-gradient(180deg, #f0f4f8 0%, var(--surface-1) 100%);
 }
 
 .ta-subnav button {
@@ -787,14 +798,14 @@
 }
 
 .ta-subnav button:hover {
-  color: #0d47a1;
+  color: var(--accent-700);
   border-color: #90caf9;
   background: #e3f2fd;
   box-shadow: 0 2px 8px rgba(25, 118, 210, 0.12);
 }
 
 .ta-subnav button:focus-visible {
-  outline: 2px solid #1976d2;
+  outline: 2px solid var(--ta-accent);
   outline-offset: 2px;
 }
 
@@ -803,8 +814,8 @@
   max-width: 560px;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  background: #fafafa;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
   font-size: 1rem;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
@@ -813,7 +824,7 @@
 
 .ta-input:focus {
   background: #fff;
-  border-color: #1976d2;
+  border-color: var(--ta-accent);
   box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.08);
 }
 
@@ -822,7 +833,7 @@
   margin: 16px 0 8px 0;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #666;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -858,25 +869,25 @@
 .ta-read-pane h1 {
   margin: 0 0 12px 0;
   font-size: 1.75rem;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .ta-read-pane hr {
   border: none;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border);
   margin: 0 0 20px 0;
 }
 
 .ta-read-pane .ta-read-body h2 {
   margin: 1.25em 0 0.5em;
   font-size: 1.25rem;
-  color: #1565c0;
+  color: var(--ta-accent-hover);
 }
 
 .ta-read-heading {
   margin: 1.25em 0 0.5em;
   font-size: 1.25rem;
-  color: #1565c0;
+  color: var(--ta-accent-hover);
 }
 
 .ta-read-heading:first-child {
@@ -885,7 +896,7 @@
 
 .ta-read-paragraph {
   line-height: 1.65;
-  color: #333;
+  color: var(--text-primary);
   margin: 0 0 1em 0;
 }
 
@@ -893,7 +904,7 @@
   max-width: 100%;
   border-radius: 10px;
   margin: 12px 0;
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
 }
 
 .ta-read-audio {
@@ -903,12 +914,12 @@
 
 .ta-read-pane .ta-read-body p {
   line-height: 1.6;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .ta-note-list-item {
   padding: 12px 14px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--surface-2);
   cursor: pointer;
   border-left: 3px solid transparent;
   transition: background 0.15s ease, border-left-color 0.15s ease;
@@ -916,14 +927,14 @@
 
 .ta-note-list-item:hover {
   background: #f8fbff;
-  border-left-color: #1976d2;
+  border-left-color: var(--ta-accent);
 }
 
 .ta-note-list-item h3 {
   margin: 0 0 6px 0;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .ta-note-list-item p {
@@ -939,7 +950,7 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--surface-2);
 }
 
 .ta-note-editor,
@@ -947,7 +958,7 @@
   flex: 1;
   padding: 20px 24px;
   overflow: auto;
-  border-right: 1px solid #eee;
+  border-right: 1px solid var(--border);
 }
 
 .ta-notes-list {
@@ -956,8 +967,8 @@
   max-width: 300px;
   flex-shrink: 0;
   overflow: auto;
-  background: #fafbfc;
-  border-left: 1px solid #eee;
+  background: var(--surface-1);
+  border-left: 1px solid var(--border);
   padding: 8px 0;
 }
 
@@ -977,7 +988,7 @@
 .ta-calc-editor .ta-calc {
   flex: 0 0 auto;
   padding: 16px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   border-radius: 12px;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
@@ -999,13 +1010,13 @@
 .ta-expense-row input[type="number"] {
   padding: 8px 10px;
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   font-size: 0.95rem;
 }
 
 .ta-expense-row input:focus {
   outline: none;
-  border-color: #1976d2;
+  border-color: var(--ta-accent);
   box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.08);
 }
 
@@ -1031,7 +1042,7 @@
   border-radius: 8px;
   border: 1px dashed #90caf9;
   background: #f5f9ff;
-  color: #1565c0;
+  color: var(--ta-accent-hover);
   cursor: pointer;
   font-weight: 500;
 }
@@ -1044,7 +1055,7 @@
   margin-top: 20px;
   font-weight: 600;
   font-size: 1.05rem;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .ta-calc-view ul {
@@ -1085,7 +1096,7 @@
   padding: 12px 14px;
   margin-bottom: 20px;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   box-sizing: border-box;
 }
 
@@ -1094,7 +1105,7 @@
   padding: 14px 16px;
   border: 1px dashed #cfd8dc;
   border-radius: 10px;
-  background: #fafbfc;
+  background: var(--surface-1);
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -1110,7 +1121,7 @@
 .ta-guide-toolbar button {
   padding: 8px 14px;
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   background: #fff;
   cursor: pointer;
   font-size: 0.9rem;
@@ -1120,11 +1131,11 @@
 .ta-guide-toolbar button:hover {
   background: #f0f7ff;
   border-color: #90caf9;
-  color: #1565c0;
+  color: var(--ta-accent-hover);
 }
 
 .ta-guide-block {
-  border: 1px solid #eee;
+  border: 1px solid var(--border);
   padding: 16px 44px 16px 16px;
   border-radius: 10px;
   margin-bottom: 14px;
@@ -1163,7 +1174,7 @@
   margin-top: 10px;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   box-sizing: border-box;
   font-family: inherit;
   font-size: 0.95rem;
@@ -1172,7 +1183,7 @@
 
 .ta-guide-block textarea:focus {
   outline: none;
-  border-color: #1976d2;
+  border-color: var(--ta-accent);
   box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.08);
 }
 
@@ -1195,8 +1206,75 @@
 .ta-guide-footer-actions {
   margin-top: 28px;
   padding-top: 20px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border);
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .ta-topbar,
+[data-theme="dark"] .ta-header {
+  background: var(--surface-0);
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .ta-home-card,
+[data-theme="dark"] .ta-card,
+[data-theme="dark"] .ta-note-card,
+[data-theme="dark"] .ta-guide-card,
+[data-theme="dark"] .ta-calc-card {
+  background: var(--surface-0);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .ta-home-card:hover,
+[data-theme="dark"] .ta-note-card:hover {
+  border-color: var(--accent-400);
+  box-shadow: 0 4px 12px rgba(13, 107, 92, 0.15);
+}
+
+[data-theme="dark"] .ta-sidebar,
+[data-theme="dark"] .ta-notes-sidebar {
+  background: var(--surface-0);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .ta-sidebar-item:hover,
+[data-theme="dark"] .ta-note-item:hover {
+  background: var(--surface-2);
+}
+
+[data-theme="dark"] .ta-sidebar-item.active,
+[data-theme="dark"] .ta-note-item.active {
+  background: rgba(13, 107, 92, 0.15);
+  border-left-color: var(--accent-400);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select,
+[data-theme="dark"] .ta-filter-input,
+[data-theme="dark"] .ta-search-input {
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .ta-guide-upload-ok {
+  background: rgba(45, 138, 94, 0.15);
+  border-color: rgba(45, 138, 94, 0.35);
+  color: var(--accent-300);
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .ta-mail-layout,
+[data-theme="dark"] .ta-translator-page {
+  background: var(--surface-1);
 }

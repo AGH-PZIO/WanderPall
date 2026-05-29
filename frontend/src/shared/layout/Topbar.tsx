@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../modules/account/hooks/useAuth";
+import { logoFullColor, logoMarkColor } from "../../assets/logo";
 import { toggleGuestTheme } from "../theme";
 import { Icon } from "../ui/Icon";
 
@@ -31,15 +32,15 @@ export function Topbar({ landing = false, onMenuClick, showMenu = false }: Topba
             <Icon name="menu" size="icon-md" />
           </button>
         )}
-        <Link to={user ? "/dashboard" : "/"} className="topbar__brand" aria-label="WanderPall">
+        <Link to={user ? "/trips" : "/"} className="topbar__brand" aria-label="WanderPall">
           <img
-            src="/logo/WanderPall-logo_color_full.svg"
+            src={logoFullColor}
             alt=""
             className="topbar__brand-img topbar__brand-img--full"
             aria-hidden="true"
           />
           <img
-            src="/logo/WanderPall-logo_color.svg"
+            src={logoMarkColor}
             alt="WanderPall"
             className="topbar__brand-img topbar__brand-img--mark"
           />

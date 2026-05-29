@@ -105,8 +105,10 @@ export function installAuthMiddleware() {
 }
 
 const THEME_ATTR = "data-theme";
+const THEME_STORAGE_KEY = "wp-c1-theme";
 
 export function applyTheme(theme: string | null | undefined) {
   const normalized = theme === "dark" ? "dark" : "light";
   document.documentElement.setAttribute(THEME_ATTR, normalized);
+  localStorage.setItem(THEME_STORAGE_KEY, normalized);
 }

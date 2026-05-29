@@ -17,7 +17,7 @@ export function LoginPage() {
     setSubmitting(true);
     try {
       await signIn(email, password);
-      navigate("/dashboard");
+      navigate("/trips");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {

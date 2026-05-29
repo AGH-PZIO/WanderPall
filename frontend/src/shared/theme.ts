@@ -1,3 +1,5 @@
+import { applyTheme } from "../modules/account/auth-runtime";
+
 const STORAGE_KEY = "wp-c1-theme";
 
 export function getPreferredTheme(): "light" | "dark" {
@@ -7,8 +9,7 @@ export function getPreferredTheme(): "light" | "dark" {
 }
 
 export function applyGuestTheme(theme: "light" | "dark") {
-  document.documentElement.setAttribute("data-theme", theme);
-  localStorage.setItem(STORAGE_KEY, theme);
+  applyTheme(theme);
 }
 
 export function toggleGuestTheme(): "light" | "dark" {

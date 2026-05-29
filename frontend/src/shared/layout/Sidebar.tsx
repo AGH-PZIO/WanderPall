@@ -12,7 +12,6 @@ type NavItem = {
 };
 
 const MAIN_NAV: NavItem[] = [
-  { to: "/dashboard", label: "Dashboard", icon: "home", end: true },
   { to: "/trips", label: "Trips", icon: "map-pin", end: false },
   { to: "/groups", label: "Groups", icon: "users", end: false },
   { to: "/guides", label: "Guides", icon: "book", end: false },

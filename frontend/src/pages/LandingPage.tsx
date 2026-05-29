@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { HERO_WORDS, WP_CLIPS } from "../shared/clips";
+import { logoMarkColor } from "../assets/logo";
 import { Topbar } from "../shared/layout/Topbar";
 import { Icon } from "../shared/ui/Icon";
 
@@ -82,7 +83,7 @@ export function LandingPage() {
               <div className="hero__split">
                 <div className="hero__brand">
                   <img
-                    src="/logo/WanderPall-logo_color.svg"
+                    src={logoMarkColor}
                     alt=""
                     className="hero__brand-logo"
                     width={120}

@@ -11,10 +11,11 @@ import { ToolsRoutes } from "./modules/travel-assistance/ui/ToolsRoutes";
 import { GroupsRoutes } from "./modules/travel-buddies/ui/GroupsRoutes";
 import { TripsRoutes } from "./modules/maps/ui/TripsRoutes";
 import { AppLayout } from "./shared/layout/AppLayout";
-import { DashboardPage } from "./pages/DashboardPage";
 import { LandingPage } from "./pages/LandingPage";
 import { PlaceholderPage } from "./pages/PlaceholderPage";
 import { ProjectsPage } from "./pages/ProjectsPage";
+import { TravelAssistanceHubPage } from "./pages/dev/TravelAssistanceHubPage";
+import { JournalDevPage } from "./pages/dev/JournalDevPage";
 import { ToastProvider } from "./shared/ui/Toast";
 
 function LegacyRedirect({ to }: { to: string }) {
@@ -29,9 +30,11 @@ export function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/travel-assistance" element={<TravelAssistanceHubPage />} />
+            <Route path="/projects/journal" element={<JournalDevPage />} />
 
             <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/dashboard" element={<LegacyRedirect to="/trips" />} />
               <Route path="/trips/*" element={<TripsRoutes />} />
               <Route path="/groups/*" element={<GroupsRoutes />} />
               <Route path="/guides/*" element={<GuidesRoutes />} />

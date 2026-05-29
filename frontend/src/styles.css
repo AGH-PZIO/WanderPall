@@ -6,31 +6,6 @@
 @import "./shared/design/home.css";
 
 /* App extensions */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-.dashboard-stat-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 8px;
-}
-
-.dashboard-stat-accent {
-  color: var(--accent-500);
-}
-
-.dashboard-stat-brown {
-  color: var(--brown-500);
-}
-
-.dashboard-stat-detail {
-  margin-top: 8px;
-}
-
 .module-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -102,9 +77,15 @@
 }
 
 .page-content--auth {
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
   padding-top: 48px;
+}
+
+.page-content--auth .acc-container {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .topbar__theme .icon-sun,

@@ -24,14 +24,12 @@
 .topbar > div:first-child {
   min-width: 0;
   flex: 1 1 auto;
-  overflow: hidden;
 }
 
 .topbar__brand {
   display: flex;
   align-items: center;
-  min-width: 0;
-  max-width: 100%;
+  flex-shrink: 0;
   color: var(--text-primary);
   font-family: var(--font-display);
   font-weight: 600;
@@ -52,7 +50,7 @@
 }
 
 .topbar__brand-img--full {
-  max-width: min(148px, 46vw);
+  max-width: min(200px, 32vw);
 }
 
 .topbar__brand-img--mark {
@@ -370,6 +368,6 @@
 
   .topbar__brand-img--full {
     height: 24px;
-    max-width: min(168px, 28vw);
+    max-width: min(200px, 32vw);
   }
 }
