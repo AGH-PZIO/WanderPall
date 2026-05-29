@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import type { ExplorerJournalPreview, ReactionEmoji } from "../api/journal-api";
 import { ReactionBar } from "./ReactionBar";
 import { CommentSection } from "./CommentSection";
@@ -10,6 +11,7 @@ interface JournalCardProps {
 }
 
 export function JournalCard({ journal, accessToken, currentUserId, onReactionChange }: JournalCardProps) {
+  const navigate = useNavigate();
   const authorName = `${journal.author.first_name} ${journal.author.last_name}`;
   const updatedAt = new Date(journal.updated_at).toLocaleString();
 
@@ -20,12 +22,19 @@ export function JournalCard({ journal, accessToken, currentUserId, onReactionCha
   return (
     <div className="jr-card jr-journal-card">
       <div className="jr-journal-header">
-        <div>
+        <div style={{ flex: 1 }}>
           <h3 style={{ margin: "0 0 4px" }}>📖 {journal.title}</h3>
           <div className="jr-muted">
             by {authorName} · Updated {updatedAt}
           </div>
         </div>
+        <button
+          className="jr-btn-secondary jr-btn jr-view-btn"
+          type="button"
+          onClick={() => navigate(`/journal/explorer/${journal.id}`)}
+        >
+          View full journal →
+        </button>
       </div>
 
       {journal.first_entry && (

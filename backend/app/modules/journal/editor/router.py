@@ -266,17 +266,25 @@ async def upload_images(
     return created
 
 
-@router.get("/{journal_id}/entries/{entry_id}/images/{image_id}", response_model=None)
+@router.get("/{journal_id}/entries/{entry_id}/images/{image_id:path}", response_model=None)
 def get_image(
     journal_id: UUID,
     entry_id: UUID,
-    image_id: UUID,
+    image_id: str,
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> Response:
     """
     Public endpoint for journal images - no authentication required.
     Images are accessible to journal owners without auth for browser loading.
+    Accepts image_id with or without a file extension (e.g. "uuid.jpg" or "uuid").
     """
+    # Strip file extension if present (e.g. "uuid.jpg" -> "uuid")
+    image_uuid_str = image_id.split('.')[0] if '.' in image_id else image_id
+    try:
+        image_uuid = UUID(image_uuid_str)
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invalid image ID")
+
     # Verify the image exists and belongs to the specified journal/entry
     row = connection.execute(
         """
@@ -285,12 +293,12 @@ def get_image(
         JOIN journal.entries e ON e.id = i.entry_id
         WHERE i.id = %s AND e.id = %s AND e.journal_id = %s
         """,
-        (image_id, entry_id, journal_id),
+        (image_uuid, entry_id, journal_id),
     ).fetchone()
-    
+
     if row is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
-    
+
     storage = LocalStorageBackend(settings.journal_media_dir)
     data = storage.open_bytes(key=row["storage_key"])
     if data is None:

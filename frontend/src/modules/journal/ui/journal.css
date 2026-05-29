@@ -172,7 +172,17 @@
 }
 
 .jr-journal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.jr-view-btn {
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .jr-entry-preview {
@@ -416,3 +426,71 @@
     padding: 8px 12px;
   }
 }
+
+/* ============================================================================
+   Public Journal Detail Page
+   ============================================================================ */
+
+.jr-detail-entry {
+  display: grid;
+  gap: 14px;
+}
+
+.jr-detail-entry-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.jr-detail-entry-index {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1976d2;
+}
+
+.jr-detail-entry-meta {
+  font-size: 0.88rem;
+}
+
+.jr-detail-entry-text {
+  margin: 0;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  color: #263238;
+}
+
+.jr-detail-photos {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.jr-detail-photo-link {
+  display: block;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.15s;
+}
+
+.jr-detail-photo-link:hover {
+  transform: scale(1.02);
+}
+
+.jr-detail-photo {
+  width: 200px;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid #e0e0e0;
+}
+
+@media (max-width: 700px) {
+  .jr-detail-photo {
+    width: 140px;
+    height: 110px;
+  }
+}
+

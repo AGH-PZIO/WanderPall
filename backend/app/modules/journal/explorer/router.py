@@ -146,7 +146,7 @@ def get_explorer_journal(
     current_user: Annotated[User, Depends(get_current_user)],
     connection: Annotated[Connection, Depends(get_connection)],
 ) -> ExplorerJournalDetailResponse:
-    j = _svc(connection).require_accessible_journal(current_user_id=current_user.id, journal_id=journal_id)
+    j = _svc(connection).require_accessible_journal(current_user_id=current_user.id, journal_id=journal_id, include_own=True)
     entries = repository.list_entries_for_journal(connection, journal_id=journal_id)
     entry_responses: list[ExplorerEntryResponse] = []
     for e in entries:
