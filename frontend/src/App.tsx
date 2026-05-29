@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { accountModule, AccountPage } from "./modules/account";
-import { journalModule } from "./modules/journal";
+import { journalModule, JournalPage } from "./modules/journal";
 import { mapsModule, MapsPage } from "./modules/maps";
 import { travelAssistanceModule, TravelAssistancePage } from "./modules/travel-assistance";
 import { travelBuddiesModule, TravelBuddiesPage } from "./modules/travel-buddies";
@@ -64,12 +64,12 @@ export function App() {
       <ToastProvider>
         <Router>
           <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/account/*" element={<AccountPage onClose={() => window.location.href = "/"} />} />
-          <Route path="/travel-assistance/*" element={<TravelAssistancePage onClose={() => window.location.href = "/"} />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/account/*" element={<AccountPage onClose={() => window.location.href = "/"} />} />
+            <Route path="/travel-assistance/*" element={<TravelAssistancePage onClose={() => window.location.href = "/"} />} />
             <Route path="/travel-buddies/*" element={<TravelBuddiesPage onClose={() => window.location.href = "/"} />} />
-          <Route path="/maps/*" element={<MapsPage onClose={() => window.location.href = "/"} />} />
-
+            <Route path="/maps/*" element={<MapsPage onClose={() => window.location.href = "/"} />} />
+            <Route path="/journal/*" element={<JournalPage onClose={() => window.location.href = "/"} />} />
           </Routes>
         </Router>
       </ToastProvider>

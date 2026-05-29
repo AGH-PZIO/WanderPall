@@ -16,16 +16,16 @@ fi
 
 case "$1" in
   db)
-    docker compose up -d db --wait
+    docker compose up -d --wait db
     "$(dirname "$0")/migrate_db.sh"
     ;;
   backend)
-    docker compose up -d db --wait
+    docker compose up -d --wait db
     "$(dirname "$0")/migrate_db.sh"
     docker compose --profile backend up --build -d backend
     ;;
   full)
-    docker compose up -d db --wait
+    docker compose up -d --wait db
     "$(dirname "$0")/migrate_db.sh"
     docker compose --profile full up --build -d backend frontend
     ;;

@@ -1,4 +1,5 @@
 import type { FrontendModule } from "../../shared/module";
+import { JournalPage } from "./JournalPage";
 
 export const journalModule: FrontendModule = {
   id: "journal",
@@ -7,3 +8,5 @@ export const journalModule: FrontendModule = {
   summary: "Journal creation, entries, visibility, public browsing, saved journals, comments, and reactions.",
   owner: "@sggorski @Gawronek-8 @pavlvs-91"
 };
+
+export { JournalPage };

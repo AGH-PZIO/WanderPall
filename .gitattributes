@@ -1,0 +1,13 @@
+# Default: normalize line endings to LF in the repository
+* text=auto eol=lf
+
+# Generated files that must stay LF so CI diffs are stable
+docs/openapi.json text eol=lf
+frontend/src/shared/api-types.ts text eol=lf
+
+# Shell scripts must be LF (otherwise they break on Linux)
+*.sh text eol=lf
+
+# Windows-only files that should keep CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
