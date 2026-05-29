@@ -1561,6 +1561,7 @@ export interface paths {
          * Get Image
          * @description Public endpoint for journal images - no authentication required.
          *     Images are accessible to journal owners without auth for browser loading.
+         *     Accepts image_id with or without a file extension (e.g. "uuid.jpg" or "uuid").
          */
         get: operations["get_image_journals__journal_id__entries__entry_id__images__image_id__get"];
         put?: never;

@@ -6444,7 +6444,7 @@
           "module-5-journal"
         ],
         "summary": "Get Image",
-        "description": "Public endpoint for journal images - no authentication required.\nImages are accessible to journal owners without auth for browser loading.",
+        "description": "Public endpoint for journal images - no authentication required.\nImages are accessible to journal owners without auth for browser loading.\nAccepts image_id with or without a file extension (e.g. \"uuid.jpg\" or \"uuid\").",
         "operationId": "get_image_journals__journal_id__entries__entry_id__images__image_id__get",
         "parameters": [
           {
@@ -6473,7 +6473,6 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
               "title": "Image Id"
             }
           }
