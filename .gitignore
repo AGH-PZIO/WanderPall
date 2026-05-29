@@ -31,6 +31,8 @@ pnpm-debug.log*
 # Docker / local runtime
 *.pid
 *.log
+docker-compose.override.yml
+backend/media/
 
 # IDE / OS
 .codex

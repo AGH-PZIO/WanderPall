@@ -10,9 +10,9 @@ import { GuidesRoutes } from "./modules/travel-assistance/ui/GuidesRoutes";
 import { ToolsRoutes } from "./modules/travel-assistance/ui/ToolsRoutes";
 import { GroupsRoutes } from "./modules/travel-buddies/ui/GroupsRoutes";
 import { TripsRoutes } from "./modules/maps/ui/TripsRoutes";
+import { JournalRoutes } from "./modules/journal/ui/JournalRoutes";
 import { AppLayout } from "./shared/layout/AppLayout";
 import { LandingPage } from "./pages/LandingPage";
-import { PlaceholderPage } from "./pages/PlaceholderPage";
 import { ProjectsPage } from "./pages/ProjectsPage";
 import { TravelAssistanceHubPage } from "./pages/dev/TravelAssistanceHubPage";
 import { JournalDevPage } from "./pages/dev/JournalDevPage";
@@ -38,7 +38,7 @@ export function App() {
               <Route path="/trips/*" element={<TripsRoutes />} />
               <Route path="/groups/*" element={<GroupsRoutes />} />
               <Route path="/guides/*" element={<GuidesRoutes />} />
-              <Route path="/journal/*" element={<PlaceholderPage title="Journal" description="Wpisy z podróży — publiczne i prywatne dzienniki." />} />
+              <Route path="/journal/*" element={<JournalRoutes />} />
               <Route path="/tools/*" element={<ToolsRoutes />} />
               <Route path="/account/*" element={<AccountRoutes />} />
 

@@ -25,10 +25,29 @@ jobs:
 
       - name: Export OpenAPI
         working-directory: backend
-        run: ../.venv/bin/python -m scripts.export_openapi
+        run: PYTHONPATH=. ../.venv/bin/python -m scripts.export_openapi
 
       - name: Check OpenAPI is up to date
         run: git diff --exit-code docs/openapi.json
+
+  backend-integration:
+    name: Backend Integration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Start database
+        run: ./scripts/start.sh db
+
+      - name: Run integration tests
+        run: ./scripts/test.sh backend-integration
 
   frontend:
     name: Frontend

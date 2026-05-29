@@ -17,7 +17,7 @@ export function JournalDevPage() {
 
             <PageHeader
               title={journalModule.name}
-              description="Tryb deweloperski — moduł dzienników podróży (UI w przygotowaniu)."
+              description="Tryb deweloperski — moduł dzienników podróży."
             />
 
             <p className="eyebrow">{journalModule.number}</p>
@@ -28,8 +28,7 @@ export function JournalDevPage() {
 
             <div className="card placeholder-page" style={{ marginTop: 24 }}>
               <p>
-                Pełna funkcjonalność Journal będzie dostępna pod <Link to="/journal">/journal</Link> po
-                implementacji modułu.
+                Moduł Journal jest dostępny pod <Link to="/journal">/journal</Link>.
               </p>
             </div>
           </div>
