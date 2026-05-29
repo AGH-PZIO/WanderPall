@@ -53,7 +53,7 @@ export function PasswordResetPage() {
 
           <p className="acc-muted">
             Have a token?{" "}
-            <Link to="/account/password-reset/confirm" className="acc-link-button">
+            <Link to="/password-reset/confirm" className="acc-link-button">
               Enter it here
             </Link>
           </p>

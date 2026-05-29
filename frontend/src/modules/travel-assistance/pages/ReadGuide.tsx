@@ -40,11 +40,11 @@ export default function ReadGuide() {
         <div
           key={g.id}
           className="ta-note-list-item"
-          onClick={() => navigate(`/travel-assistance/read-guide/${g.id}`)}
+          onClick={() => navigate(`/guides/read/${g.id}`)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              navigate(`/travel-assistance/read-guide/${g.id}`);
+              navigate(`/guides/read/${g.id}`);
             }
           }}
           role="button"
@@ -62,7 +62,7 @@ export default function ReadGuide() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/browse-guides")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/guides/browse")}>
               ← Back
             </button>
             <h2>Guide</h2>
@@ -111,7 +111,7 @@ export default function ReadGuide() {
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/browse-guides")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides/browse")}>
             ← Back
           </button>
           <h2>{guide.title}</h2>
@@ -119,10 +119,10 @@ export default function ReadGuide() {
       </div>
 
       <div className="ta-subnav">
-        <button type="button" onClick={() => navigate("/travel-assistance")}>
+        <button type="button" onClick={() => navigate("/guides")}>
           Travel assistance
         </button>
-        <button type="button" onClick={() => navigate("/travel-assistance/my-guides")}>
+        <button type="button" onClick={() => navigate("/guides/mine")}>
           My guides
         </button>
       </div>

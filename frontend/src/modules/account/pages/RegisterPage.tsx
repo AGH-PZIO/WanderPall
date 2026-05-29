@@ -102,7 +102,7 @@ export function RegisterPage() {
         password,
         password_confirmation: passwordConfirmation
       });
-      navigate("/account/login");
+      navigate("/login");
     } catch (err) {
       handleError(err);
     } finally {

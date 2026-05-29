@@ -1,0 +1,81 @@
+:root {
+  --icon-primary: var(--text-primary);
+  --icon-secondary: var(--text-secondary);
+  --icon-muted: var(--text-muted);
+  --icon-accent: var(--accent-500);
+  --icon-on-accent: #ffffff;
+}
+
+.icon {
+  display: block;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+}
+
+.icon-xs { width: 16px; height: 16px; }
+.icon-sm { width: 18px; height: 18px; }
+.icon-md { width: 24px; height: 24px; }
+.icon-lg { width: 32px; height: 32px; }
+
+.topbar__link--with-icon,
+.btn--with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn--with-icon .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.stat-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--icon-accent);
+}
+
+.stat-card__icon .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.stat-card__icon--brown {
+  color: var(--brown-500);
+}
+
+.sidebar__link[data-icon]::before,
+.nav-group__sub .sidebar__link {
+  /* icons injected by JS at start of link */
+}
+
+.icon-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 16px;
+}
+
+.icon-showcase-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  color: var(--icon-secondary);
+  font-size: 0.75rem;
+}
+
+.icon-showcase-item .icon {
+  width: 24px;
+  height: 24px;
+}

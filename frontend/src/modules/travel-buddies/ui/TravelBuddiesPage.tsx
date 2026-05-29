@@ -18,7 +18,7 @@ function TravelBuddiesTopbar({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             className="tb-btn-secondary"
-            onClick={() => navigate("/travel-buddies")}
+            onClick={() => navigate("/groups")}
           >
             ← Wróć
           </button>

@@ -1,61 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-import { accountModule, AccountPage } from "./modules/account";
-import { journalModule } from "./modules/journal";
-import { mapsModule, MapsPage } from "./modules/maps";
-import { travelAssistanceModule, TravelAssistancePage } from "./modules/travel-assistance";
-import { travelBuddiesModule, TravelBuddiesPage } from "./modules/travel-buddies";
-
-import { getTestStatus } from "./shared/api";
-import type { FrontendModule } from "./shared/module";
 import { AuthProvider } from "./modules/account/hooks/useAuth";
+import { LoginPage } from "./modules/account/pages/LoginPage";
+import { RegisterPage } from "./modules/account/pages/RegisterPage";
+import { PasswordResetPage } from "./modules/account/pages/PasswordResetPage";
+import { PasswordResetConfirmPage } from "./modules/account/pages/PasswordResetConfirmPage";
+import { AccountRoutes } from "./modules/account/ui/AccountRoutes";
+import { GuidesRoutes } from "./modules/travel-assistance/ui/GuidesRoutes";
+import { ToolsRoutes } from "./modules/travel-assistance/ui/ToolsRoutes";
+import { GroupsRoutes } from "./modules/travel-buddies/ui/GroupsRoutes";
+import { TripsRoutes } from "./modules/maps/ui/TripsRoutes";
+import { AppLayout } from "./shared/layout/AppLayout";
+import { DashboardPage } from "./pages/DashboardPage";
+import { LandingPage } from "./pages/LandingPage";
+import { PlaceholderPage } from "./pages/PlaceholderPage";
+import { ProjectsPage } from "./pages/ProjectsPage";
 import { ToastProvider } from "./shared/ui/Toast";
 
-const modules: FrontendModule[] = [
-  accountModule,
-  travelAssistanceModule,
-  travelBuddiesModule,
-  mapsModule,
-  journalModule
-];
-
-function HomePage() {
-  async function handleTestApi() {
-    const result = await getTestStatus();
-    window.alert(result.message);
-  }
-
-  return (
-    <main className="app-shell">
-      <header className="app-header">
-        <p className="eyebrow">WanderPall</p>
-        <h1>Travel planning workspace</h1>
-
-        <button
-          className="api-test-button"
-          type="button"
-          onClick={handleTestApi}
-        >
-          Test API
-        </button>
-      </header>
-
-      <section className="module-grid" aria-label="Project modules">
-        {modules.map((module) => (
-          <article
-            className="module-card"
-            key={module.id}
-            onClick={() => window.location.href = `/${module.id}`}
-          >
-            <p className="module-number">{module.number}</p>
-            <h2>{module.name}</h2>
-            <p>{module.summary}</p>
-            <p className="module-owner">{module.owner}</p>
-          </article>
-        ))}
-      </section>
-    </main>
-  );
+function LegacyRedirect({ to }: { to: string }) {
+  return <Navigate to={to} replace />;
 }
 
 export function App() {
@@ -64,12 +27,31 @@ export function App() {
       <ToastProvider>
         <Router>
           <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/account/*" element={<AccountPage onClose={() => window.location.href = "/"} />} />
-          <Route path="/travel-assistance/*" element={<TravelAssistancePage onClose={() => window.location.href = "/"} />} />
-            <Route path="/travel-buddies/*" element={<TravelBuddiesPage onClose={() => window.location.href = "/"} />} />
-          <Route path="/maps/*" element={<MapsPage onClose={() => window.location.href = "/"} />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
 
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/trips/*" element={<TripsRoutes />} />
+              <Route path="/groups/*" element={<GroupsRoutes />} />
+              <Route path="/guides/*" element={<GuidesRoutes />} />
+              <Route path="/journal/*" element={<PlaceholderPage title="Journal" description="Wpisy z podróży — publiczne i prywatne dzienniki." />} />
+              <Route path="/tools/*" element={<ToolsRoutes />} />
+              <Route path="/account/*" element={<AccountRoutes />} />
+
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/password-reset" element={<PasswordResetPage />} />
+              <Route path="/password-reset/confirm" element={<PasswordResetConfirmPage />} />
+            </Route>
+
+            {/* Legacy URL redirects */}
+            <Route path="/travel-assistance/*" element={<LegacyRedirect to="/guides" />} />
+            <Route path="/travel-buddies/*" element={<LegacyRedirect to="/groups" />} />
+            <Route path="/maps/*" element={<LegacyRedirect to="/trips" />} />
+            <Route path="/account/login" element={<LegacyRedirect to="/login" />} />
+            <Route path="/account/register" element={<LegacyRedirect to="/register" />} />
+            <Route path="/account/password-reset/*" element={<LegacyRedirect to="/password-reset" />} />
           </Routes>
         </Router>
       </ToastProvider>

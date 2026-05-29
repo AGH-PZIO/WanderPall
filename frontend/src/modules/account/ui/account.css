@@ -1,10 +1,10 @@
 .acc-full-page {
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  min-height: 100vh;
-  background: #f7f8f4;
-  color: #18201c;
+  width: 100%;
+  min-height: auto;
+  background: transparent;
+  color: var(--text-primary);
 }
 
 :root[data-theme="dark"] .acc-full-page {

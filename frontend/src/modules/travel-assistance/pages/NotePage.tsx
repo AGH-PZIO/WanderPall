@@ -45,11 +45,11 @@ function NoteViewer({
         <div
           key={n.id}
           className="ta-note-list-item"
-          onClick={() => navigate(`/travel-assistance/note/${n.id}`)}
+          onClick={() => navigate(`/guides/note/${n.id}`)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              navigate(`/travel-assistance/note/${n.id}`);
+              navigate(`/guides/note/${n.id}`);
             }
           }}
           role="button"
@@ -65,13 +65,13 @@ function NoteViewer({
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/notes")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides/notes")}>
             ← Back
           </button>
           <h2>Browse note</h2>
         </div>
         <div className="ta-actions">
-          <button type="button" onClick={() => navigate(`/travel-assistance/edit-note/${noteId}`)} className="btn-primary">
+          <button type="button" onClick={() => navigate(`/guides/edit-note/${noteId}`)} className="btn-primary">
             Edit
           </button>
           {!isNew && (
@@ -80,7 +80,7 @@ function NoteViewer({
               className="btn-secondary"
               onClick={() => {
                 remove(noteId ?? "");
-                navigate("/travel-assistance/notes");
+                navigate("/guides/notes");
               }}
             >
               Delete
@@ -124,7 +124,7 @@ function NotePage() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/notes")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/guides/notes")}>
               ← Back
             </button>
             <h2>{isNew ? "New note" : "Edit note"}</h2>

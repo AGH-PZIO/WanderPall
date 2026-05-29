@@ -14,3 +14,18 @@ Utwórz strony tak, by ich drzewko w głównym flow (nie w trybie deweloperskim)
 
 Przetestuj działanie.
 Jeśli działa - zaktualizuj dokumentację itp.
+
+---
+
+## Status implementacji (2026-05-29)
+
+Zaimplementowano w `frontend/`:
+
+- Design language C1 (Together) — tokeny, layout, komponenty w `frontend/src/shared/design/`
+- Strona startowa `/` — hero C1 z animacją i wideo; **W drogę!** → `/register`; **Przejrzyj projekt** → `/projects`
+- Po logowaniu przekierowanie na `/dashboard` z nawigacją boczną (Dashboard, Trips, Groups, Guides, Journal, Tools, Account)
+- Drzewo tras zgodne z `tree.md` (moduły zmapowane: maps→trips, travel-buddies→groups, travel-assistance→guides/tools)
+- Stary UI zachowany w `frontend/legacy/` do porównania
+- Przekierowania ze starych URL (`/travel-assistance`, `/travel-buddies`, `/maps`, `/account/login`, …)
+
+Testy: `npm run lint` i `npm run build` w `frontend/` — OK.

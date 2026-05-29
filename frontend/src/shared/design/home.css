@@ -1,0 +1,243 @@
+.app--landing .main--landing {
+  margin-left: 0;
+  width: 100%;
+}
+
+.hero {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--topbar-height));
+  overflow: hidden;
+}
+
+.hero__video-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.hero__video--active {
+  opacity: 1;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 24, 22, 0.72) 0%,
+    rgba(18, 24, 22, 0.55) 50%,
+    rgba(18, 24, 22, 0.78) 100%
+  );
+  z-index: 1;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding: 48px 32px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.hero__split {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 64px);
+  align-items: center;
+  max-width: 100%;
+}
+
+.hero__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-right: clamp(24px, 4vw, 48px);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.hero__brand-logo {
+  width: clamp(72px, 11vw, 112px);
+  height: auto;
+  max-height: 82px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
+}
+
+.hero__brand-name {
+  margin: 16px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.hero__brand-wander {
+  color: var(--accent-300);
+}
+
+.hero__brand-pall {
+  color: var(--brown-300);
+}
+
+.hero__message {
+  text-align: left;
+}
+
+.hero__headline {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: white;
+  margin-bottom: 40px;
+}
+
+.hero__word-slot {
+  display: inline-block;
+  position: relative;
+  min-width: min(100%, 12ch);
+  min-height: 1.15em;
+  vertical-align: bottom;
+  text-align: left;
+}
+
+@media (min-width: 641px) {
+  .hero__word-slot {
+    min-width: 14ch;
+  }
+}
+
+.hero__word {
+  display: inline-block;
+  color: white;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  position: absolute;
+  left: 0;
+  right: 0;
+  white-space: nowrap;
+}
+
+.hero__word--active {
+  opacity: 1;
+  transform: translateY(0);
+  position: relative;
+}
+
+.hero__word--exit {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.hero__together {
+  color: var(--brown-300);
+  text-decoration: underline;
+  text-decoration-color: var(--brown-400);
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 3px;
+}
+
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.btn--hero {
+  padding: 20px 56px;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn--hero:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.hero__footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 32px 36px;
+}
+
+.btn--dev {
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  border-color: rgba(255, 255, 255, 0.5);
+  color: white;
+}
+
+.btn--dev:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.hero__dev {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 768px) {
+  .hero__split {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    text-align: center;
+  }
+
+  .hero__brand {
+    padding-right: 0;
+    border-right: none;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .hero__message {
+    text-align: center;
+  }
+
+  .hero__actions {
+    align-items: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero__headline {
+    font-size: clamp(2rem, 8vw, 2.75rem);
+  }
+
+  .hero__content {
+    padding: 32px 20px 120px;
+  }
+
+  .hero__word {
+    white-space: normal;
+    position: relative;
+  }
+}

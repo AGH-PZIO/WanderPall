@@ -61,7 +61,7 @@ function BrowseGuides() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
               ← Back
             </button>
             <h2>Public travel guides</h2>
@@ -77,7 +77,7 @@ function BrowseGuides() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
               ← Back
             </button>
             <h2>Public travel guides</h2>
@@ -94,7 +94,7 @@ function BrowseGuides() {
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
             ← Back
           </button>
           <h2>Public travel guides</h2>
@@ -102,7 +102,7 @@ function BrowseGuides() {
       </div>
 
       <div className="ta-subnav">
-        <button type="button" onClick={() => navigate("/travel-assistance/my-guides")}>
+        <button type="button" onClick={() => navigate("/guides/mine")}>
           My guides
         </button>
       </div>
@@ -195,11 +195,11 @@ function BrowseGuides() {
             <div
               key={guide.id}
               className="ta-stack-card"
-              onClick={() => navigate(`/travel-assistance/read-guide/${guide.id}`)}
+              onClick={() => navigate(`/guides/read/${guide.id}`)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  navigate(`/travel-assistance/read-guide/${guide.id}`);
+                  navigate(`/guides/read/${guide.id}`);
                 }
               }}
               role="button"

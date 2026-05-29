@@ -98,7 +98,7 @@ function CalculationPage() {
         total
       };
       create(calcData);
-      navigate("/travel-assistance/my-calculations");
+      navigate("/tools/calculator");
     }
   }
 
@@ -112,11 +112,11 @@ function CalculationPage() {
         <div
           key={c.id}
           className="ta-note-list-item"
-          onClick={() => navigate(`/travel-assistance/calculation/${c.id}`)}
+          onClick={() => navigate(`/tools/calculator/${c.id}`)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              navigate(`/travel-assistance/calculation/${c.id}`);
+              navigate(`/tools/calculator/${c.id}`);
             }
           }}
           role="button"
@@ -229,7 +229,7 @@ function CalculationPage() {
             className="ta-btn-danger"
             onClick={() => {
               remove(id ?? "");
-              navigate("/travel-assistance/my-calculations");
+              navigate("/tools/calculator");
             }}
           >
             Delete
@@ -245,7 +245,7 @@ function CalculationPage() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/my-calculations")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/tools/calculator")}>
               ← Back
             </button>
             <h2>Calculator</h2>
@@ -260,7 +260,7 @@ function CalculationPage() {
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/my-calculations")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/tools/calculator")}>
             ← Back
           </button>
           <h2>{isNew ? "New calculation" : "Calculation"}</h2>

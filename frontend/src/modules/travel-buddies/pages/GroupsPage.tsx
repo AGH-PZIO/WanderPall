@@ -12,7 +12,7 @@ export function GroupsPage() {
   const [creating, setCreating] = useState(false);
 
   function handleGroupClick(group: { id: string }) {
-    navigate(`/travel-buddies/groups/${group.id}`);
+    navigate(`/groups/${group.id}`);
   }
 
   useEffect(() => {

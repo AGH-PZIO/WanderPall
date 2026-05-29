@@ -32,7 +32,7 @@ export function MailPage() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
             ← Back
           </button>
           <h2>Email Documents</h2>
@@ -55,7 +55,7 @@ export function MailPage() {
       {/* HEADER */}
       <div className="ta-header">
         <div className="ta-header-left">
-          <button onClick={() => navigate("/travel-assistance")} className="btn-back">← Back</button>
+          <button onClick={() => navigate("/guides")} className="btn-back">← Back</button>
           <h2>Email Documents</h2>
           <small>{googleEmail}</small>
         </div>

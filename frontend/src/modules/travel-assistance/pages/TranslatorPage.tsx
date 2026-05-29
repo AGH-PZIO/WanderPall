@@ -27,7 +27,7 @@ export function TranslatorPage() {
       <div className="ta-header">
         <div className="ta-header-left">
           <button
-            onClick={() => navigate("/travel-assistance")}
+            onClick={() => navigate("/guides")}
             className="btn-back"
           >
             ← Back
