@@ -456,13 +456,18 @@ export async function uploadAttachment(
 ): Promise<AttachmentResponse> {
   const formData = new FormData();
   formData.append("file", file);
-  const { data, error } = await apiClient.POST("/travel-buddies/groups/{group_id}/attachments", {
-    body: formData as unknown as { file: string },
+  const baseUrl = (import.meta as { env?: Record<string, string> }).env?.VITE_API_BASE_URL ?? "/api";
+  const res = await fetch(`${baseUrl}/travel-buddies/groups/${groupId}/attachments`, {
+    method: "POST",
+    // Do NOT set Content-Type — the browser must set it with the multipart boundary
     headers: authHeaders(accessToken),
-    params: { path: { group_id: groupId }, query: {} }
+    body: formData,
   });
-  if (error || !data) throw new Error(describeError(error, "Nie udało się przesłać pliku"));
-  return data;
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({})) as { detail?: unknown };
+    throw new Error(describeError(err, "Nie udało się przesłać pliku"));
+  }
+  return res.json() as Promise<AttachmentResponse>;
 }
 
 export async function addReaction(

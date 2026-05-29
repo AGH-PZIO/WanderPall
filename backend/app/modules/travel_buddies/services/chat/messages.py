@@ -61,9 +61,9 @@ class MessageService:
         )
         created = self.messages.create(message)
         
-        if request.attachment_ids and self.attachments:
+        if request.attachment_ids:
             for att_id in request.attachment_ids:
-                self.attachments.link_attachment(created.id, att_id)
+                self.messages.link_attachment(created.id, att_id)
         
         atts = self.messages.get_attachments(created.id)
         attachments = [
