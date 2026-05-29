@@ -140,7 +140,8 @@ export function TravelBuddiesProvider({ children }: { children: ReactNode }) {
     } catch {
       // silently fail
     }
-  }, [state.currentGroup]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const refreshPolls = useCallback(async (groupId?: string) => {
     const token = getAccessToken();
@@ -152,7 +153,8 @@ export function TravelBuddiesProvider({ children }: { children: ReactNode }) {
     } catch {
       // silently fail
     }
-  }, [state.currentGroup]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const refreshMessages = useCallback(async (groupId?: string) => {
     const token = getAccessToken();
@@ -164,7 +166,8 @@ export function TravelBuddiesProvider({ children }: { children: ReactNode }) {
     } catch {
       // silently fail
     }
-  }, [state.currentGroup]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const refreshTasks = useCallback(async (groupId?: string) => {
     const token = getAccessToken();
@@ -176,7 +179,8 @@ export function TravelBuddiesProvider({ children }: { children: ReactNode }) {
     } catch {
       // silently fail
     }
-  }, [state.currentGroup]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const refreshPacking = useCallback(async (groupId?: string) => {
     const token = getAccessToken();
@@ -191,7 +195,8 @@ export function TravelBuddiesProvider({ children }: { children: ReactNode }) {
     } catch {
       // silently fail
     }
-  }, [state.currentGroup]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value = useMemo<TravelBuddiesContextValue>(
     () => ({
