@@ -35,15 +35,15 @@ export function HomePage() {
           </>
         ) : (
           <>
-            <Link to="/account/login" className="acc-home-card">
+            <Link to="/login" className="acc-home-card">
               <h3>Sign in</h3>
               <p>Access your WanderPall workspace.</p>
             </Link>
-            <Link to="/account/register" className="acc-home-card">
+            <Link to="/register" className="acc-home-card">
               <h3>Create account</h3>
               <p>Register with email verification.</p>
             </Link>
-            <Link to="/account/password-reset" className="acc-home-card">
+            <Link to="/password-reset" className="acc-home-card">
               <h3>Forgot password?</h3>
               <p>Request a reset link by email.</p>
             </Link>

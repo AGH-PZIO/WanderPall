@@ -1,25 +1,40 @@
-/* === Design tokens === */
+/* === Design tokens (C1 Together) === */
 :root {
-  --tb-primary: #2c3e50;
-  --tb-primary-dark: #1a252f;
-  --tb-accent: #3498db;
-  --tb-accent-dark: #2980b9;
-  --tb-success: #27ae60;
-  --tb-success-light: #eafaf1;
-  --tb-warning: #f39c12;
-  --tb-danger: #e74c3c;
-  --tb-danger-light: #fdf2f2;
-  --tb-bg: #f0f4f8;
-  --tb-surface: #ffffff;
-  --tb-border: #e2e8f0;
-  --tb-text: #2d3748;
-  --tb-text-muted: #718096;
-  --tb-text-light: #a0aec0;
-  --tb-radius-sm: 4px;
-  --tb-radius: 8px;
-  --tb-radius-lg: 12px;
-  --tb-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --tb-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+  --tb-primary: var(--accent-700);
+  --tb-primary-dark: var(--accent-800);
+  --tb-accent: var(--accent-500);
+  --tb-accent-dark: var(--accent-600);
+  --tb-success: var(--success);
+  --tb-success-light: var(--accent-50);
+  --tb-warning: var(--warning);
+  --tb-danger: var(--danger);
+  --tb-danger-light: rgba(201, 68, 68, 0.12);
+  --tb-bg: var(--surface-1);
+  --tb-surface: var(--surface-0);
+  --tb-border: var(--border);
+  --tb-text: var(--text-primary);
+  --tb-text-muted: var(--text-secondary);
+  --tb-text-light: var(--text-muted);
+  --tb-radius-sm: var(--radius-sm);
+  --tb-radius: var(--radius-md);
+  --tb-radius-lg: var(--radius-lg);
+  --tb-shadow: var(--shadow-sm);
+  --tb-shadow-md: var(--shadow-md);
+}
+
+[data-theme="dark"] {
+  --tb-primary: var(--accent-800);
+  --tb-primary-dark: var(--accent-900);
+  --tb-accent: var(--accent-400);
+  --tb-accent-dark: var(--accent-500);
+  --tb-success-light: rgba(13, 107, 92, 0.2);
+  --tb-danger-light: rgba(201, 68, 68, 0.15);
+  --tb-bg: var(--surface-1);
+  --tb-surface: var(--surface-0);
+  --tb-border: var(--border);
+  --tb-text: var(--text-primary);
+  --tb-text-muted: var(--text-secondary);
+  --tb-text-light: var(--text-muted);
 }
 
 /* === Layout === */
@@ -1218,5 +1233,47 @@
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
+}
+
+/* Dark mode — hardcoded legacy colors */
+[data-theme="dark"] .tb-btn-edit:hover,
+[data-theme="dark"] .tb-message-bubble--own,
+[data-theme="dark"] .tb-poll-option-voted,
+[data-theme="dark"] .tb-task-done {
+  background: rgba(13, 107, 92, 0.25);
+}
+
+[data-theme="dark"] .tb-btn-edit:hover {
+  background: rgba(13, 107, 92, 0.2);
+}
+
+[data-theme="dark"] .tb-msg-ok {
+  background: rgba(45, 138, 94, 0.2);
+  color: var(--accent-300);
+  border-color: rgba(45, 138, 94, 0.35);
+}
+
+[data-theme="dark"] .tb-msg-err {
+  background: rgba(201, 68, 68, 0.15);
+  color: #f3a8a8;
+  border-color: rgba(201, 68, 68, 0.35);
+}
+
+[data-theme="dark"] .tb-chat-input input,
+[data-theme="dark"] .tb-inline-form input,
+[data-theme="dark"] .tb-form input,
+[data-theme="dark"] .tb-form textarea,
+[data-theme="dark"] .tb-create-form input,
+[data-theme="dark"] .tb-create-form textarea {
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .tb-tabs-nav button.active {
+  background: var(--accent-600);
+}
+
+[data-theme="dark"] .tb-avatar {
+  background: var(--accent-700);
 }
 

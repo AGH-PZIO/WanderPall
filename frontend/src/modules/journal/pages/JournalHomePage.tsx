@@ -31,8 +31,8 @@ export function JournalHomePage() {
               You need to be signed in to create journals.
             </p>
             <div className="jr-actions" style={{ justifyContent: "flex-start" }}>
-              <Link className="jr-btn" to="/account/login">Go to login</Link>
-              <Link className="jr-btn-secondary jr-btn" to="/account/register">Create account</Link>
+              <Link className="jr-btn" to="/login">Go to login</Link>
+              <Link className="jr-btn-secondary jr-btn" to="/register">Create account</Link>
             </div>
           </>
         )}

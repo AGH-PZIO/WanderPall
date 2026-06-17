@@ -707,7 +707,7 @@ export function GroupMapPage() {
   return (
     <div className="maps-page">
       <div className="maps-toolbar">
-        <button type="button" className="maps-btn-secondary" onClick={() => navigate("/maps")}>
+        <button type="button" className="maps-btn-secondary" onClick={() => navigate("/trips")}>
           ← Grupy
         </button>
 

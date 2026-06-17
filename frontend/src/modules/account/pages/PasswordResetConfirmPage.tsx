@@ -35,7 +35,7 @@ export function PasswordResetConfirmPage() {
         password,
         password_confirmation: passwordConfirmation
       });
-      navigate("/account/login");
+      navigate("/login");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not reset password");
     } finally {

@@ -107,7 +107,7 @@ export function ExplorerFeedPage() {
         <div className="jr-card">
           <p className="jr-muted">Please sign in to explore public journals.</p>
           <div className="jr-actions" style={{ justifyContent: "flex-start" }}>
-            <button className="jr-btn" type="button" onClick={() => navigate("/account/login")}>
+            <button className="jr-btn" type="button" onClick={() => navigate("/login")}>
               Go to login
             </button>
           </div>

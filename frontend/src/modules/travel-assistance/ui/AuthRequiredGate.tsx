@@ -25,10 +25,10 @@ export function AuthRequiredGate({ feature, hint }: AuthRequiredGateProps) {
             "You need an active session to open this area. Sign in with your WanderPall account, then come back here."}
         </p>
         <div className="ta-auth-gate-actions">
-          <button type="button" className="btn-primary" onClick={() => navigate("/account/login")}>
+          <button type="button" className="btn-primary" onClick={() => navigate("/login")}>
             Sign in
           </button>
-          <button type="button" className="ta-auth-gate-back" onClick={() => navigate("/travel-assistance")}>
+          <button type="button" className="ta-auth-gate-back" onClick={() => navigate("/guides")}>
             ← Back to Travel assistance
           </button>
         </div>

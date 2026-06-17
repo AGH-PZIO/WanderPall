@@ -30,7 +30,7 @@ function NotesPage() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
               ← Back
             </button>
             <h2>My notes</h2>
@@ -45,13 +45,13 @@ function NotesPage() {
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
             ← Back
           </button>
           <h2>My notes</h2>
         </div>
         <div className="ta-actions">
-          <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/edit-note/new")}>
+          <button type="button" className="btn-primary" onClick={() => navigate("/guides/edit-note/new")}>
             + New note
           </button>
         </div>
@@ -62,7 +62,7 @@ function NotesPage() {
           <div className="ta-empty-state" style={{ minHeight: 200 }}>
             <div className="ta-empty-icon">🗒️</div>
             <p>No notes yet. Create your first note.</p>
-            <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/edit-note/new")}>
+            <button type="button" className="btn-primary" onClick={() => navigate("/guides/edit-note/new")}>
               New note
             </button>
           </div>
@@ -71,11 +71,11 @@ function NotesPage() {
             <div
               key={n.id}
               className="ta-stack-card"
-              onClick={() => navigate(`/travel-assistance/note/${n.id}`)}
+              onClick={() => navigate(`/guides/note/${n.id}`)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  navigate(`/travel-assistance/note/${n.id}`);
+                  navigate(`/guides/note/${n.id}`);
                 }
               }}
               role="button"

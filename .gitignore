@@ -42,3 +42,10 @@ backend/media/
 *.swo
 .DS_Store
 Thumbs.db
+
+#cięższe assety do edycji
+assets/local
+
+#stare dema
+misc/demo/trash/
+AGENTS.md

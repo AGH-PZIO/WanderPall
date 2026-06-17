@@ -57,7 +57,7 @@ function NoteEditor({
       update(noteId ? noteId : "", noteData);
     }
 
-    navigate("/travel-assistance/notes");
+    navigate("/guides/notes");
   }
 
   function renderNotes() {
@@ -71,11 +71,11 @@ function NoteEditor({
         <div
           key={n.id}
           className="ta-note-list-item"
-          onClick={() => navigate(`/travel-assistance/note/${n.id}`)}
+          onClick={() => navigate(`/guides/note/${n.id}`)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              navigate(`/travel-assistance/note/${n.id}`);
+              navigate(`/guides/note/${n.id}`);
             }
           }}
           role="button"
@@ -91,7 +91,7 @@ function NoteEditor({
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/notes")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides/notes")}>
             ← Back
           </button>
           <h2>{isNew ? "New note" : "Edit note"}</h2>
@@ -106,7 +106,7 @@ function NoteEditor({
               className="btn-secondary"
               onClick={() => {
                 remove(noteId ?? "");
-                navigate("/travel-assistance/notes");
+                navigate("/guides/notes");
               }}
             >
               Delete
@@ -171,7 +171,7 @@ function EditNotePage() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/notes")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/guides/notes")}>
               ← Back
             </button>
             <h2>{isNew ? "New note" : "Edit note"}</h2>

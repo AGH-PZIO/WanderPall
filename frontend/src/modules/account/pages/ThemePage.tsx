@@ -42,7 +42,7 @@ export function ThemePage() {
   }, [accessToken]);
 
   if (loading) return <p className="acc-muted">Loading…</p>;
-  if (!accessToken) return <Navigate to="/account/login" replace />;
+  if (!accessToken) return <Navigate to="/login" replace />;
 
   async function save() {
     if (!accessToken) return;

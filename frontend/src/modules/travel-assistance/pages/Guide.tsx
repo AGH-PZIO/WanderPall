@@ -77,7 +77,7 @@ export default function GuideEditor() {
     try {
       await saveGuide(isNew ? null : id!, payload);
       alert(isNew ? "Guide created!" : "Changes saved!");
-      navigate("/travel-assistance/my-guides");
+      navigate("/guides/mine");
     } catch (err: unknown) {
       if (err instanceof Error) alert(`Error when saving: ${err.message}`);
       else alert("Error when saving");
@@ -88,7 +88,7 @@ export default function GuideEditor() {
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance/my-guides")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides/mine")}>
             ← Back
           </button>
           <h2>{isNew ? "New guide" : "Edit guide"}</h2>
@@ -204,7 +204,7 @@ export default function GuideEditor() {
         </div>
 
         <div className="ta-guide-footer-actions">
-          <button type="button" className="btn-secondary" onClick={() => navigate("/travel-assistance/my-guides")}>
+          <button type="button" className="btn-secondary" onClick={() => navigate("/guides/mine")}>
             Cancel
           </button>
         </div>

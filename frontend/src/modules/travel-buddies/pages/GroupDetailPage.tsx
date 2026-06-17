@@ -210,7 +210,7 @@ export function GroupDetailPage() {
     if (!confirm("Na pewno chcesz opuścić tę grupę?")) return;
     try {
       await leaveGroup(accessToken, groupId);
-      navigate("/travel-buddies");
+      navigate("/groups");
     } catch (err: unknown) {
       showMsg(false, err instanceof Error ? err.message : "Błąd opuszczania grupy");
     }

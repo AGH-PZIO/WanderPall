@@ -18,7 +18,7 @@ export function ProfilePage() {
   const [submitting, setSubmitting] = useState(false);
 
   if (loading) return <p className="acc-muted">Loading…</p>;
-  if (!user || !accessToken) return <Navigate to="/account/login" replace />;
+  if (!user || !accessToken) return <Navigate to="/login" replace />;
 
   function startEditing() {
     if (!user) return;

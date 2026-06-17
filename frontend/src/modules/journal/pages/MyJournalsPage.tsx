@@ -50,7 +50,7 @@ export function MyJournalsPage() {
       <div className="jr-shell">
         <p className="jr-muted">Please sign in to view your journals.</p>
         <div className="jr-actions" style={{ justifyContent: "flex-start" }}>
-          <Link className="jr-btn" to="/account/login">Go to login</Link>
+          <Link className="jr-btn" to="/login">Go to login</Link>
         </div>
       </div>
     );

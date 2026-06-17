@@ -17,7 +17,7 @@ export function LoginPage() {
     setSubmitting(true);
     try {
       await signIn(email, password);
-      navigate("/account");
+      navigate("/trips");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
@@ -63,11 +63,11 @@ export function LoginPage() {
           </button>
 
           <p className="acc-muted">
-            New here? <Link to="/account/register" className="acc-link-button">Create an account</Link>
+            New here? <Link to="/register" className="acc-link-button">Create an account</Link>
           </p>
           <p className="acc-muted">
             Forgot password?{" "}
-            <Link to="/account/password-reset" className="acc-link-button">Reset it</Link>
+            <Link to="/password-reset" className="acc-link-button">Reset it</Link>
           </p>
         </form>
       </div>

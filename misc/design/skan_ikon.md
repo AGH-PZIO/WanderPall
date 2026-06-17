@@ -1,0 +1,1 @@
+Na podstawie stron WanderPalla określ jakie ikony będą potrzebne (konkretnie co ma na nich być) do projektu tej aplikacji - przede wszystkim, co już się w niej znajduje

@@ -12,7 +12,7 @@ export function DeleteAccountPage() {
   const [submitting, setSubmitting] = useState(false);
 
   if (loading) return <p className="acc-muted">Loading…</p>;
-  if (!user || !accessToken) return <Navigate to="/account/login" replace />;
+  if (!user || !accessToken) return <Navigate to="/login" replace />;
 
   async function handleDelete() {
     if (!accessToken) return;

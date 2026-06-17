@@ -29,7 +29,7 @@ function MyCalculations() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
               ← Back
             </button>
             <h2>Trip calculator</h2>
@@ -44,13 +44,13 @@ function MyCalculations() {
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
             ← Back
           </button>
           <h2>My calculations</h2>
         </div>
         <div className="ta-actions">
-          <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/calculation/new")}>
+          <button type="button" className="btn-primary" onClick={() => navigate("/tools/calculator/new")}>
             + New calculation
           </button>
         </div>
@@ -61,7 +61,7 @@ function MyCalculations() {
           <div className="ta-empty-state" style={{ minHeight: 200 }}>
             <div className="ta-empty-icon">🧮</div>
             <p>No saved calculations yet.</p>
-            <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/calculation/new")}>
+            <button type="button" className="btn-primary" onClick={() => navigate("/tools/calculator/new")}>
               New calculation
             </button>
           </div>
@@ -70,11 +70,11 @@ function MyCalculations() {
             <div
               key={c.id}
               className="ta-stack-card"
-              onClick={() => navigate(`/travel-assistance/calculation/${c.id}`)}
+              onClick={() => navigate(`/tools/calculator/${c.id}`)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  navigate(`/travel-assistance/calculation/${c.id}`);
+                  navigate(`/tools/calculator/${c.id}`);
                 }
               }}
               role="button"

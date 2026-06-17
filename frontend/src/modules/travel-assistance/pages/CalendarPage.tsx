@@ -77,7 +77,7 @@ export function CalendarPage() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
             ← Back
           </button>
           <h2>Calendar</h2>
@@ -98,7 +98,7 @@ export function CalendarPage() {
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button onClick={() => navigate("/travel-assistance")} className="btn-back">
+          <button onClick={() => navigate("/guides")} className="btn-back">
             ← Back
           </button>
           <h2>Calendar</h2>

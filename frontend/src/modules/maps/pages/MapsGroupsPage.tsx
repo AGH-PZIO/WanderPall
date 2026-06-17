@@ -42,12 +42,11 @@ export function MapsGroupsPage() {
 
   return (
     <div className="maps-groups-page">
-      <header className="maps-header">
-        <h2>Mapy podróży</h2>
-        <p className="maps-subtitle">
-          Wybierz grupę "Travel Buddies", aby otworzyć jej mapę wspólnej podróży.
+      {!loading && !error && groups.length > 0 && (
+        <p className="maps-subtitle text-secondary" style={{ marginBottom: 16 }}>
+          Wybierz grupę, aby otworzyć mapę wspólnej podróży.
         </p>
-      </header>
+      )}
 
       {groups.length === 0 ? (
         <div className="maps-empty">
@@ -56,7 +55,7 @@ export function MapsGroupsPage() {
           <button
             type="button"
             className="maps-btn-primary"
-            onClick={() => navigate("/travel-buddies")}
+            onClick={() => navigate("/groups")}
           >
             Przejdź do Travel Buddies
           </button>
@@ -67,11 +66,11 @@ export function MapsGroupsPage() {
             <li
               key={g.id}
               className="maps-group-card"
-              onClick={() => navigate(`/maps/groups/${g.id}`)}
+              onClick={() => navigate(`/trips/groups/${g.id}`)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) =>
-                (e.key === "Enter" || e.key === " ") && navigate(`/maps/groups/${g.id}`)
+                (e.key === "Enter" || e.key === " ") && navigate(`/trips/groups/${g.id}`)
               }
             >
               <div className="maps-group-card-icon">🗺️</div>

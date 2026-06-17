@@ -1,10 +1,10 @@
 .acc-full-page {
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  min-height: 100vh;
-  background: #f7f8f4;
-  color: #18201c;
+  width: 100%;
+  min-height: auto;
+  background: transparent;
+  color: var(--text-primary);
 }
 
 :root[data-theme="dark"] .acc-full-page {
@@ -166,14 +166,15 @@
 
 .acc-subheading {
   margin: 0 0 28px;
-  color: #4e5f56;
+  color: var(--text-secondary);
 }
 
 .acc-card {
   padding: 28px;
-  border: 1px solid #d2d8c8;
-  border-radius: 10px;
-  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-0);
+  box-sizing: border-box;
 }
 
 .acc-form {
@@ -191,31 +192,39 @@
 .acc-field label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #18201c;
-}
-
-.acc-field input,
-.acc-field select {
-  padding: 10px 12px;
-  border: 1px solid #d2d8c8;
-  border-radius: 6px;
-  background: #ffffff;
-  font: inherit;
-  color: #18201c;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.acc-field input:focus,
-.acc-field select:focus {
-  outline: none;
-  border-color: #1e6f5c;
-  box-shadow: 0 0 0 3px rgba(30, 111, 92, 0.15);
+  color: var(--text-primary);
 }
 
 .acc-field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  min-width: 0;
+}
+
+.acc-field-row .acc-field {
+  min-width: 0;
+}
+
+.acc-field input,
+.acc-field select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-0);
+  font: inherit;
+  color: var(--text-primary);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.acc-field input:focus,
+.acc-field select:focus {
+  outline: none;
+  border-color: var(--accent-500);
+  box-shadow: 0 0 0 3px rgba(13, 107, 92, 0.15);
 }
 
 @media (max-width: 520px) {

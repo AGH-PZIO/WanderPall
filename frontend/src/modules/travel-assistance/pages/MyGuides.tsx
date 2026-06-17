@@ -49,7 +49,7 @@ export default function MyGuides() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
               ← Back
             </button>
             <h2>My guides</h2>
@@ -64,7 +64,7 @@ export default function MyGuides() {
       <div className="ta-shell">
         <div className="ta-header">
           <div className="ta-header-left">
-            <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+            <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
               ← Back
             </button>
             <h2>My guides</h2>
@@ -81,20 +81,20 @@ export default function MyGuides() {
     <div className="ta-shell">
       <div className="ta-header">
         <div className="ta-header-left">
-          <button type="button" className="btn-back" onClick={() => navigate("/travel-assistance")}>
+          <button type="button" className="btn-back" onClick={() => navigate("/guides")}>
             ← Back
           </button>
           <h2>My guides</h2>
         </div>
         <div className="ta-actions">
-          <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/guide/new")}>
+          <button type="button" className="btn-primary" onClick={() => navigate("/guides/edit/new")}>
             + New guide
           </button>
         </div>
       </div>
 
       <div className="ta-subnav">
-        <button type="button" onClick={() => navigate("/travel-assistance/browse-guides")}>
+        <button type="button" onClick={() => navigate("/guides/browse")}>
           Browse public guides
         </button>
       </div>
@@ -104,7 +104,7 @@ export default function MyGuides() {
           <div className="ta-empty-state" style={{ minHeight: 200 }}>
             <div className="ta-empty-icon">📖</div>
             <p>You have no guides yet.</p>
-            <button type="button" className="btn-primary" onClick={() => navigate("/travel-assistance/guide/new")}>
+            <button type="button" className="btn-primary" onClick={() => navigate("/guides/edit/new")}>
               Create guide
             </button>
           </div>
@@ -116,10 +116,10 @@ export default function MyGuides() {
                 {g.published ? "Published" : "Draft"} · {new Date(g.created_at).toLocaleString()}
               </p>
               <div className="ta-stack-card__actions" style={{ marginTop: 12 }}>
-                <button type="button" onClick={() => navigate(`/travel-assistance/read-guide/${g.id}`)}>
+                <button type="button" onClick={() => navigate(`/guides/read/${g.id}`)}>
                   Read
                 </button>
-                <button type="button" onClick={() => navigate(`/travel-assistance/guide/${g.id}`)}>
+                <button type="button" onClick={() => navigate(`/guides/edit/${g.id}`)}>
                   Edit
                 </button>
                 <button type="button" onClick={() => handleTogglePublish(g.id, g.published)}>
